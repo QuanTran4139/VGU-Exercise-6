@@ -3,6 +3,7 @@ CREATE TABLE IF NOT EXISTS AcademicYear (
 
     PRIMARY KEY (AYearId)
 );
+
 CREATE TABLE IF NOT EXISTS Semester (
    SemesterId VARCHAR(10),
    SemesterName VARCHAR(100) NOT NULL,
@@ -26,7 +27,7 @@ CREATE TABLE IF NOT EXISTS Faculty (
 		ON DELETE CASCADE,
     CONSTRAINT FacultyInAcademicYear
         UNIQUE (AYearId, FacultyName)
-); 
+);
 
 CREATE TABLE IF NOT EXISTS Program (
     ProgramId VARCHAR(10),
@@ -40,6 +41,7 @@ CREATE TABLE IF NOT EXISTS Program (
     CONSTRAINT ProgramInFaculty
         UNIQUE (FacultyId, ProgramName)
 );
+
 CREATE TABLE IF NOT EXISTS Module (
     ModuleId VARCHAR(10),
     ModuleName VARCHAR(100) NOT NULL,
@@ -50,6 +52,7 @@ CREATE TABLE IF NOT EXISTS Module (
 		REFERENCES Program (ProgramId)
 		ON DELETE CASCADE
 );
+
 CREATE TABLE IF NOT EXISTS Class (
     ClassId VARCHAR(10),
     ClassSize VARCHAR(10) NOT NULL,
@@ -67,7 +70,7 @@ CREATE TABLE IF NOT EXISTS Class (
         UNIQUE (ModuleId, ClassId),
 	CONSTRAINT ClassInSemester
         UNIQUE (SemesterId, ClassId)
-        
+
 );
 
 CREATE TABLE IF NOT EXISTS Lecturer (
@@ -75,7 +78,7 @@ CREATE TABLE IF NOT EXISTS Lecturer (
     LecturerName VARCHAR(100) NOT NULL,
 
     PRIMARY KEY (LecturerId)
-); 
+);
 
 CREATE TABLE IF NOT EXISTS Teaching (
     LecturerId VARCHAR(10) NOT NULL,
@@ -93,7 +96,7 @@ CREATE TABLE IF NOT EXISTS Teaching (
 CREATE TABLE IF NOT EXISTS Questionnaire (
     LecturerId VARCHAR(10) NOT NULL,
     ClassId VARCHAR(10) NOT NULL,
-    Content LONGBLOB, 
+    Content LONGBLOB,
 
     PRIMARY KEY (LecturerId,ClassId),
     FOREIGN KEY (LecturerId)
