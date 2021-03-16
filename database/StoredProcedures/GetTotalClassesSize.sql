@@ -1,17 +1,22 @@
 /*
-   Get sport centers from a city identified by the cityId
+   Get Total classes size by SUM of the "sizes" of all the classes of the given lecturer, 
+   for the given module, 
+   in the given program, 
+   of the given faculty, 
+   in the given semester, 
+   for the given academic year.
 */
 DELIMITER //
 
 DROP PROCEDURE IF EXISTS GetTotalClassesSize  //
 CREATE PROCEDURE GetTotalClassesSize (
-	IN inAYearId INT,
-    IN inSemesterId INT,
-    IN inFacultyId INT,
-    IN inProgramId VARCHAR(5),
-    IN inModuleId INT,
-    IN inLecturerId INT,
-    IN inClassId INT,
+	IN inAYearId VARCHAR(10),
+    IN inSemesterId  VARCHAR(10),
+    IN inFacultyId  VARCHAR(10),
+    IN inProgramId  VARCHAR(10),
+    IN inModuleId  VARCHAR(10),
+    IN inLecturerId  VARCHAR(10),
+    IN inClassId  VARCHAR(10),
     OUT statusCode INT
 )
 BEGIN
