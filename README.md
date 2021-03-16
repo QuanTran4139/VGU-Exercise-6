@@ -9,5 +9,4 @@
 - 13872 - duchai9109
 - 16052 - NguyenGiaKimThien
 - 15124 - TranPhanPhucLong
-- 14117 - bomoc777
 - 13298 - bacxhoang
