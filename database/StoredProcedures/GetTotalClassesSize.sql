@@ -16,7 +16,6 @@ CREATE PROCEDURE GetTotalClassesSize (
     IN inProgramId  VARCHAR(10),
     IN inModuleId  VARCHAR(10),
     IN inLecturerId  VARCHAR(10),
-    IN inClassId  VARCHAR(10),
     OUT statusCode INT
 )
 BEGIN
@@ -25,15 +24,14 @@ BEGIN
     AND inFacultyId NOT IN (SELECT FacultyId FROM Faculty)
     AND inProgramId NOT IN (SELECT ProgramId FROM Program)
     AND inModuleId NOT IN (SELECT ModuleId FROM Module)
-    AND inLecturerId NOT IN (SELECT LecturerId FROM Lecturer)
-    AND inClassId NOT IN (SELECT ClassId FROM Class) THEN
+    AND inLecturerId NOT IN (SELECT LecturerId FROM Teaching) THEN
 		SET statusCode = 405; -- invalid code
 	ELSE
 		SET statusCode = 200;
 
         SELECT SUM(Size) AS TotalClassesSize
 		FROM Class
-		NATURAL JOIN Lecturer
+		NATURAL JOIN Teaching
         NATURAL JOIN Module
         NATURAL JOIN Program
         NATURAL JOIN Faculty
