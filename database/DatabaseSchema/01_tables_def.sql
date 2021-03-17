@@ -1,6 +1,5 @@
 CREATE TABLE IF NOT EXISTS AcademicYear (
     AYearId VARCHAR(10),
-
     PRIMARY KEY (AYearId)
 );
 CREATE TABLE IF NOT EXISTS Semester (
@@ -9,8 +8,7 @@ CREATE TABLE IF NOT EXISTS Semester (
    AYearId VARCHAR(10) NOT NULL,
     PRIMARY KEY (SemesterId),
     FOREIGN KEY (AYearId)
-		REFERENCES AcademicYear (AYearId)
-		ON DELETE CASCADE,
+		REFERENCES AcademicYear (AYearId),
         CONSTRAINT SemesterInAcademicYear
         UNIQUE (AYearId, SemesterName)
 );
@@ -23,7 +21,6 @@ CREATE TABLE IF NOT EXISTS Faculty (
     PRIMARY KEY (FacultyId),
 	FOREIGN KEY (AYearId)
 		REFERENCES AcademicYear (AYearId)
-		ON DELETE CASCADE
 ); 
 
 CREATE TABLE IF NOT EXISTS Program (
@@ -33,8 +30,7 @@ CREATE TABLE IF NOT EXISTS Program (
 
     PRIMARY KEY (ProgramId),
 	FOREIGN KEY (FacultyId)
-		REFERENCES Faculty (FacultyId)
-		ON DELETE CASCADE,
+		REFERENCES Faculty (FacultyId),
     CONSTRAINT ProgramInFaculty
         UNIQUE (FacultyId, ProgramName)
 );
@@ -46,7 +42,6 @@ CREATE TABLE IF NOT EXISTS Module (
     PRIMARY KEY (ModuleId),
 	FOREIGN KEY (ProgramId)
 		REFERENCES Program (ProgramId)
-		ON DELETE CASCADE
 );
 CREATE TABLE IF NOT EXISTS Class (
     ClassId VARCHAR(10),
@@ -56,11 +51,9 @@ CREATE TABLE IF NOT EXISTS Class (
 
     PRIMARY KEY (ClassId),
 	FOREIGN KEY (SemesterId)
-		REFERENCES Semester (SemesterId)
-		ON DELETE CASCADE,
+		REFERENCES Semester (SemesterId),
 	FOREIGN KEY (ModuleId)
-		REFERENCES Module (ModuleId)
-		ON DELETE CASCADE,
+		REFERENCES Module (ModuleId),
     CONSTRAINT ClassInModule
         UNIQUE (ModuleId, ClassId),
 	CONSTRAINT ClassInSemester
@@ -71,8 +64,7 @@ CREATE TABLE IF NOT EXISTS Class (
 CREATE TABLE IF NOT EXISTS Lecturer (
     LecturerId VARCHAR(10),
     LecturerName VARCHAR(100) NOT NULL,
-
-    PRIMARY KEY (LecturerId)
+	PRIMARY KEY (LecturerId)
 ); 
 
 CREATE TABLE IF NOT EXISTS Teaching (
@@ -81,11 +73,9 @@ CREATE TABLE IF NOT EXISTS Teaching (
 
     PRIMARY KEY (LecturerId,ClassId),
     FOREIGN KEY (LecturerId)
-		REFERENCES Lecturer (LecturerId)
-		ON DELETE CASCADE,
+		REFERENCES Lecturer (LecturerId),
 	FOREIGN KEY (ClassId)
 		REFERENCES Class (ClassId)
-		ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS Questionnaire (
@@ -95,9 +85,7 @@ CREATE TABLE IF NOT EXISTS Questionnaire (
 
     PRIMARY KEY (LecturerId,ClassId),
     FOREIGN KEY (LecturerId)
-		REFERENCES Lecturer (LecturerId)
-		ON DELETE CASCADE,
+		REFERENCES Lecturer (LecturerId),
 	FOREIGN KEY (ClassId)
 		REFERENCES Class (ClassId)
-		ON DELETE CASCADE
 );
