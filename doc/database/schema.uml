@@ -1,0 +1,72 @@
+@startuml
+
+left to right direction
+
+entity AcademicYear{
+    <u> AYear_ID
+}
+
+entity Semester{
+    <u> Semester_ID
+    <u> AYear_ID FK
+}
+
+entity Faculty{
+    <u> Faculty_ID
+    <u> AYear_ID FK
+    --
+    Name
+}
+
+entity Program{
+    <u> Program_ID
+    <u> Faculty_ID FK
+    --
+    Name
+}
+
+entity Module{
+    <u> Module_ID
+    <u> Program_ID FK
+    --
+    Name
+}
+
+entity Class{
+    <u> Class_ID
+    <u> Module_ID FK
+    <u> Semester_ID FK
+    --
+    Size
+}
+
+entity Lecturer{
+    <u> Lecturer_ID
+    --
+    Name
+}
+
+entity Questionaire{
+    <u> Questionaire_ID
+    <u> Lecturer_ID FK
+    <u> Class_ID FK
+}
+
+entity Teaches{
+    <u> Lecturer_ID FK
+    <u> Class_ID FK
+}
+
+AcademicYear ||--o{ Semester
+Semester ||--o{ Faculty
+Faculty ||--o{ Program
+Program ||--o{ Module
+Module ||--o{ Class
+
+Class --|| Questionaire
+Class --|{ Teaches
+
+Lecturer --|| Questionaire
+Lecturer --|{ Teaches
+
+@enduml
