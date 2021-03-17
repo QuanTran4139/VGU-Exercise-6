@@ -13,7 +13,6 @@ entity Semester{
 
 entity Faculty{
     <u> Faculty_ID
-    <u> AYear_ID FK
     --
     Name
 }
@@ -46,6 +45,11 @@ entity Lecturer{
     Name
 }
 
+entity FacultyInYear{
+    <u> Faculty_ID FK
+    <u> AYear_ID FK
+}
+
 entity Questionaire{
     <u> Questionaire_ID
     <u> Lecturer_ID FK
@@ -62,6 +66,9 @@ Semester ||--o{ Faculty
 Faculty ||--o{ Program
 Program ||--o{ Module
 Module ||--o{ Class
+
+FacultyInYear }o--o{ Faculty
+FacultyInYear }o--|| AcademicYear
 
 Class --|| Questionaire
 Class --|{ Teaches
