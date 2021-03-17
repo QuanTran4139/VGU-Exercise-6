@@ -86,7 +86,7 @@ CREATE TABLE IF NOT EXISTS ModuleInProgram (
 
 CREATE TABLE IF NOT EXISTS Class (
     ClassId VARCHAR(10),
-    Size VARCHAR(10) NOT NULL,
+    Size INT NOT NULL,
     SemesterId VARCHAR(10) NOT NULL,
     ModuleId VARCHAR(10) NOT NULL,
 
