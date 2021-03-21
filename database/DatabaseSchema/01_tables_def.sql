@@ -1,5 +1,3 @@
-
-
 CREATE TABLE IF NOT EXISTS AcademicYear (
     AYearId VARCHAR(10),
     PRIMARY KEY (AYearId)
@@ -8,7 +6,7 @@ CREATE TABLE IF NOT EXISTS AcademicYear (
 CREATE TABLE IF NOT EXISTS Semester (
    SemesterId VARCHAR(10),
    SemesterName VARCHAR(100) NOT NULL,
-    PRIMARY KEY (SemesterId)
+   PRIMARY KEY (SemesterId)
 
 );
 
@@ -45,17 +43,14 @@ CREATE TABLE IF NOT EXISTS Program (
     PRIMARY KEY (ProgramId)
 );
 
-CREATE TABLE IF NOT EXISTS ProgramInFacultyInAcademicYear (
+CREATE TABLE IF NOT EXISTS ProgramInFaculty (
 	ProgramId VARCHAR(10),
 	FacultyId VARCHAR(10),
-    AYearId VARCHAR(10),
-    PRIMARY KEY(ProgramId,FacultyId,AYearId),
+    PRIMARY KEY(ProgramId,FacultyId),
 	FOREIGN KEY (ProgramId)
 		REFERENCES Program (ProgramId),
 	FOREIGN KEY (FacultyId)
-		REFERENCES Faculty (FacultyId),
-	FOREIGN KEY (AYearId)
-		REFERENCES AcademicYear (AYearId)
+		REFERENCES Faculty (FacultyId)
 );
 
 CREATE TABLE IF NOT EXISTS Module (
@@ -65,40 +60,31 @@ CREATE TABLE IF NOT EXISTS Module (
     PRIMARY KEY (ModuleId)
 );
 
-CREATE TABLE IF NOT EXISTS ModuleInProgramInAcademicYear (
+CREATE TABLE IF NOT EXISTS ModuleInProgram (
 	ModuleId VARCHAR(10),
 	ProgramId VARCHAR(10),
-    AYearId VARCHAR(10),
     
-    PRIMARY KEY(ModuleId,ProgramId,AYearId),
+    PRIMARY KEY(ModuleId,ProgramId),
 	FOREIGN KEY (ModuleId)
 		REFERENCES Module (ModuleId),
 	FOREIGN KEY (ProgramId)
-		REFERENCES Program (ProgramId),
-    FOREIGN KEY (AYearId)
-		REFERENCES AcademicYear (AYearId)
+		REFERENCES Program (ProgramId)
 );
 
 CREATE TABLE IF NOT EXISTS Class (
     ClassId VARCHAR(10),
     Size INT NOT NULL,
-
-    PRIMARY KEY (ClassId)
-);
-
-CREATE TABLE IF NOT EXISTS ClassInSemesterModuleAcademicYear (
-	ClassId VARCHAR(10),
     SemesterId VARCHAR(10),
     ModuleId VARCHAR(10),
-    AYearId VARCHAR(10),
-    PRIMARY KEY(ClassId,SemesterId,ModuleId,AYearId),
+    PRIMARY KEY(ClassId,SemesterId,ModuleId),
     FOREIGN KEY (SemesterId)
 		REFERENCES Semester (SemesterId),
 	FOREIGN KEY (ModuleId)
-		REFERENCES Module (ModuleId),
-	FOREIGN KEY (AYearId)
-		REFERENCES AcademicYear (AYearId)
+		REFERENCES Module (ModuleId)
 );
+
+
+    
 
 CREATE TABLE IF NOT EXISTS Lecturer (
     LecturerId VARCHAR(10),
