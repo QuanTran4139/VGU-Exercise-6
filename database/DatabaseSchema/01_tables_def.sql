@@ -91,6 +91,8 @@ CREATE TABLE IF NOT EXISTS ClassInSemesterInModuleInAcademicYear (
 	AYearId INT,
     
     PRIMARY KEY (ClassId,SemesterId,ModuleId,AYearId),
+    FOREIGN KEY (ClassId)
+		REFERENCES Class (ClassId),
     FOREIGN KEY (SemesterId)
 		REFERENCES Semester (SemesterId),
 	FOREIGN KEY (ModuleId)
