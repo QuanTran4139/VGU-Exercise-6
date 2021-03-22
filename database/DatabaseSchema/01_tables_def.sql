@@ -4,19 +4,12 @@ CREATE TABLE IF NOT EXISTS AcademicYear (
     PRIMARY KEY (AYearId)
 );
 
-CREATE TABLE IF NOT EXISTS Semester (
-   SemesterId VARCHAR(10),
-   
-   PRIMARY KEY (SemesterId)
-);
 
-CREATE TABLE IF NOT EXISTS SemesterInAcademicYear (
+CREATE TABLE IF NOT EXISTS Semester (
 	SemesterId VARCHAR(10),
     AYearId INT NOT NULL,
     
     PRIMARY KEY(SemesterId,AYearId),
-	FOREIGN KEY (SemesterId)
-		REFERENCES Semester (SemesterId),
 	FOREIGN KEY (AYearId)
 		REFERENCES AcademicYear (AYearId)
 );
@@ -31,12 +24,12 @@ CREATE TABLE IF NOT EXISTS Faculty (
 ); 
 
 CREATE TABLE IF NOT EXISTS FacultyInAcademicYear (
-	FacultyName VARCHAR(100),
+	FacultyId VARCHAR(100),
     AYearId INT NOT NULL,
     
-    PRIMARY KEY(FacultyName,AYearId),
-	FOREIGN KEY (FacultyName)
-		REFERENCES Faculty (FacultyName),
+    PRIMARY KEY(FacultyId,AYearId),
+	FOREIGN KEY (FacultyId)
+		REFERENCES Faculty (FacultyId),
 	FOREIGN KEY (AYearId)
 		REFERENCES AcademicYear (AYearId)
 );
@@ -51,12 +44,12 @@ CREATE TABLE IF NOT EXISTS Program (
 );
 
 CREATE TABLE IF NOT EXISTS ProgramInFacultyInAcademicYear (
-	ProgramName VARCHAR(100),
+	ProgramId VARCHAR(100),
 	FacultyId VARCHAR(10),
     AYearId INT,
-    PRIMARY KEY(ProgramName,FacultyId,AYearId),
-	FOREIGN KEY (ProgramName)
-		REFERENCES Program (ProgramName),
+    PRIMARY KEY(ProgramId,FacultyId,AYearId),
+	FOREIGN KEY (ProgramId)
+		REFERENCES Program (ProgramId),
 	FOREIGN KEY (FacultyId)
 		REFERENCES Faculty (FacultyId),
 	FOREIGN KEY (AYearId)

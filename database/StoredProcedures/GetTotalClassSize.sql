@@ -31,7 +31,6 @@ BEGIN
 		NATURAL JOIN ClassInSemesterInModuleInAcademicYear
         NATURAL JOIN ProgramInFacultyInAcademicYear
 		NATURAL JOIN ModuleInProgramInAcademicYear
-        NATURAL JOIN SemesterInAcademicYear
         NATURAL JOIN FacultyInAcademicYear
 		WHERE LecturerId = inLecturerId
         AND SemesterId = inSemesterId

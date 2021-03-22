@@ -8,18 +8,18 @@ INSERT INTO `faculty` (`FacultyId`, `FacultyName`) VALUES 	('CENG', 'Computer An
 															('ECO', 'Economy'),
 															('ARC', 'Architecture' );
 
-INSERT INTO `facultyinacademicyear` (`FacultyName`, `AYearId`) VALUES ( 'Computer And Engineering', 2001),
-																	( 'Computer And Engineering', 2002),
-																	( 'Computer And Engineering', 2003),
-																	( 'Computer And Engineering', 2004),
-																	( 'Economy', 2001),
-																	( 'Economy', 2002),
-																	( 'Economy', 2003),
-																	( 'Economy', 2004),
-																	( 'Architecture', 2001),
-																	( 'Architecture', 2002),
-																	( 'Architecture', 2003),
-																	( 'Architecture', 2004);
+INSERT INTO `facultyinacademicyear` (`FacultyId`, `AYearId`) VALUES ( 'CENG', 2001),
+																	( 'CENG', 2002),
+																	( 'CENG', 2003),
+																	( 'CENG', 2004),
+																	( 'ECO', 2001),
+																	( 'ECO', 2002),
+																	( 'ECO', 2003),
+																	( 'ECO', 2004),
+																	( 'ARC', 2001),
+																	( 'ARC', 2002),
+																	( 'ARC', 2003),
+																	( 'ARC', 2004);
 
 INSERT INTO `lecturer` (`LecturerId`, `LecturerName`) VALUES 	('1', 'BOB'),
 																('2', 'BOB'),
@@ -32,11 +32,11 @@ INSERT INTO `program` (`ProgramId`, `ProgramName`) VALUES 	('CS', 'Computer Scie
 															('BA', 'Business Administrator'),
 															('AR', 'Architecture');
 
-INSERT INTO `programinfacultyinacademicyear` (`ProgramName`, `FacultyId`, `AYearId`) VALUES 	( 'Computer Science', 'CENG', 2001),
-																							    ( 'Computer Science', 'CENG', 2002),
-																							    ( 'Electrical Engineering', 'CENG', 2001),
-																							    ( 'Business Administrator', 'ECO', 2002),
-																							    ( 'Architecture', 'ARC', 2002);
+INSERT INTO `programinfacultyinacademicyear` (`ProgramId`, `FacultyId`, `AYearId`) VALUES 	( 'CS', 'CENG', 2001),
+																							    ( 'CS', 'CENG', 2002),
+																							    ( 'EE', 'CENG', 2001),
+																							    ( 'BA', 'ECO', 2002),
+																							    ( 'AR', 'ARC', 2002);
 
 INSERT INTO `module` (`ModuleId`, `ModuleName`) VALUES 	('ComCa', 'Calculus'),
 														('ComAl', 'Algebra'),
@@ -52,10 +52,8 @@ INSERT INTO `moduleinprograminacademicyear` (`ModuleId`, `ProgramId`, `AYearId`)
 																							( 'Ba', 'BA', 2001),
 																							( 'Phy', 'AR', 2001);
 
-INSERT INTO `semester` (`SemesterId`) VALUES 	('SS'),
-												('WS');
 
-INSERT INTO `semesterinacademicyear` (`SemesterId`, `AYearId`) VALUES 	( 'SS', 2001),
+INSERT INTO `semester` (`SemesterId`, `AYearId`) VALUES 	( 'SS', 2001),
 																		( 'SS', 2002),
 																		( 'SS', 2003),
 																		( 'SS', 2004),
