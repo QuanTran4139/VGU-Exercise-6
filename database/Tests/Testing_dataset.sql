@@ -53,14 +53,14 @@ INSERT INTO `moduleinprograminacademicyear` (`ModuleId`, `ProgramId`, `AYearId`)
 																							( 'Phy', 'AR', 2001);
 
 
-INSERT INTO `semester` (`SemesterId`, `AYearId`) VALUES 	( 'SS', 2001),
-																		( 'SS', 2002),
-																		( 'SS', 2003),
-																		( 'SS', 2004),
-																		( 'WS', 2001),
-																		( 'WS', 2002),
-																		( 'WS', 2003),
-																		( 'WS', 2004);
+INSERT INTO `semester` (`SemesterId`, `AYearId`) VALUES 	( 'SS01', 2001),
+																		( 'SS02', 2002),
+																		( 'SS03', 2003),
+																		( 'SS04', 2004),
+																		( 'WS01', 2001),
+																		( 'WS02', 2002),
+																		( 'WS03', 2003),
+																		( 'WS04', 2004);
 
 
 INSERT INTO `class` (`ClassId`, `Size`) VALUES 	('1', '20'),
@@ -70,12 +70,12 @@ INSERT INTO `class` (`ClassId`, `Size`) VALUES 	('1', '20'),
 												('5', '30'),
 												('6', '50');
                                                 
-INSERT INTO `classinsemesterinmoduleinacademicyear` (`ClassId`, `SemesterId`, `ModuleId`,`AYearId`) VALUES 	('1', 'WS', 'EECa',2001),
-																										    ('2', 'WS', 'ComCa',2001),
-																										    ('3', 'WS', 'EECa',2001),
-																										    ('4', 'SS', 'ComCa',2001),
-																										    ('5', 'WS', 'Ba',2001),
-																										    ('6', 'SS', 'Phy',2001);
+INSERT INTO `classinsemesterinmodule` (`ClassId`, `SemesterId`, `ModuleId`) VALUES 	('1', 'WS01', 'EECa'),
+																										    ('2', 'WS01', 'ComCa'),
+																										    ('3', 'WS01', 'EECa'),
+																										    ('4', 'SS01', 'ComCa'),
+																										    ('5', 'WS01', 'Ba'),
+																										    ('6', 'SS01', 'Phy');
 
 INSERT INTO `questionnaire` (`LecturerId`, `ClassId`) VALUES 	('1', '1'),
 																('2', '2'),

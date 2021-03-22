@@ -28,7 +28,7 @@ BEGIN
         NATURAL JOIN Faculty
         NATURAL JOIN Semester
         NATURAL JOIN AcademicYear
-		NATURAL JOIN ClassInSemesterInModuleInAcademicYear
+		NATURAL JOIN ClassInSemesterInModule
         NATURAL JOIN ProgramInFacultyInAcademicYear
 		NATURAL JOIN ModuleInProgramInAcademicYear
         NATURAL JOIN FacultyInAcademicYear
