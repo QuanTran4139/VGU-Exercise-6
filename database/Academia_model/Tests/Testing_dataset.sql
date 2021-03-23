@@ -1,4 +1,4 @@
-  
+
 INSERT INTO `AcademicYear` (`AYearId`) VALUES 	(2001),
 												(2002),
 												(2003),
@@ -32,7 +32,7 @@ INSERT INTO `Program` (`ProgramId`, `ProgramName`) VALUES 	('CS', 'Computer Scie
 															('BA', 'Business Administrator'),
 															('AR', 'Architecture');
 
-INSERT INTO `ProgramInFacultyInacademicYear` (`ProgramId`, `FacultyId`, `AYearId`) VALUES 	( 'CS', 'CENG', 2001),
+INSERT INTO `ProgramInFacultyInAcademicYear` (`ProgramId`, `FacultyId`, `AYearId`) VALUES 	( 'CS', 'CENG', 2001),
 																							    ( 'CS', 'CENG', 2002),
 																							    ( 'EE', 'CENG', 2001),
 																							    ( 'BA', 'ECO', 2002),
@@ -69,7 +69,7 @@ INSERT INTO `Class` (`ClassId`, `Size`) VALUES 	('1', '20'),
 												('4', '50'),
 												('5', '30'),
 												('6', '50');
-                                                
+
 INSERT INTO `ClassInSemesterInModule` (`ClassId`, `SemesterId`, `ModuleId`) VALUES 	('1', 'WS01', 'EECa'),
 																										    ('2', 'WS01', 'ComCa'),
 																										    ('3', 'WS01', 'EECa'),
