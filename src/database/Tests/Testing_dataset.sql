@@ -33,10 +33,10 @@ INSERT INTO `Program` (`ProgramId`, `ProgramName`) VALUES 	('CS', 'Computer Scie
 															('AR', 'Architecture');
 
 INSERT INTO `ProgramInFacultyInAcademicYear` (`ProgramId`, `FacultyId`, `AYearId`) VALUES 	( 'CS', 'CENG', 2001),
-																							    ( 'CS', 'CENG', 2002),
-																							    ( 'EE', 'CENG', 2001),
-																							    ( 'BA', 'ECO', 2002),
-																							    ( 'AR', 'ARC', 2002);
+																							( 'CS', 'CENG', 2002),
+																							( 'EE', 'CENG', 2001),
+																							( 'BA', 'ECO', 2002),
+																							( 'AR', 'ARC', 2002);
 
 INSERT INTO `Module` (`ModuleId`, `ModuleName`) VALUES 	('ComCa', 'Calculus'),
 														('ComAl', 'Algebra'),
@@ -63,19 +63,13 @@ INSERT INTO `Semester` (`SemesterId`, `AYearId`) VALUES 	( 'SS01', 2001),
 																		( 'WS04', 2004);
 
 
-INSERT INTO `Class` (`ClassId`, `Size`) VALUES 	('1', '20'),
-												('2', '30'),
-												('3', '50'),
-												('4', '50'),
-												('5', '30'),
-												('6', '50');
 
-INSERT INTO `ClassInSemesterInModule` (`ClassId`, `SemesterId`, `ModuleId`) VALUES 	('1', 'WS01', 'EECa'),
-																										    ('2', 'WS01', 'ComCa'),
-																										    ('3', 'WS01', 'EECa'),
-																										    ('4', 'SS01', 'ComCa'),
-																										    ('5', 'WS01', 'Ba'),
-																										    ('6', 'SS01', 'Phy');
+INSERT INTO `Class` (`ClassId`,`Size` ,`SemesterId`, `ModuleId`) VALUES 	('1', '20', 'WS01', 'EECa'),
+																			('2', '30', 'WS01', 'ComCa'),
+																			('3', '50', 'WS01', 'EECa'),
+																			('4', '50', 'SS01', 'ComCa'),
+																			('5', '30', 'WS01', 'Ba'),
+																		    ('6', '50', 'SS01', 'Phy');
 
 INSERT INTO `Questionnaire` (`LecturerId`, `ClassId`) VALUES 	('1', '1'),
 																('2', '2'),
