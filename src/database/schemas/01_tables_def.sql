@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS Faculty (
 ); 
 
 CREATE TABLE IF NOT EXISTS FacultyInAcademicYear (
-	FacultyId VARCHAR(100),
+	FacultyId VARCHAR(10),
     AYearId INT NOT NULL,
     
     PRIMARY KEY(FacultyId,AYearId),
@@ -46,7 +46,7 @@ CREATE TABLE IF NOT EXISTS Program (
 );
 
 CREATE TABLE IF NOT EXISTS ProgramInFacultyInAcademicYear (
-	ProgramId VARCHAR(100),
+	ProgramId VARCHAR(10),
 	FacultyId VARCHAR(10),
     AYearId INT,
     PRIMARY KEY(ProgramId,FacultyId,AYearId),
@@ -81,25 +81,21 @@ CREATE TABLE IF NOT EXISTS ModuleInProgramInAcademicYear (
 CREATE TABLE IF NOT EXISTS Class (
     ClassId VARCHAR(10),
     Size INT NOT NULL,
-   
-    PRIMARY KEY(ClassId)
-
-);
-
-CREATE TABLE IF NOT EXISTS ClassInSemesterInModule (
-	ClassId VARCHAR(10),
-	SemesterId VARCHAR(10),
+    SemesterId VARCHAR(10),
     ModuleId VARCHAR(10),
-    
+   
     PRIMARY KEY (ClassId,SemesterId,ModuleId),
     FOREIGN KEY (ClassId)
 		REFERENCES Class (ClassId),
     FOREIGN KEY (SemesterId)
 		REFERENCES Semester (SemesterId),
 	FOREIGN KEY (ModuleId)
-		REFERENCES ModuleInProgramInAcademicYear (ModuleId)
+		REFERENCES ModuleInProgramInAcademicYear (ModuleId),
+	CONSTRAINT Class
+		UNIQUE (ClassId)
+
 );
-    
+
 
 CREATE TABLE IF NOT EXISTS Lecturer (
     LecturerId VARCHAR(10),
