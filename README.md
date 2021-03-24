@@ -11,3 +11,13 @@
 - 15124 - TranPhanPhucLong
 - 13298 - bacxhoang
 - 14306 - khoiminhvo32
+
+## Installing the application
+
+### Database
+
+Log into MySQL, go to `/src/database/` and run `/src/database/init.sql`.
+
+### Web applications
+
+Copy/symlink `/src/main/www/` to `path/to/tomcat/webapps`.
