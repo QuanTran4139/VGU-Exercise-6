@@ -1,7 +1,1 @@
-.*
-target
-src/main/logs
-src/main/temp
-src/main/work
-src/main/conf/context.xml
-src/main/conf/tomcat-users.xml
+build
