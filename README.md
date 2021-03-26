@@ -20,4 +20,5 @@ Log into MySQL, go to `/src/database/` and run `/src/database/init.sql`.
 
 ### Web applications
 
-Copy/symlink `/src/main/www/` to `path/to/tomcat/webapps`.
+1. Run `maven install`
+2. Copy `target/Questionnaire*.war` to `path/to/tomcat/webapps/Questionnaire.war`
