@@ -8,8 +8,8 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
-public class Configuration {
-    public Configuration() {
+public class Database {
+    public Database() {
     }
     public static Connection getAcademiaConnection() throws SQLException, NamingException{
         Context initContext = new InitialContext();

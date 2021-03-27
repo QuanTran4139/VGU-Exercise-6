@@ -1,10 +1,7 @@
 package com.vgu.sqm.questionnaire.core;
 
-import org.json.simple.JSONObject;
-
 import javax.naming.NamingException;
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.Hashtable;
 
 public class Module {
@@ -17,7 +14,7 @@ public class Module {
     }
 
     public Hashtable<String, String> getJsonData() throws SQLException, NamingException {
-        Connection db = com.vgu.sqm.questionnaire.core.Configuration.getAcademiaConnection();
+        Connection db = com.vgu.sqm.questionnaire.core.Database.getAcademiaConnection();
         int statusCode;
 
         try {
