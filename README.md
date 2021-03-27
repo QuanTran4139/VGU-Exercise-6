@@ -20,5 +20,5 @@ Log into MySQL, go to `/src/database/` and run `/src/database/init.sql`.
 
 ### Web applications
 
-1. Run `maven compile install`
+1. Run `maven clean compile install`
 2. Copy `target/Questionnaire*.war` to `path/to/tomcat/webapps/Questionnaire.war` (rename to remove the extra string in the middle)
