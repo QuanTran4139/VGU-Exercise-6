@@ -1,6 +1,6 @@
 package com.vgu.sqm.questionnaire.core;
 
-public class Module {
+public class Module implements Entity {
     private String ModuleID;
     private String ModuleName;
 
