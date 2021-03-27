@@ -20,14 +20,10 @@ public class ModuleApi extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
-        if (request.getParameter("action") == "dump") {
+        if (request.getParameter("action").equals("dump")) {
             response.setContentType("application/json");
             response.setStatus(HttpServletResponse.SC_OK);
-            JSONObject output = new JSONObject();
-            for (Module module : dumpModules()) {
-                output.put(module.getID(), module.getName());
-            }
-            response.getWriter().print(output);
+            response.getWriter().print(dumpModulesJson());
         }
     }
 
@@ -36,9 +32,17 @@ public class ModuleApi extends HttpServlet {
         doGet(request, response);
     }
 
-    private ArrayList<Module> dumpModules() {
+    private ArrayList<Module> dumpModuleObjects() {
         ArrayList<Module> modules = new ArrayList<Module>();
         // TODO get modules from DB
         return modules;
+    }
+
+    private JSONObject dumpModulesJson(){
+        JSONObject output = new JSONObject();
+        for (Module module : dumpModuleObjects()) {
+            output.put(module.getID(), module.getName());
+        }
+        return output;
     }
 }
