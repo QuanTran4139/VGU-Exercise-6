@@ -85,8 +85,6 @@ CREATE TABLE IF NOT EXISTS Class (
     ModuleId VARCHAR(10),
    
     PRIMARY KEY (ClassId,SemesterId,ModuleId),
-    FOREIGN KEY (ClassId)
-		REFERENCES Class (ClassId),
     FOREIGN KEY (SemesterId)
 		REFERENCES Semester (SemesterId),
 	FOREIGN KEY (ModuleId)
