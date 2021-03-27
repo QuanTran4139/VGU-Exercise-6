@@ -11,7 +11,8 @@ import javax.sql.DataSource;
 public class Database {
     public Database() {
     }
-    public static Connection getAcademiaConnection() throws SQLException, NamingException{
+
+    public static Connection getAcademiaConnection() throws SQLException, NamingException {
         Context initContext = new InitialContext();
         Context envContext = (Context) initContext.lookup("java:comp/env");
         DataSource ds = (DataSource) envContext.lookup("jdbc/vgu6");

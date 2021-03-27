@@ -1,6 +1,7 @@
 package com.vgu.sqm.questionnaire.api;
 
 import com.vgu.sqm.questionnaire.core.Entity;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import javax.json.Json;
@@ -24,9 +25,9 @@ public abstract class EntityApi extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
+            throws ServletException, IOException {
         String action =
-            request.getParameterMap().containsKey("action") ? request.getParameter("action") : "";
+                request.getParameterMap().containsKey("action") ? request.getParameter("action") : "";
         if (action.equals("dump")) {
             response.setContentType("application/json");
             response.setStatus(HttpServletResponse.SC_OK);
@@ -42,7 +43,7 @@ public abstract class EntityApi extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
+            throws ServletException, IOException {
         doGet(request, response);
     }
 }
