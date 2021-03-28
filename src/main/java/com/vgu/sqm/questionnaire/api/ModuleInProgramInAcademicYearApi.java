@@ -12,7 +12,8 @@ import javax.servlet.annotation.WebServlet;
 
 @WebServlet("/api/moduleInProgramInAcademicYearApi")
 public class ModuleInProgramInAcademicYearApi extends ResourceApi {
-    private final static Logger LOGGER = Logger.getLogger(ModuleInProgramInAcademicYearApi.class.getName());
+    private final static Logger LOGGER =
+        Logger.getLogger(ModuleInProgramInAcademicYearApi.class.getName());
     private static final long serialVersionUID = 1L;
 
     public ModuleInProgramInAcademicYearApi() {

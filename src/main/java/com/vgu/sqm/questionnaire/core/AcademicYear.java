@@ -7,7 +7,7 @@ import javax.json.JsonObjectBuilder;
 public class AcademicYear implements Resource {
     private int AYearID;
 
-    public AcademicYear(int AYearID){
+    public AcademicYear(int AYearID) {
         this.AYearID = AYearID;
     }
 

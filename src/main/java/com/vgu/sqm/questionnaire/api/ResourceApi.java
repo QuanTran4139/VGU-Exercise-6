@@ -14,9 +14,9 @@ import javax.servlet.http.HttpServletResponse;
 public abstract class ResourceApi extends HttpServlet {
     abstract ArrayList<Resource> dumpResource();
 
-    protected JsonArray ResourceToJson(ArrayList<Resource> resources){
+    protected JsonArray ResourceToJson(ArrayList<Resource> resources) {
         JsonArrayBuilder builder = Json.createArrayBuilder();
-        for (Resource resource : resources){
+        for (Resource resource : resources) {
             builder.add(resource.exportResourceJson());
         }
         JsonArray array = builder.build();
