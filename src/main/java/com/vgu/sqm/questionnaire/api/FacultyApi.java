@@ -3,6 +3,7 @@ package com.vgu.sqm.questionnaire.api;
 import com.vgu.sqm.questionnaire.core.Database;
 import com.vgu.sqm.questionnaire.core.Faculty;
 import com.vgu.sqm.questionnaire.core.Resource;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -21,7 +22,24 @@ public class FacultyApi extends ResourceApi {
 
     protected ArrayList<Resource> dumpResource() {
         ArrayList<Resource> resources = new ArrayList<Resource>();
-        // TODO dump resource
+
+        try {
+            Connection db = Database.getAcademiaConnection();
+            CallableStatement st = db.prepareCall("CALL DumpFaculty()");
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                String id = rs.getString(1); //Attribute name FacultyID
+                String name = rs.getString(2); //Attribute name FacultyName
+
+                resources.add(new Faculty(id, name));
+            }
+            LOGGER.log(Level.INFO, "Getting info from database successfully.");
+            db.close();
+        } catch (SQLException e1) {
+            LOGGER.log(Level.SEVERE, e1.toString());
+        } catch (NamingException e2) {
+            LOGGER.log(Level.SEVERE, e2.toString());
+        }
         return resources;
     }
 }

@@ -21,7 +21,24 @@ public class FacultyInAcademicYearApi extends ResourceApi {
 
     protected ArrayList<Resource> dumpResource() {
         ArrayList<Resource> resources = new ArrayList<Resource>();
-        // TODO dump resource
+
+        try {
+            Connection db = Database.getAcademiaConnection();
+            CallableStatement st = db.prepareCall("CALL DumpFacultyInAcademicYear();");
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                String fId = rs.getString(1); //Attribute name: SemesterID
+                int aId = rs.getInt(2); //Attribute name: AYearID
+
+                resources.add(new FacultyInAcademicYear(fId, aId));
+            }
+            LOGGER.log(Level.INFO, "Getting info from database successfully.");
+            db.close();
+        } catch (SQLException e1) {
+            LOGGER.log(Level.SEVERE, e1.toString());
+        } catch (NamingException e2) {
+            LOGGER.log(Level.SEVERE, e2.toString());
+        }
         return resources;
     }
 }

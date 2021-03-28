@@ -8,9 +8,9 @@ public class Lecturer implements Resource {
     private String LecturerID;
     private String LecturerName;
 
-    public Lecturer(String ModuleID, String ModuleName) {
-        this.LecturerID = ModuleID;
-        this.LecturerName = ModuleName;
+    public Lecturer(String LecturerID, String LecturerName) {
+        this.LecturerID = LecturerID;
+        this.LecturerName = LecturerName;
     }
 
     public JsonObject exportResourceJson() {
