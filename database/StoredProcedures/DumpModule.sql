@@ -3,6 +3,6 @@ DROP PROCEDURE IF EXISTS DumpModule //
 CREATE PROCEDURE DumpModule()
 BEGIN
         SELECT *
-        FROM MODULE;
+        FROM Module;
 END//
 DELIMITER ;
