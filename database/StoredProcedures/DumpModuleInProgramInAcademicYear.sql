@@ -1,0 +1,8 @@
+DELIMITER //
+DROP PROCEDURE IF EXISTS DumpModuleInProgramInAcademicYear //
+CREATE PROCEDURE DumpModuleInProgramInAcademicYear()
+BEGIN
+        SELECT *
+        FROM MODULEINPROGRAMINACADEMICYEAR;
+END//
+DELIMITER ; 
