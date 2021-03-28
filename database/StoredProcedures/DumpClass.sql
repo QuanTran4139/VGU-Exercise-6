@@ -1,0 +1,8 @@
+DELIMITER //
+DROP PROCEDURE IF EXISTS DumpClass //
+CREATE PROCEDURE DumpClass()
+BEGIN
+        SELECT *
+        FROM Class;
+END//
+DELIMITER ;

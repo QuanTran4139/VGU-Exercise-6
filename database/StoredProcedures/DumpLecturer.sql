@@ -1,0 +1,8 @@
+DELIMITER //
+DROP PROCEDURE IF EXISTS DumpLecturer //
+CREATE PROCEDURE DumpLecturer()
+BEGIN
+        SELECT *
+        FROM Lecturer;
+END//
+DELIMITER ;

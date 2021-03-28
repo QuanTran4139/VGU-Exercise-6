@@ -1,0 +1,8 @@
+DELIMITER //
+DROP PROCEDURE IF EXISTS DumpFaculty //
+CREATE PROCEDURE DumpFaculty()
+BEGIN
+        SELECT *
+        FROM Faculty;
+END//
+DELIMITER ;
