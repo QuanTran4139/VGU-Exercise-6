@@ -6,9 +6,10 @@ $(document).ready(function()
 			url: "/Questionnaire/api/academicYear?action=dump",
 			dataType : 'json',
 			data: JSON.stringify(data),
-			success: function (response)
+			success: function (data)
 			{
-				console.log(response);   
+				//console.log(response);   
+				alert(data);
 			},
 			error:function(request, textStatus, errorThrown)
 			{
