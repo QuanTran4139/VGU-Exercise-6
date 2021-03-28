@@ -1,6 +1,6 @@
 package com.vgu.sqm.questionnaire.api;
 
-import com.vgu.sqm.questionnaire.core.Entity;
+import com.vgu.sqm.questionnaire.core.Resource;
 import com.vgu.sqm.questionnaire.core.Module;
 import com.vgu.sqm.questionnaire.core.Database;
 
@@ -12,7 +12,7 @@ import javax.naming.NamingException;
 import javax.servlet.annotation.WebServlet;
 
 @WebServlet("/api/module")
-public class ModuleApi extends EntityApi {
+public class ModuleApi extends ResourceApi {
     private final static Logger LOGGER = Logger.getLogger(ModuleApi.class.getName());
     private static final long serialVersionUID = 1L;
 
@@ -20,9 +20,8 @@ public class ModuleApi extends EntityApi {
         super();
     }
 
-    @Override
-    protected ArrayList<Entity> dumpEntities() {
-        ArrayList<Entity> modules = new ArrayList<Entity>();
+    protected ArrayList<Resource> dumpResource() {
+        ArrayList<Resource> modules = new ArrayList<Resource>();
 
         try {
             Connection db = Database.getAcademiaConnection();

@@ -4,19 +4,22 @@ import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 
-public class Program implements Resource {
+public class ProgramInFacultyInAcademicYear implements Resource {
     private String ProgramID;
-    private String ProgramName;
+    private String FacultyID;
+    private int AYearID;
 
-    public Program(String ProgramID, String ProgramName) {
+    public ProgramInFacultyInAcademicYear(String ProgramID, String FacultyID, int AYearID) {
         this.ProgramID = ProgramID;
-        this.ProgramName = ProgramName;
+        this.FacultyID = FacultyID;
+        this.AYearID = AYearID;
     }
 
     public JsonObject exportResourceJson() {
         JsonObjectBuilder builder = Json.createObjectBuilder();
         builder.add("ProgramID", this.ProgramID);
-        builder.add("ProgramName", this.ProgramName);
+        builder.add("FacultyID", this.FacultyID);
+        builder.add("AYearID", this.AYearID);
         JsonObject obj = builder.build();
         return obj;
     }

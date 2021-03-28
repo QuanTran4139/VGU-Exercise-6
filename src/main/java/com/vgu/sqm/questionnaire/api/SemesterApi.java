@@ -1,7 +1,7 @@
 package com.vgu.sqm.questionnaire.api;
 
 import com.vgu.sqm.questionnaire.core.Resource;
-import com.vgu.sqm.questionnaire.core.Lecturer;
+import com.vgu.sqm.questionnaire.core.Semester;
 import com.vgu.sqm.questionnaire.core.Database;
 
 import java.sql.*;
@@ -11,12 +11,12 @@ import java.util.logging.Logger;
 import javax.naming.NamingException;
 import javax.servlet.annotation.WebServlet;
 
-@WebServlet("/api/lecturer")
-public class LecturerApi extends ResourceApi {
-    private final static Logger LOGGER = Logger.getLogger(LecturerApi.class.getName());
+@WebServlet("/api/semester")
+public class SemesterApi extends ResourceApi {
+    private final static Logger LOGGER = Logger.getLogger(SemesterApi.class.getName());
     private static final long serialVersionUID = 1L;
 
-    public LecturerApi() {
+    public SemesterApi() {
         super();
     }
 

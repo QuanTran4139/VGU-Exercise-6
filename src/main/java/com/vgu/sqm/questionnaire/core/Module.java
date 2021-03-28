@@ -1,6 +1,10 @@
 package com.vgu.sqm.questionnaire.core;
 
-public class Module implements Entity {
+import javax.json.Json;
+import javax.json.JsonObject;
+import javax.json.JsonObjectBuilder;
+
+public class Module implements Resource {
     private String ModuleID;
     private String ModuleName;
 
@@ -9,11 +13,11 @@ public class Module implements Entity {
         this.ModuleName = ModuleName;
     }
 
-    public String getID() {
-        return this.ModuleID;
-    }
-
-    public String getName() {
-        return this.ModuleName;
+    public JsonObject exportResourceJson() {
+        JsonObjectBuilder builder = Json.createObjectBuilder();
+        builder.add("ModuleID", this.ModuleID);
+        builder.add("ModuleName", this.ModuleName);
+        JsonObject obj = builder.build();
+        return obj;
     }
 }
