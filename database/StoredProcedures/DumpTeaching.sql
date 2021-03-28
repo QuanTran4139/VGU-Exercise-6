@@ -3,6 +3,6 @@ DROP PROCEDURE IF EXISTS DumpTeaching //
 CREATE PROCEDURE DumpTeaching()
 BEGIN
         SELECT *
-        FROM TEACHING;
+        FROM Teaching;
 END//
 DELIMITER ; 

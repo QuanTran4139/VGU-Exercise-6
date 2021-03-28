@@ -3,6 +3,6 @@ DROP PROCEDURE IF EXISTS DumpProgramInFacultyInAcademicYear //
 CREATE PROCEDURE DumpProgramInFacultyInAcademicYear()
 BEGIN
         SELECT *
-        FROM PROGRAMINFACULTYINACADEMICYEAR;
+        FROM ProgramInFacultyInAcademicYear;
 END//
 DELIMITER ; 
