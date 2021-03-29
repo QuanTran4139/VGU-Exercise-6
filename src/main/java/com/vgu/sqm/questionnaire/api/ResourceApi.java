@@ -1,6 +1,6 @@
 package com.vgu.sqm.questionnaire.api;
 
-import com.vgu.sqm.questionnaire.core.Resource;
+import com.vgu.sqm.questionnaire.resource.Resource;
 import java.io.IOException;
 import java.util.ArrayList;
 import javax.json.Json;

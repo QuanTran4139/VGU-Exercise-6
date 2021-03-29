@@ -1,4 +1,4 @@
-package com.vgu.sqm.questionnaire.core;
+package com.vgu.sqm.questionnaire.resource;
 
 import javax.json.Json;
 import javax.json.JsonObject;

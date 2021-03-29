@@ -1,8 +1,8 @@
 package com.vgu.sqm.questionnaire.api;
 
-import com.vgu.sqm.questionnaire.core.Database;
-import com.vgu.sqm.questionnaire.core.Resource;
-import com.vgu.sqm.questionnaire.core.Semester;
+import com.vgu.sqm.questionnaire.database.Database;
+import com.vgu.sqm.questionnaire.resource.Resource;
+import com.vgu.sqm.questionnaire.resource.Semester;
 
 import java.sql.*;
 import java.util.ArrayList;
