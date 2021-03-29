@@ -1,0 +1,8 @@
+DELIMITER //
+DROP PROCEDURE IF EXISTS DumpProgram //
+CREATE PROCEDURE DumpProgram()
+BEGIN
+        SELECT *
+        FROM Program;
+END//
+DELIMITER ;

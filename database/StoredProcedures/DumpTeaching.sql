@@ -1,0 +1,8 @@
+DELIMITER //
+DROP PROCEDURE IF EXISTS DumpTeaching //
+CREATE PROCEDURE DumpTeaching()
+BEGIN
+        SELECT *
+        FROM Teaching;
+END//
+DELIMITER ; 

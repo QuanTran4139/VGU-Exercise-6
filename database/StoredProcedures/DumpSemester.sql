@@ -1,0 +1,8 @@
+DELIMITER //
+DROP PROCEDURE IF EXISTS DumpSemester //
+CREATE PROCEDURE DumpSemester()
+BEGIN
+        SELECT *
+        FROM Semester;
+END//
+DELIMITER ;

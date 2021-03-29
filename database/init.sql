@@ -1,0 +1,15 @@
+source schemas/01_tables_def.sql;
+source Tests/Testing_dataset.sql;
+source StoredProcedures/GetTotalClassesSize.sql;
+source StoredProcedures/DumpAcademicYear.sql;
+source StoredProcedures/DumpSemester.sql;
+source StoredProcedures/DumpFaculty.sql;
+source StoredProcedures/DumpProgram.sql;
+source StoredProcedures/DumpModule.sql;
+source StoredProcedures/DumpClass.sql;
+source StoredProcedures/DumpLecturer.sql;
+source StoredProcedures/DumpQuestionnaire.sql;
+source StoredProcedures/DumpTeaching.sql;
+source StoredProcedures/DumpFacultyInAcademicYear.sql;
+source StoredProcedures/DumpProgramInFacultyInAcademicYear.sql;
+source StoredProcedures/DumpModuleInProgramInAcademicYear.sql;
