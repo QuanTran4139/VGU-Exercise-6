@@ -77,6 +77,7 @@ public class ClassApi extends ResourceApi {
             if (request.getParameterMap().containsKey("cid")) {
                 response.setStatus(HttpServletResponse.SC_OK);
                 response.setContentType("application/json");
+                response.getWriter().print(getClassOptions(request.getParameter("cid")));
             } else {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 response.getWriter().print(

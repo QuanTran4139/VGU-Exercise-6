@@ -102,7 +102,7 @@ public class QuestionnaireApi extends ResourceApi {
                 response.getWriter().print(
                     "The following parameters are required for 'getCounts': cid, lid, qid");
             }
-        } else if (action.equals("getReponseRate")) { // action = getReponseRate
+        } else if (action.equals("getResponseRate")) { // action = getReponseRate
             if (request.getParameterMap().containsKey("cid")
                 && request.getParameterMap().containsKey("lid")
                 && request.getParameterMap().containsKey("qid")) {
