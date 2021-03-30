@@ -3,12 +3,16 @@ package com.vgu.sqm.questionnaire.api;
 import com.vgu.sqm.questionnaire.database.Database;
 import com.vgu.sqm.questionnaire.resource.Questionnaire;
 import com.vgu.sqm.questionnaire.resource.Resource;
+import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.naming.NamingException;
+import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 @WebServlet("/api/questionnaire")
 public class QuestionnaireApi extends ResourceApi {
@@ -48,5 +52,13 @@ public class QuestionnaireApi extends ResourceApi {
             LOGGER.log(Level.SEVERE, e2.toString());
         }
         return resources;
+    }
+
+    @Override
+    protected void doGetCustomAction(HttpServletRequest request, HttpServletResponse response,
+        String action) throws ServletException, IOException {
+        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        String message = String.format("Action '%s' is not supported", action);
+        response.getWriter().print(message);
     }
 }

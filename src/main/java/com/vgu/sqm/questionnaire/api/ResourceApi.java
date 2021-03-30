@@ -35,14 +35,19 @@ public abstract class ResourceApi extends HttpServlet {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             response.getWriter().print("You need to supply an 'action'");
         } else {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            String message = String.format("Action '%s' is not supported", action);
-            response.getWriter().print(message);
+            doGetCustomAction(request, response, action);
         }
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
         doGet(request, response);
+    }
+
+    protected void doGetCustomAction(HttpServletRequest request, HttpServletResponse response,
+        String action) throws ServletException, IOException {
+        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        String message = String.format("Action '%s' is not supported", action);
+        response.getWriter().print(message);
     }
 }
