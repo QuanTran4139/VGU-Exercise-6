@@ -87,7 +87,7 @@ public class QuestionnaireApi extends ResourceApi {
     @Override
     protected void doGetCustomAction(HttpServletRequest request, HttpServletResponse response,
         String action) throws ServletException, IOException {
-        if (action.equals("getCounts")) {
+        if (action.equals("getCounts")) { // action = getCounts
             if (request.getParameterMap().containsKey("cid")
                 && request.getParameterMap().containsKey("lid")
                 && request.getParameterMap().containsKey("qid")) {
@@ -97,12 +97,12 @@ public class QuestionnaireApi extends ResourceApi {
                 String lid = request.getParameter("lid");
                 String qid = request.getParameter("qid");
                 response.getWriter().print(getCounts(cid, lid, qid));
-            } else {
+            } else { // missing parameters
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 response.getWriter().print(
                     "The following parameters are required for 'getCounts': cid, lid, qid");
             }
-        } else if (action.equals("getReponseRate")) {
+        } else if (action.equals("getReponseRate")) { // action = getReponseRate
             if (request.getParameterMap().containsKey("cid")
                 && request.getParameterMap().containsKey("lid")
                 && request.getParameterMap().containsKey("qid")) {
@@ -112,7 +112,7 @@ public class QuestionnaireApi extends ResourceApi {
                 String lid = request.getParameter("lid");
                 String qid = request.getParameter("qid");
                 response.getWriter().print(getReponseRate(cid, lid, qid));
-            } else {
+            } else { // missing parameters
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 response.getWriter().print(
                     "The following parameters are required for 'getReponseRate': cid, lid, qid");

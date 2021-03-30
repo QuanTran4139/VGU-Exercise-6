@@ -50,7 +50,7 @@ Calling `questionnaire?action=getCounts` will return the counts of the answers t
 
 The response is formatted as follows:
 
-```
+```json
 {
     "gender": {
         "M": count(gender == "M"),
@@ -66,3 +66,36 @@ The response is formatted as follows:
 ```
 
 Where `"qa"` (questions-answers) is an array of questions, and each question is an array of answers, where `a0 = count(answer == "N/A")`, `a1 = count(answer == 1)`, and so on, with the length of each answer being the number of possible answers (including "N/A").
+
+#### `getResponseRate`
+
+Calling `questionnaire?action=getResponseRate&cid=_ClassID_&lid=_LecturerID_&qid=_QuestionnaireID` will return a `float` representing the response rate of the corresponding questionnaire.
+
+### `class`
+
+#### `getClassOptions`
+
+Calling `class?action=getClassOptions&cid=_ClassID_` will return lists of semesters, faculties, programs and lecturers.
+
+The response is formatted as follows:
+
+```json
+{
+    "semesters": [
+        {"SemesterID": "WS2020", "AYearID": 2020},
+        {"SemesterID": "SS2021", "AYearID": 2021},
+    ],
+    "faculties": [
+        {"FacultyID": "A", "FacultyName": "AAAA"},
+        {"FacultyID": "B", "FacultyName": "bruh"},
+    ],
+    "programs": [
+        {"ProgramID": "A1", "ProgramName": "hello"},
+        {"ProgramID": "B2", "ProgramName": "world"},
+    ],
+    "lecturers": [
+        {"LecturerID": "1", "LecturerName": "Bob"},
+        {"LecturerID": "2", "LecturerName": "Alice"},
+    ]
+}
+```

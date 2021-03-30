@@ -2,7 +2,12 @@ package com.vgu.sqm.questionnaire.api;
 
 import com.vgu.sqm.questionnaire.database.Database;
 import com.vgu.sqm.questionnaire.resource.Class;
+import com.vgu.sqm.questionnaire.resource.Faculty;
+import com.vgu.sqm.questionnaire.resource.Lecturer;
+import com.vgu.sqm.questionnaire.resource.Program;
 import com.vgu.sqm.questionnaire.resource.Resource;
+import com.vgu.sqm.questionnaire.resource.Semester;
+import com.vgu.sqm.questionnaire.utils.JsonUtils;
 import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
@@ -50,34 +55,32 @@ public class ClassApi extends ResourceApi {
         return resources;
     }
 
-    private JsonObject getClassInfo(String ClassID) {
+    private JsonObject getClassOptions(String ClassID) {
         // TODO replace the following sample data with real data from the DB
-        int AYearID = 2020;
-        String SemesterID = "WS2020";
-        String FacultyID = "bruh";
-        String ProgramID = "bruh";
-        String LecturerID = "bruh";
+        Semester[] semesters = {new Semester("WS2020", 2020), new Semester("SS2021", 2021)};
+        Faculty[] faculties = {new Faculty("A", "41414141"), new Faculty("B", "42424242")};
+        Program[] programs = {new Program("A", "41414141"), new Program("B", "42424242")};
+        Lecturer[] lecturers = {new Lecturer("1", "Bob"), new Lecturer("2", "Alice")};
 
         return Json.createObjectBuilder()
-            .add("AYearID", AYearID)
-            .add("SemesterID", SemesterID)
-            .add("FacultyID", FacultyID)
-            .add("ProgramID", ProgramID)
-            .add("LecturerID", LecturerID)
+            .add("Semesters", JsonUtils.arrayToJson(semesters))
+            .add("Faculties", JsonUtils.arrayToJson(faculties))
+            .add("Programs", JsonUtils.arrayToJson(programs))
+            .add("Lecturers", JsonUtils.arrayToJson(lecturers))
             .build();
     }
 
     @Override
     protected void doGetCustomAction(HttpServletRequest request, HttpServletResponse response,
         String action) throws ServletException, IOException {
-        if (action.equals("getClassInfo")) {
+        if (action.equals("getClassOptions")) {
             if (request.getParameterMap().containsKey("cid")) {
                 response.setStatus(HttpServletResponse.SC_OK);
                 response.setContentType("application/json");
             } else {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 response.getWriter().print(
-                    "The following parameter is required for 'getClassInfo': cid");
+                    "The following parameter is required for 'getClassOptions': cid");
             }
         } else {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
