@@ -38,7 +38,7 @@ public class QuestionnaireApi extends ResourceApi {
                 // TODO get actual data for this
                 int[] answers = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17};
 
-                resources.add(new Questionnaire(lId, cId, 'N', answers, content));
+                resources.add(new Questionnaire(lId, cId, 0, 'N', answers, content));
             }
             LOGGER.log(Level.INFO, "Getting info from database successfully.");
             db.close();
