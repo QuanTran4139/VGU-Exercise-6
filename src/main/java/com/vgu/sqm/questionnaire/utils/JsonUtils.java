@@ -12,4 +12,16 @@ public class JsonUtils {
         }
         return builder.build();
     }
+
+    public static JsonArray arrayToJson(int[][] input) {
+        JsonArrayBuilder builder = Json.createArrayBuilder();
+        for (int[] i : input) {
+            JsonArrayBuilder iBuilder = Json.createArrayBuilder();
+            for (int j: i){
+                iBuilder.add(j);
+            }
+            builder.add(iBuilder.build());
+        }
+        return builder.build();
+    }
 }
