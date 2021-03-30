@@ -12,3 +12,7 @@
 - 13298: Database Schema design and implementation, Procedures design implementation, ERD and Relational Schema implementation, Testing implementation.
 - 16052: Database Schema design and implementation, Procedures design and implementation, ERD and Relational Schema design, Testing design and implementation.
 - 15124: Database Schema design and implementation, UML Class, Sequence, Use Case Diagram design, Documentation.
+- 13471: Get Json data into Table, Chart.js research and implementation
+- 13948: Get Json data into Table, testing GET request to database
+- 13886: Get Json data into Table, Chart.js research and implementation
+
