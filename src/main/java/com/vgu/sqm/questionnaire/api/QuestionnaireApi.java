@@ -57,8 +57,11 @@ public class QuestionnaireApi extends ResourceApi {
     @Override
     protected void doGetCustomAction(HttpServletRequest request, HttpServletResponse response,
         String action) throws ServletException, IOException {
-        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-        String message = String.format("Action '%s' is not supported", action);
-        response.getWriter().print(message);
+        if (action.equals("getCounts")) {
+        } else {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            String message = String.format("Action '%s' is not supported", action);
+            response.getWriter().print(message);
+        }
     }
 }
