@@ -113,11 +113,30 @@ CREATE TABLE IF NOT EXISTS Teaching (
 );
 
 CREATE TABLE IF NOT EXISTS Questionnaire (
-    LecturerId VARCHAR(10),
-    ClassId VARCHAR(10),
-    Content LONGBLOB, 
-
-    PRIMARY KEY (LecturerId,ClassId),
+	QuestionnaireId INT AUTO_INCREMENT,
+    LecturerId VARCHAR(10) NOT NULL,
+    ClassId VARCHAR(10) NOT NULL,
+    Gender CHAR,
+	Question1 ENUM('1','2','3','4','5','N/A') NOT NULL,
+    Question2 ENUM('1','2','3','4','5','N/A') NOT NULL,
+    Question3 ENUM('1','2','3','4','5','N/A') NOT NULL,
+    Question4 ENUM('1','2','3','4','5','N/A') NOT NULL,
+    Question5 ENUM('1','2','3','4','5') NOT NULL,
+    Question6 ENUM('1','2','3','4','5') NOT NULL,
+    Question7 ENUM('1','2','3','4','5') NOT NULL,
+    Question8 ENUM('1','2','3','4','5','N/A') NOT NULL,
+    Question9 ENUM('1','2','3','4','5','N/A') NOT NULL,
+    Question10 ENUM('1','2','3','4','5','N/A') NOT NULL,
+    Question11 ENUM('1','2','3','4','5','N/A') NOT NULL,
+    Question12 ENUM('1','2','3','4','5','N/A') NOT NULL,
+    Question13 ENUM('1','2','3','4','5','N/A') NOT NULL,
+    Question14 ENUM('1','2','3','4','5','N/A') NOT NULL,
+    Question15 ENUM('1','2','3','4','5','N/A') NOT NULL,
+    Question16 ENUM('1','2','3','4','5','N/A') NOT NULL,
+    Question17 ENUM('1','2','3','4','5','N/A') NOT NULL,
+    Comment MEDIUMTEXT,
+    
+    PRIMARY KEY (QuestionnaireId),
     FOREIGN KEY (LecturerId)
 		REFERENCES Lecturer (LecturerId),
 	FOREIGN KEY (ClassId)

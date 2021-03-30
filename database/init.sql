@@ -1,6 +1,8 @@
 source schemas/01_tables_def.sql;
 source Tests/Testing_dataset.sql;
 source StoredProcedures/GetTotalClassesSize.sql;
+source StoredProcedures/GetClassOptions.sql;
+source StoredProcedures/GetGenderCountByID.sql;
 source StoredProcedures/DumpAcademicYear.sql;
 source StoredProcedures/DumpSemester.sql;
 source StoredProcedures/DumpFaculty.sql;
