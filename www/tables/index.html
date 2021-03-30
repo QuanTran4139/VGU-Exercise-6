@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+
 <html>
 	<head>
 		<title>Database Tables</title>
@@ -17,6 +17,20 @@
 				background-color: grey;
 			}
 		</style>
+		<script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+		<script src = "https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+		<script type="text/javascript" src="./../js/testDumpAcademicYear.js"></script>
+		<script type="text/javascript" src="./../js/testDumpClass.js"></script>
+		<script type="text/javascript" src="./../js/testDumpFaculty.js"></script>
+		<script type="text/javascript" src="./../js/testDumpFacultyInAcademicYear.js"></script>
+		<script type="text/javascript" src="./../js/testDumpLecturer.js"></script>
+		<script type="text/javascript" src="./../js/testDumpModule.js"></script>
+		<script type="text/javascript" src="./../js/testDumpModuleInProgramInAcademicYear.js"></script>
+		<script type="text/javascript" src="./../js/testDumpProgram.js"></script>
+		<script type="text/javascript" src="./../js/testDumpProgramInFacultyInAcademicYear.js"></script>
+		<script type="text/javascript" src="./../js/testDumpQuestionnaire.js"></script>
+		<script type="text/javascript" src="./../js/testDumpSemester.js"></script>
+		<script type="text/javascript" src="./../js/testDumpTeaching.js"></script>
 	</head>
 	
 	<body>
@@ -34,8 +48,8 @@
 				<td><button class="button" id="delete">Delete</button></td>
 			</tr>
 			<tr>
-				<td><input type="text" id="facultyID" name="faculty"></td>
-				<td><input type="text" id="AYearID" name="AYear"></td>
+				<td><input type="text" id="facultyID_1" name="faculty"></td>
+				<td><input type="text" id="AYearID_1" name="AYear"></td>
 				<td><button class="button" id="new">New</button></td>
 			</tr>
 		</table>
@@ -52,7 +66,7 @@
 				<td><button class="button" id="delete">Delete</button></td>
 			</tr>
 			<tr>
-				<td><input type="text" id="AYearID" name="AYear"></td>
+				<td><input type="text" id="AYearID_2" name="AYear"></td>
 				<td><button class="button" id="new">New</button></td>
 			</tr>
 		</table>
@@ -71,8 +85,8 @@
 				<td><button class="button" id="delete">Delete</button></td>
 			</tr>
 			<tr>
-				<td><input type="text" id="semesterID" name="semester"></td>
-				<td><input type="text" id="AYearID" name="AYear"></td>
+				<td><input type="text" id="semesterID_1" name="semester"></td>
+				<td><input type="text" id="AYearID_3" name="AYear"></td>
 				<td><button class="button" id="new">New</button></td>
 			</tr>
 		</table>
@@ -96,8 +110,8 @@
 				<td><button class="button" id="delete">Delete</button></td>
 			</tr>
 			<tr>
-				<td><input type="text" id="facultyID" name="faculty"></td>
-				<td><input type="text" id="facultyName" name="facultyName"></td>
+				<td><input type="text" id="facultyID_2" name="faculty"></td>
+				<td><input type="text" id="facultyName_1" name="facultyName"></td>
 				<td><button class="button" id="new">New</button></td>
 			</tr>
 		</table>
@@ -124,9 +138,9 @@
 				<td><button class="button" id="delete">Delete</button></td>
 			</tr>
 			<tr>
-				<td><input type="text" id="programID" name="programID"></td>
-				<td><input type="text" id="facultyID" name="facultyID"></td>
-				<td><input type="text" id="programName" name="programName"></td>
+				<td><input type="text" id="programID_1" name="programID"></td>
+				<td><input type="text" id="facultyID_3" name="facultyID"></td>
+				<td><input type="text" id="programName_1" name="programName"></td>
 				<td><button class="button" id="new">New</button></td>
 			</tr>
 		</table>
@@ -153,9 +167,9 @@
 				<td><button class="button" id="delete">Delete</button></td>
 			</tr>
 			<tr>
-				<td><input type="text" id="programID" name="programID"></td>
-				<td><input type="text" id="facultyID" name="facultyID"></td>
-				<td><input type="text" id="programName" name="programName"></td>
+				<td><input type="text" id="programID_2" name="programID"></td>
+				<td><input type="text" id="facultyID_4" name="facultyID"></td>
+				<td><input type="text" id="programName_2" name="programName"></td>
 				<td><button class="button" id="new">New</button></td>
 			</tr>
 		</table>
@@ -185,10 +199,10 @@
 				<td><button class="button" id="delete">Delete</button></td>
 			</tr>
 			<tr>
-				<td><input type="text" id="classID" name="classID"></td>
-				<td><input type="text" id="moduleID" name="moduleID"></td>
-				<td><input type="text" id="semesterID" name="semesterID"></td>
-				<td><input type="text" id="size" name="size"></td>
+				<td><input type="text" id="classID_1" name="classID"></td>
+				<td><input type="text" id="moduleID_1" name="moduleID"></td>
+				<td><input type="text" id="semesterID_2" name="semesterID"></td>
+				<td><input type="text" id="size_1" name="size"></td>
 				<td><button class="button" id="new">New</button></td>
 			</tr>
 		</table>
@@ -215,9 +229,9 @@
 				<td><button class="button" id="delete">Delete</button></td>
 			</tr>
 			<tr>
-				<td><input type="text" id="questionaireID" name="questionaireID"></td>
-				<td><input type="text" id="lecturerID" name="lecturerID"></td>
-				<td><input type="text" id="classID" name="classID"></td>
+				<td><input type="text" id="questionaireID_1" name="questionaireID"></td>
+				<td><input type="text" id="lecturerID_1" name="lecturerID"></td>
+				<td><input type="text" id="classID_2" name="classID"></td>
 				<td><button class="button" id="new">New</button></td>
 			</tr>
 		</table>
@@ -236,8 +250,8 @@
 				<td><button class="button" id="delete">Delete</button></td>
 			</tr>
 			<tr>
-				<td><input type="text" id="lecturerID" name="lecturerID"></td>
-				<td><input type="text" id="lecturerName" name="lecturerName"></td>
+				<td><input type="text" id="lecturerID_2" name="lecturerID"></td>
+				<td><input type="text" id="lecturerName_1" name="lecturerName"></td>
 				<td><button class="button" id="new">New</button></td>
 			</tr>
 		</table>
@@ -256,8 +270,8 @@
 				<td><button class="button" id="delete">Delete</button></td>
 			</tr>
 			<tr>
-				<td><input type="text" id="lecturerID" name="lecturerID"></td>
-				<td><input type="text" id="classID" name="classID"></td>
+				<td><input type="text" id="lecturerID_3" name="lecturerID"></td>
+				<td><input type="text" id="classID_3" name="classID"></td>
 				<td><button class="button" id="new">New</button></td>
 			</tr>
 		</table>
