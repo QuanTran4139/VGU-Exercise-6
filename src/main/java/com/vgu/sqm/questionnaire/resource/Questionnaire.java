@@ -9,6 +9,7 @@ import javax.json.JsonObjectBuilder;
 public class Questionnaire implements Resource {
     private String LecturerID;
     private String ClassID;
+    private int QuestionnaireID;
     private char gender;
     private int[] answers;
     private String comment;
@@ -22,9 +23,10 @@ public class Questionnaire implements Resource {
     }
 
     public Questionnaire(
-        String LecturerID, String ClassID, char gender, int[] answers, String comment) {
+        String LecturerID, String ClassID, int QuestionnaireID, char gender, int[] answers, String comment) {
         this.LecturerID = LecturerID;
         this.ClassID = ClassID;
+        this.QuestionnaireID = QuestionnaireID;
         this.gender = gender;
         this.answers = answers;
         this.comment = comment;
@@ -34,6 +36,7 @@ public class Questionnaire implements Resource {
         JsonObjectBuilder builder = Json.createObjectBuilder();
         builder.add("LecturerID", this.LecturerID);
         builder.add("ClassID", this.ClassID);
+        builder.add("QuestionnaireID", this.QuestionnaireID);
         builder.add("gender", this.gender);
         builder.add("answers", intArrayToJsonArray(this.answers));
         builder.add("comment", this.comment);
