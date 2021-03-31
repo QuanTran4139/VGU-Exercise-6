@@ -4,15 +4,14 @@ $(document).ready(function()
 	{
 		console.log(JSON.stringify(data));
 		var txt = "", x;
-		var txt_2 = "";
 		txt += "<table border='1'>"
 		for (x in data)
 		{
-			txt += "<tr><td>" + JSON.stringify(data[x].LecturerID) + "</td>" + "<td>" + JSON.stringify(data[x].ClassID) + "</td></tr>";
+			txt += "<tr><td>" + JSON.stringify(data[x].LecturerID) + "</td>"; 
+			txt += "<td>" + JSON.stringify(data[x].ClassID) + "</td></tr>";";
 		}
 		
 		txt += "</table>"
-		document.getElementById("lecturerID_2").innerHTML = txt_2;
-		document.getElementById("classID").innerHTML = txt;
+		document.getElementById("lecturerID_2").innerHTML = txt;
 	});
 });

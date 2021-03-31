@@ -42,18 +42,10 @@
 				<td>Faculty ID</td>
 				<td>Academic year ID</td>
 			</tr>
-			<tr>
-				<td>FE</td>
-				<td>2020</td>
-				<td><button class="button" id="delete">Delete</button></td>
-			</tr>
-			<tr>
-				<td><input type="text" id="facultyID_1" name="faculty"></td>
-				<td><input type="text" id="AYearID_1" name="AYear"></td>
-				<td><button class="button" id="new">New</button></td>
-			</tr>
 		</table>
-
+		<p id="facultyID"> </p>
+		
+		
 		<h3>Academic year</h3>
 		<button class="button" id="hide">Hide</button>
 		<button class="button" id="show">Show</button>
@@ -61,15 +53,8 @@
 			<tr>
 				<td>Academic year ID</td>
 			</tr>
-			<tr>
-				<td>2020</td>
-				<td><button class="button" id="delete">Delete</button></td>
-			</tr>
-			<tr>
-				<td><input type="text" id="AYearID_2" name="AYear"></td>
-				<td><button class="button" id="new">New</button></td>
-			</tr>
 		</table>
+		<p id="AYearID_2"> </p>
 
 		<h3>Semester</h3>
 		<button class="button" id="hide">Hide</button>
@@ -79,42 +64,20 @@
 				<td>Semester ID</td>
 				<td>Academic year ID</td>
 			</tr>
-			<tr>
-				<td>SS2020</td>
-				<td>2020</td>
-				<td><button class="button" id="delete">Delete</button></td>
-			</tr>
-			<tr>
-				<td><input type="text" id="semesterID_1" name="semester"></td>
-				<td><input type="text" id="AYearID_3" name="AYear"></td>
-				<td><button class="button" id="new">New</button></td>
-			</tr>
 		</table>
-
+		<p id="semesterID"> </p>
+		
 		<h3>Faculty</h3>
 		<button class="button" id="hide">Hide</button>
 		<button class="button" id="show">Show</button>
 		<table>
 			<tr>
 				<td>Faculty ID</td>
-				<td>Name</td>
-			</tr>
-			<tr>
-				<td>FE</td>
-				<td>Faculty of Engineering</td>
-				<td><button class="button" id="delete">Delete</button></td>
-			</tr>
-			<tr>
-				<td>FB</td>
-				<td>Faculty of Business</td>
-				<td><button class="button" id="delete">Delete</button></td>
-			</tr>
-			<tr>
-				<td><input type="text" id="facultyID_2" name="faculty"></td>
-				<td><input type="text" id="facultyName_1" name="facultyName"></td>
-				<td><button class="button" id="new">New</button></td>
+				<td>FacultyName</td>
 			</tr>
 		</table>
+		<p id="facultyID_2"> </p>
+
 
 		<h3>Program</h3>
 		<button class="button" id="hide">Hide</button>
@@ -122,28 +85,10 @@
 		<table>
 			<tr>
 				<td>Program ID</td>
-				<td>Faculty ID</td>
-				<td>Name</td>
-			</tr>
-			<tr>
-				<td>CS</td>
-				<td>FE</td>
-				<td>Computer Science</td>
-				<td><button class="button" id="delete">Delete</button></td>
-			</tr>
-			<tr>
-				<td>BA</td>
-				<td>FB</td>
-				<td>Business Administration</td>
-				<td><button class="button" id="delete">Delete</button></td>
-			</tr>
-			<tr>
-				<td><input type="text" id="programID_1" name="programID"></td>
-				<td><input type="text" id="facultyID_3" name="facultyID"></td>
-				<td><input type="text" id="programName_1" name="programName"></td>
-				<td><button class="button" id="new">New</button></td>
+				<td>ProgramName</td>
 			</tr>
 		</table>
+		<p id="ProgramID"> </p>
 
 		<h3>Module</h3>
 		<button class="button" id="hide">Hide</button>
@@ -151,28 +96,10 @@
 		<table>
 			<tr>
 				<td>Module ID</td>
-				<td>Program ID</td>
-				<td>Name</td>
-			</tr>
-			<tr>
-				<td>M1</td>
-				<td>CS</td>
-				<td>Algebra</td>
-				<td><button class="button" id="delete">Delete</button></td>
-			</tr>
-			<tr>
-				<td>M2</td>
-				<td>ME</td>
-				<td>Control Theory</td>
-				<td><button class="button" id="delete">Delete</button></td>
-			</tr>
-			<tr>
-				<td><input type="text" id="programID_2" name="programID"></td>
-				<td><input type="text" id="facultyID_4" name="facultyID"></td>
-				<td><input type="text" id="programName_2" name="programName"></td>
-				<td><button class="button" id="new">New</button></td>
+				<td>ModuleName</td>
 			</tr>
 		</table>
+		<p id="ModuleID"> </p>
 
 		<h3>Class</h3>
 		<button class="button" id="hide">Hide</button>
@@ -180,32 +107,12 @@
 		<table>
 			<tr>
 				<td>Class ID</td>
-				<td>Module ID</td>
-				<td>Semester ID</td>
 				<td>Size</td>
-			</tr>
-			<tr>
-				<td>M1-SS2020</td>
-				<td>M1</td>
-				<td>SS2020</td>
-				<td>30</td>
-				<td><button class="button" id="delete">Delete</button></td>
-			</tr>
-			<tr>
-				<td>M1-SS2020</td>
-				<td>M2</td>
-				<td>SS2020</td>
-				<td>25</td>
-				<td><button class="button" id="delete">Delete</button></td>
-			</tr>
-			<tr>
-				<td><input type="text" id="classID_1" name="classID"></td>
-				<td><input type="text" id="moduleID_1" name="moduleID"></td>
-				<td><input type="text" id="semesterID_2" name="semesterID"></td>
-				<td><input type="text" id="size_1" name="size"></td>
-				<td><button class="button" id="new">New</button></td>
+				<td>Semester ID</td>
+				<td>Module ID</td>
 			</tr>
 		</table>
+		<p id="ClassID"> </p>
 
 		<h3>Questionaire</h3>
 		<button class="button" id="hide">Hide</button>
@@ -216,25 +123,8 @@
 				<td>Lecture ID</td>
 				<td>Class ID</td>
 			</tr>
-			<tr>
-				<td>1234</td>
-				<td>JD-000</td>
-				<td>M1-SS2020</td>
-				<td><button class="button" id="delete">Delete</button></td>
-			</tr>
-			<tr>
-				<td>1235</td>
-				<td>JD-001</td>
-				<td>M2-SS2020</td>
-				<td><button class="button" id="delete">Delete</button></td>
-			</tr>
-			<tr>
-				<td><input type="text" id="questionaireID_1" name="questionaireID"></td>
-				<td><input type="text" id="lecturerID_1" name="lecturerID"></td>
-				<td><input type="text" id="classID_2" name="classID"></td>
-				<td><button class="button" id="new">New</button></td>
-			</tr>
 		</table>
+		<p id="QuestionaireID"> </p>
 
 		<h3>Lecture</h3>
 		<button class="button" id="hide">Hide</button>
@@ -244,17 +134,8 @@
 				<td>Lecture ID</td>
 				<td>Name</td>
 			</tr>
-			<tr>
-				<td>JD-000</td>
-				<td>John Doe</td>
-				<td><button class="button" id="delete">Delete</button></td>
-			</tr>
-			<tr>
-				<td><input type="text" id="lecturerID_2" name="lecturerID"></td>
-				<td><input type="text" id="lecturerName_1" name="lecturerName"></td>
-				<td><button class="button" id="new">New</button></td>
-			</tr>
 		</table>
+		<p id="LecturerID"> </p>
 
 		<h3>Teaches</h3>
 		<button class="button" id="hide">Hide</button>
@@ -264,16 +145,8 @@
 				<td>Lecture ID</td>
 				<td>Class ID</td>
 			</tr>
-			<tr>
-				<td>JD-000</td>
-				<td>M1-SS2020</td>
-				<td><button class="button" id="delete">Delete</button></td>
-			</tr>
-			<tr>
-				<td><input type="text" id="lecturerID_3" name="lecturerID"></td>
-				<td><input type="text" id="classID_3" name="classID"></td>
-				<td><button class="button" id="new">New</button></td>
-			</tr>
 		</table>
+		<p id="lecturerID_2"> <p
+		
 	</body>
 </html>
