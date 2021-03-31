@@ -123,4 +123,25 @@ public class QuestionnaireApi extends ResourceApi {
             response.getWriter().print(message);
         }
     }
+
+    @Override
+    protected void doPut(HttpServletRequest request, HttpServletResponse response)
+        throws ServletException, IOException {
+        // TODO
+    }
+
+    @Override
+    protected void doDelete(HttpServletRequest request, HttpServletResponse response)
+        throws ServletException, IOException {
+        // TODO
+    }
+
+    @Override
+    protected void addResourceToDatabase(Resource resource) {
+        // TODO
+    }
+
+    private void deleteResourceFromDataBase(int AYearID) {
+        // TODO
+    }
 }

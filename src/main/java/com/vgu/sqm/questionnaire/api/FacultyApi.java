@@ -3,13 +3,16 @@ package com.vgu.sqm.questionnaire.api;
 import com.vgu.sqm.questionnaire.database.Database;
 import com.vgu.sqm.questionnaire.resource.Faculty;
 import com.vgu.sqm.questionnaire.resource.Resource;
-
+import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.naming.NamingException;
+import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 @WebServlet("/api/faculty")
 public class FacultyApi extends ResourceApi {
@@ -28,8 +31,8 @@ public class FacultyApi extends ResourceApi {
             CallableStatement st = db.prepareCall("CALL DumpFaculty()");
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
-                String id = rs.getString(1); //Attribute name FacultyID
-                String name = rs.getString(2); //Attribute name FacultyName
+                String id = rs.getString(1); // Attribute name FacultyID
+                String name = rs.getString(2); // Attribute name FacultyName
 
                 resources.add(new Faculty(id, name));
             }
@@ -41,5 +44,26 @@ public class FacultyApi extends ResourceApi {
             LOGGER.log(Level.SEVERE, e2.toString());
         }
         return resources;
+    }
+
+    @Override
+    protected void doPut(HttpServletRequest request, HttpServletResponse response)
+        throws ServletException, IOException {
+        // TODO
+    }
+
+    @Override
+    protected void doDelete(HttpServletRequest request, HttpServletResponse response)
+        throws ServletException, IOException {
+        // TODO
+    }
+
+    @Override
+    protected void addResourceToDatabase(Resource resource) {
+        // TODO
+    }
+
+    private void deleteResourceFromDataBase(int AYearID) {
+        // TODO
     }
 }

@@ -6,12 +6,16 @@ import java.util.ArrayList;
 import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonArrayBuilder;
+import javax.json.JsonObject;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public abstract class ResourceApi extends HttpServlet {
+    abstract protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException;
+    abstract protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException;
+    abstract protected void addResourceToDatabase(Resource resource);
     abstract ArrayList<Resource> dumpResource();
 
     protected JsonArray ResourceToJson(ArrayList<Resource> resources) {
