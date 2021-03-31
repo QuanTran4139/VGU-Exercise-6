@@ -8,7 +8,7 @@ $(document).ready(function()
 		for (x in data)
 		{
 			txt += "<tr><td>" + JSON.stringify(data[x].LecturerID) + "</td>"; 
-			txt += "<td>" + JSON.stringify(data[x].ClassID) + "</td></tr>";";
+			txt += "<td>" + JSON.stringify(data[x].ClassID) + "</td></tr>";
 		}
 		
 		txt += "</table>"

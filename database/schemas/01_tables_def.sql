@@ -115,8 +115,9 @@ CREATE TABLE IF NOT EXISTS Teaching (
 CREATE TABLE IF NOT EXISTS Questionnaire (
 	QuestionnaireId INT AUTO_INCREMENT,
     LecturerId VARCHAR(10) NOT NULL,
-    ClassId VARCHAR(10) NOT NULL,
+    ClassId VARCHAR(10) NOT NULL, 
     Gender CHAR,
+    Question0 ENUM('Never','Rarely','Sometimes','Often','Always') NOT NULL,
 	Question1 ENUM('1','2','3','4','5','N/A') NOT NULL,
     Question2 ENUM('1','2','3','4','5','N/A') NOT NULL,
     Question3 ENUM('1','2','3','4','5','N/A') NOT NULL,
