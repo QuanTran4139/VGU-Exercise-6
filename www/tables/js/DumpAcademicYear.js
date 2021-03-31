@@ -2,7 +2,21 @@ $(document).ready(function()
 {
 	$.get("/Questionnaire/api/academicYear?action=dump", function(data, status)
 	{
-		//alert("Data: " + data + " Status: " + status);
+		//console.log(JSON.stringify(data));
+		/*for (var i = 0; i < data.length; i++)
+		{
+			document.getElementById("AYearID").innerHTML = data[i];
+		}*/
+		
 		console.log(JSON.stringify(data));
+		var txt = "", x;
+		txt += "<table border='1'>"
+		for (x in data)
+		{
+			txt += "<tr><td>" + JSON.stringify(data[x].AYearID) + "</td></tr>";
+		}
+		
+		txt += "</table>"
+		document.getElementById("AYearID_2").innerHTML = txt;
 	});
 });
