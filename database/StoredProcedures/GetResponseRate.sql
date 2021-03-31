@@ -1,6 +1,6 @@
 DELIMITER //
-DROP PROCEDURE IF EXISTS ResponseRate //
-CREATE PROCEDURE ResponseRate(
+DROP PROCEDURE IF EXISTS GetResponseRate //
+CREATE PROCEDURE GetResponseRate(
 IN inLecturerId VARCHAR(10),
 IN inClassId VARCHAR(10),
 OUT statusCode INT
