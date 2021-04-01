@@ -76,7 +76,8 @@ public class TeachingApi extends ResourceApi {
     @Override
     protected void doDelete(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
-        if (request.getParameterMap().containsKey(p_LecturerID)) {
+        if (request.getParameterMap().containsKey(p_LecturerID)
+            && request.getParameterMap().containsKey(p_ClassID)) {
             deleteResourceFromDataBase(
                 request.getParameter(p_LecturerID), request.getParameter(p_ClassID));
             response.setStatus(HttpServletResponse.SC_OK);
