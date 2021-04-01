@@ -20,4 +20,8 @@ public class Program implements Resource {
         JsonObject obj = builder.build();
         return obj;
     }
+    public static boolean checkParametersAreValid(String ProgramID, String ProgramName) {
+        return ProgramID.length() > 0 && ProgramID.length() <= 10 && !ProgramID.isBlank()
+            && ProgramName.length() > 0 && ProgramName.length() <= 100 && !ProgramName.isBlank();
+    }
 }

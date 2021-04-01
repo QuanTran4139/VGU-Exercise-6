@@ -3,11 +3,13 @@ package com.vgu.sqm.questionnaire.api;
 import com.vgu.sqm.questionnaire.database.Database;
 import com.vgu.sqm.questionnaire.resource.ProgramInFacultyInAcademicYear;
 import com.vgu.sqm.questionnaire.resource.Resource;
+import com.vgu.sqm.questionnaire.utils.JsonUtils;
 import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.json.JsonObject;
 import javax.naming.NamingException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -19,6 +21,11 @@ public class ProgramInFacultyInAcademicYearApi extends ResourceApi {
     private final static Logger LOGGER =
         Logger.getLogger(ProgramInFacultyInAcademicYearApi.class.getName());
     private static final long serialVersionUID = 1L;
+
+    // parameter names
+    private final static String p_ProgramID = "pid";
+    private final static String p_FacultyID = "fid";
+    private final static String p_AYearID = "yid";
 
     public ProgramInFacultyInAcademicYearApi() {
         super();
@@ -51,13 +58,48 @@ public class ProgramInFacultyInAcademicYearApi extends ResourceApi {
     @Override
     protected void doPut(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
-        // TODO
+        try {
+            JsonObject json = JsonUtils.extractJsonRequestBody(request);
+            String ProgramID = json.getJsonString(p_ProgramID).getString();
+            String FacultyID = json.getJsonString(p_FacultyID).getString();
+            int AYearID = json.getJsonNumber(p_AYearID).intValue();
+            if (ProgramInFacultyInAcademicYear.checkParametersAreValid(
+                    ProgramID, FacultyID, AYearID)) {
+                addResourceToDatabase(
+                    new ProgramInFacultyInAcademicYear(ProgramID, FacultyID, AYearID));
+                response.setStatus(HttpServletResponse.SC_OK);
+            } else {
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                response.getWriter().print(
+                    "One or more parameters is invalid: %s, %s, %s".format(p_ProgramID, p_FacultyID, p_AYearID));
+            }
+        } catch (Exception e) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.getWriter().print("Malformed JSON request body");
+        }
     }
 
     @Override
     protected void doDelete(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
-        // TODO
+        if (request.getParameterMap().containsKey(p_ProgramID)
+            && request.getParameterMap().containsKey(p_FacultyID)
+            && request.getParameterMap().containsKey(p_AYearID)) {
+            try {
+                String program = request.getParameter(p_ProgramID);
+                String faculty = request.getParameter(p_FacultyID);
+                int year = Integer.parseInt(request.getParameter(p_AYearID));
+                deleteResourceFromDataBase(program, faculty, year);
+                response.setStatus(HttpServletResponse.SC_OK);
+            } catch (NumberFormatException e) {
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                response.getWriter().print("%s must be int".format(p_AYearID));
+            }
+        } else {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.getWriter().print(
+                "Missing parameters: %s, %s, %s".format(p_ProgramID, p_FacultyID, p_AYearID));
+        }
     }
 
     @Override
@@ -65,7 +107,7 @@ public class ProgramInFacultyInAcademicYearApi extends ResourceApi {
         // TODO
     }
 
-    private void deleteResourceFromDataBase(int AYearID) {
+    private void deleteResourceFromDataBase(String ProgramID, String FacultyID, int AYearID) {
         // TODO
     }
 }

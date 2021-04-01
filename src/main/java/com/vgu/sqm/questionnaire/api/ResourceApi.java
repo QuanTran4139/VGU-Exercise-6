@@ -1,6 +1,7 @@
 package com.vgu.sqm.questionnaire.api;
 
 import com.vgu.sqm.questionnaire.resource.Resource;
+import com.vgu.sqm.questionnaire.utils.JsonUtils;
 import java.io.IOException;
 import java.util.ArrayList;
 import javax.json.Json;
@@ -13,8 +14,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public abstract class ResourceApi extends HttpServlet {
-    abstract protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException;
-    abstract protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException;
+    abstract protected void doPut(HttpServletRequest request, HttpServletResponse response)
+        throws ServletException, IOException;
+    abstract protected void doDelete(HttpServletRequest request, HttpServletResponse response)
+        throws ServletException, IOException;
     abstract protected void addResourceToDatabase(Resource resource);
     abstract ArrayList<Resource> dumpResource();
 

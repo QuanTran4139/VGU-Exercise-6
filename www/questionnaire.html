@@ -8,26 +8,26 @@
 	</head>
 	
 	<body>
-		<!-- <form id = "ClassIDSelect" action="/Questionnaire/api/class?action=getClassOptions" method="GET"> -->
-			<!-- <label for="ClassID">ClassID</label> -->
-			<div>ClassID:
-				<select id="cid" name="cid">
-					<option value="0">---Please select an option---</option>
-					<option value="1">1</option>
-					<option value="2">2</option>
-					<option value="3">3</option>
-					<option value="4">4</option>
-					<option value="5">5</option>
-					<option value="6">6</option>
-				</select>
-			</div>
-		<!-- </form> -->
+		<tr><td>ClassID: <select id="cid"><option value='0'>---Select---</option></select></td></tr>
+		<br>
+		<tr><td>Lecturer: <select id="lecturerID"><option value='0'>---Select---</option></select></td></tr>
 		
-		<div>Semester:</div>
-		<div>Faculty:</div>
-		<div>Program:</div>
-		<div>Lecturer:</div>
-		<button id="SubmitClassID" type="submit">Submit</button>
+		<table>
+			<tr>
+				<td>Semester:</td>
+				<td id="SemesterID"></td>
+			</tr>
+			
+			<tr>
+				<td>Program:</td>
+				<td id="ProgramName"></td>
+			</tr>
+			
+			<tr>
+				<td>Faculty:</td>
+				<td id="FacultyName"></td>
+			</tr>
+		</table>
 		
 		<br><br>
 	

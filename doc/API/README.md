@@ -17,11 +17,13 @@ The following endpoints can be reached at `/Questionnaire/api/endpoint_name`, wh
 - `semester`
 - `teaching`
 
-## General actions
+## `GET`
+
+### General actions
 
 These are possible values for the `action` parameter handled by *all* endpoints
 
-### `dump`
+#### `dump`
 
 This dumps the entire table for each resource/endpoint. The response is formatted as follows:
 
@@ -40,11 +42,11 @@ This dumps the entire table for each resource/endpoint. The response is formatte
 ]
 ```
 
-## Endpoint-specific actions
+### Endpoint-specific actions
 
-### `questionnaire`
+#### `questionnaire`
 
-#### `getCounts`
+##### `getCounts`
 
 Calling `questionnaire?action=getCounts` will return the counts of the answers to all questions in the Questionnaire.
 
@@ -67,13 +69,13 @@ The response is formatted as follows:
 
 Where `"qa"` (questions-answers) is an array of questions, and each question is an array of answers, where `a0 = count(answer == "N/A")`, `a1 = count(answer == 1)`, and so on, with the length of each answer being the number of possible answers (including "N/A").
 
-#### `getResponseRate`
+##### `getResponseRate`
 
 Calling `questionnaire?action=getResponseRate&cid=_ClassID_&lid=_LecturerID_&qid=_QuestionnaireID` will return a `float` representing the response rate of the corresponding questionnaire.
 
-### `class`
+#### `class`
 
-#### `getClassOptions`
+##### `getClassOptions`
 
 Calling `class?action=getClassOptions&cid=_ClassID_` will return lists of semesters, faculties, programs and lecturers.
 
@@ -99,3 +101,153 @@ The response is formatted as follows:
     ]
 }
 ```
+
+## `PUT`
+
+To add an object to the database, make a `PUT` request to the corresponding resource with a JSON request body formatted as listed. (All parameters are `String`s unless specified otherwise.)
+
+### `academicYear`
+
+```json
+{
+    "yid": _AcademicYearID_
+}
+```
+
+`yid` must be an `int`
+
+### `class`
+
+```json
+{
+    "cid": _ClassID_,
+    "size": _ClassSize_,
+    "sid": _SemesterID_,
+    "mid": _ModuleID_
+}
+```
+
+`size` must be an `int`
+
+### `faculty`
+
+```json
+{
+    "id": _FacultyID_,
+    "name": _FacultyName_
+}
+```
+
+### `facultyInAcademicYear`
+
+```json
+{
+    "fid": _FacultyID_,
+    "yid": _AcademicYearID_
+}
+```
+
+`yid` must be an `int`
+
+### `lecturer`
+
+```json
+{
+    "id": _LecturerID_,
+    "name": _LecturerName_
+}
+```
+
+### `module`
+
+```json
+{
+    "id": _ModuleID_,
+    "name": _ModuleName_
+}
+```
+
+### `moduleInProgramInAcademicYear`
+
+```json
+{
+    "mid": _ModuleID_,
+    "yid": _AcademicYearID_
+}
+```
+
+`yid` must be an `int`
+
+### `program`
+
+```json
+{
+    "id": _ProgramID_,
+    "name": _ProgramName_
+}
+```
+
+### `programInFacultyInAcademicYear`
+
+```json
+{
+    "pid": _ProgramID_,
+    "fid": _FacultyID_,
+    "yid": _AcademicYearID_
+}
+```
+
+`yid` must be an `int`
+
+### `questionnaire`
+
+```json
+{
+    "lid": _LecturerID_,
+    "cid": _ClassID_,
+    "gender": _Gender_,
+    "qa": [_answers_],
+    "comment": _Comment_,
+}
+```
+
+`qa` is an `int` array of length 18, where each element can be in the range 0-5 (except 5,6,7) and `0` represents "N/A".
+
+`comment`'s max length is 500.
+
+### `semester`
+
+```json
+{
+    "sid": _SemesterID_,
+    "yid": _AcademicYearID_
+}
+```
+
+`yid` must be an `int`
+
+### `teaching`
+
+```json
+{
+    "lid": _LecturerID_,
+    "cid": _ClassID_
+}
+```
+
+## `DELETE`
+
+ To delete a resource/object from the database, make a `DELETE` request to the corresponding resource in `api/` with the provided parameters:
+
+- `academicYear`: `yid` (AcademicYearID)
+- `class`: `cid` (ClassID)
+- `faculty`: `id` (FacultyID)
+- `facultyInAcademicYear`: `fid` (FacultyID), `yid` (AcademicYearID)
+- `lecturer`: `lid` (LecturerID)
+- `module`: `mid` (ModuleID)
+- `moduleInProgramInAcademicYear`: `mid` (ModuleID), `pid` (ProgramID), `yid` (AcademicYearID)
+- `program`: `pid` (ProgramID)
+- `programInFacultyInAcademicYear`: `pid` (ProgramID), `fid` (FacultyID), `yid` (AcademicYearID)
+- `questionnaire`: `lid` (LecturerID), `cid` (ClassID), `qid` (QuestionnaireID)
+- `semester`: `sid` (SemesterID)
+- `teaching`: `lid` (LecturerID), `cid` (ClassID)

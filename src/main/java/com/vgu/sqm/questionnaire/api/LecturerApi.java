@@ -3,11 +3,13 @@ package com.vgu.sqm.questionnaire.api;
 import com.vgu.sqm.questionnaire.database.Database;
 import com.vgu.sqm.questionnaire.resource.Lecturer;
 import com.vgu.sqm.questionnaire.resource.Resource;
+import com.vgu.sqm.questionnaire.utils.JsonUtils;
 import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.json.JsonObject;
 import javax.naming.NamingException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -18,6 +20,10 @@ import javax.servlet.http.HttpServletResponse;
 public class LecturerApi extends ResourceApi {
     private final static Logger LOGGER = Logger.getLogger(LecturerApi.class.getName());
     private static final long serialVersionUID = 1L;
+
+    // parameter names
+    private final static String p_LecturerID = "id";
+    private final static String p_LecturerName = "name";
 
     public LecturerApi() {
         super();
@@ -49,13 +55,34 @@ public class LecturerApi extends ResourceApi {
     @Override
     protected void doPut(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
-        // TODO
+        try {
+            JsonObject json = JsonUtils.extractJsonRequestBody(request);
+            String id = json.getJsonString(p_LecturerID).getString();
+            String name = json.getJsonString(p_LecturerName).getString();
+            if (Lecturer.checkParametersAreValid(id, name)) {
+                addResourceToDatabase(new Lecturer(id, name));
+                response.setStatus(HttpServletResponse.SC_OK);
+            } else {
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                response.getWriter().print(
+                    "One or more parameters is invalid: %s, %s".format(p_LecturerID, p_LecturerName));
+            }
+        } catch (Exception e) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.getWriter().print("Malformed JSON request body");
+        }
     }
 
     @Override
     protected void doDelete(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
-        // TODO
+        if (request.getParameterMap().containsKey(p_LecturerID)) {
+            deleteResourceFromDataBase(request.getParameter(p_LecturerID));
+            response.setStatus(HttpServletResponse.SC_OK);
+        } else {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.getWriter().print("Missing parameter: %s");
+        }
     }
 
     @Override
@@ -63,7 +90,7 @@ public class LecturerApi extends ResourceApi {
         // TODO
     }
 
-    private void deleteResourceFromDataBase(int AYearID) {
+    private void deleteResourceFromDataBase(String LectureID) {
         // TODO
     }
 }

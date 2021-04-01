@@ -23,4 +23,10 @@ public class ModuleInProgramInAcademicYear implements Resource {
         JsonObject obj = builder.build();
         return obj;
     }
+
+    public static boolean checkParametersAreValid(String ModuleID, String ProgramID, int AYearID) {
+        return ModuleID.length() > 1 && ModuleID.length() <= 10 & !ModuleID.isBlank()
+            && ProgramID.length() > 1 && ProgramID.length() <= 10 & !ProgramID.isBlank()
+            && AYearID > 0;
+    }
 }
