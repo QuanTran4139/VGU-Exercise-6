@@ -4,9 +4,11 @@ import com.vgu.sqm.questionnaire.database.Database;
 import com.vgu.sqm.questionnaire.resource.Questionnaire;
 import com.vgu.sqm.questionnaire.resource.Resource;
 import com.vgu.sqm.questionnaire.utils.JsonUtils;
+
 import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.json.Json;
@@ -45,18 +47,28 @@ public class QuestionnaireApi extends ResourceApi {
             CallableStatement st = db.prepareCall("CALL DumpQuestionnaire()");
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
-                String lId = rs.getString(1); // Attribute name LecturerID
-                String cId = rs.getString(2); // Attribute name ClassID
-                String content = rs.getString(3); // Attribute name Content
+                int qId = rs.getInt("QuestionnaireId"); // Attribute name QuestionnaireId
+                String lId = rs.getString("LecturerId"); // Attribute name LecturerId
+                String cId = rs.getString("ClassId"); // Attribute name ClassId
+                char gender = rs.getString("Gender").charAt(0); // Attribute name Gender
+                String question0 = rs.getString("Question0"); // Attribute name Question0
 
+                //TODO need to fixed type question[0]
+                //TODO change 'char' to string?
+                int[] answers = new int[18];
+
+                answers[0] = 0;
+
+                for (int i = 1; i < answers.length; i++) {
+                    answers[i] = rs.getInt("Question" + i);
+                }
+
+                String content = rs.getString("Comment");
                 if (content == null) {
                     content = "";
                 }
 
-                // TODO get actual data for this
-                int[] answers = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17};
-
-                resources.add(new Questionnaire(lId, cId, 0, 'N', answers, content));
+                resources.add(new Questionnaire(lId, cId, qId, gender, answers, content));
             }
             LOGGER.log(Level.INFO, "Getting info from database successfully.");
             db.close();
@@ -70,21 +82,52 @@ public class QuestionnaireApi extends ResourceApi {
 
     private JsonObject getCounts(String ClassID, String LecturerID, String QuestionnaireID) {
         // TODO replace these placeholder values with data from the DB
-        int[][] qa = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9, 0}};
-        int countGenderM = 10;
-        int countGenderF = 10;
-        int countGenderN = 10;
 
-        JsonObjectBuilder objBuilder = Json.createObjectBuilder();
-        JsonObject genderCounts = Json.createObjectBuilder()
-                                      .add("M", countGenderM)
-                                      .add("F", countGenderF)
-                                      .add("N", countGenderN)
-                                      .build();
-        JsonArray qaArray = JsonUtils.arrayToJson(qa);
-        objBuilder.add("genders", genderCounts).add("qa", qaArray);
-        JsonObject obj = objBuilder.build();
-        return obj;
+        try {
+            Connection db = Database.getAcademiaConnection();
+            CallableStatement st = db.prepareCall("CALL GetGenderCountByID(?,?,?)");
+            st.setString(1, ClassID);
+            st.setString(2, LecturerID);
+            st.registerOutParameter(3, Types.INTEGER);
+
+            ResultSet rs = st.executeQuery();
+            HashMap<String, Integer> counts = new HashMap<>();
+
+            while (rs.next()) {
+                String gender = rs.getString("Gender");
+                int count = rs.getInt("Count");
+
+                counts.put(gender, count);
+
+            }
+
+            //get status
+            int status = st.getInt(3);
+            LOGGER.log(Level.INFO, "status is " + status);
+
+            LOGGER.log(Level.INFO, "Getting info from database successfully.");
+            db.close();
+
+            //TODO get list of answer
+            int[][] qa = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9, 0}};
+
+            JsonObjectBuilder objBuilder = Json.createObjectBuilder();
+            JsonObject genderCounts = Json.createObjectBuilder()
+                    .add("M", counts.get("M"))
+                    .add("F", counts.get("F"))
+                    .add("N", counts.get("N"))
+                    .build();
+            JsonArray qaArray = JsonUtils.arrayToJson(qa);
+            objBuilder.add("genders", genderCounts).add("qa", qaArray);
+            JsonObject obj = objBuilder.build();
+
+            return obj;
+        } catch (SQLException e1) {
+            LOGGER.log(Level.SEVERE, e1.toString());
+        } catch (NamingException e2) {
+            LOGGER.log(Level.SEVERE, e2.toString());
+        }
+        return null;
     }
 
     private float getReponseRate(String ClassID, String LecturerID, String QuestionnaireID) {
@@ -94,11 +137,11 @@ public class QuestionnaireApi extends ResourceApi {
 
     @Override
     protected void doGetCustomAction(HttpServletRequest request, HttpServletResponse response,
-        String action) throws ServletException, IOException {
+                                     String action) throws ServletException, IOException {
         if (action.equals("getCounts")) { // action = getCounts
             if (request.getParameterMap().containsKey("cid")
-                && request.getParameterMap().containsKey("lid")
-                && request.getParameterMap().containsKey("qid")) {
+                    && request.getParameterMap().containsKey("lid")
+                    && request.getParameterMap().containsKey("qid")) {
                 response.setContentType("application/json");
                 response.setStatus(HttpServletResponse.SC_OK);
                 String cid = request.getParameter("cid");
@@ -108,12 +151,12 @@ public class QuestionnaireApi extends ResourceApi {
             } else { // missing parameters
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 response.getWriter().print(
-                    "The following parameters are required for 'getCounts': cid, lid, qid");
+                        "The following parameters are required for 'getCounts': cid, lid, qid");
             }
         } else if (action.equals("getResponseRate")) { // action = getReponseRate
             if (request.getParameterMap().containsKey("cid")
-                && request.getParameterMap().containsKey("lid")
-                && request.getParameterMap().containsKey("qid")) {
+                    && request.getParameterMap().containsKey("lid")
+                    && request.getParameterMap().containsKey("qid")) {
                 response.setContentType("application/json");
                 response.setStatus(HttpServletResponse.SC_OK);
                 String cid = request.getParameter("cid");
@@ -123,7 +166,7 @@ public class QuestionnaireApi extends ResourceApi {
             } else { // missing parameters
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 response.getWriter().print(
-                    "The following parameters are required for 'getReponseRate': cid, lid, qid");
+                        "The following parameters are required for 'getReponseRate': cid, lid, qid");
             }
         } else {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -134,7 +177,7 @@ public class QuestionnaireApi extends ResourceApi {
 
     @Override
     protected void doPut(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
+            throws ServletException, IOException {
         JsonObject json = JsonUtils.extractJsonRequestBody(request);
         try {
             String LecturerID = json.getJsonString(p_LecturerID).getString();
@@ -147,28 +190,28 @@ public class QuestionnaireApi extends ResourceApi {
             // Get the answers
             JsonArray jsonAnswers = json.getJsonArray(p_Answers);
             int[] answers = {
-                jsonAnswers.getInt(0),
-                jsonAnswers.getInt(1),
-                jsonAnswers.getInt(2),
-                jsonAnswers.getInt(3),
-                jsonAnswers.getInt(4),
-                jsonAnswers.getInt(5),
-                jsonAnswers.getInt(6),
-                jsonAnswers.getInt(7),
-                jsonAnswers.getInt(8),
-                jsonAnswers.getInt(9),
-                jsonAnswers.getInt(10),
-                jsonAnswers.getInt(11),
-                jsonAnswers.getInt(12),
-                jsonAnswers.getInt(13),
-                jsonAnswers.getInt(14),
-                jsonAnswers.getInt(15),
-                jsonAnswers.getInt(16),
-                jsonAnswers.getInt(17),
+                    jsonAnswers.getInt(0),
+                    jsonAnswers.getInt(1),
+                    jsonAnswers.getInt(2),
+                    jsonAnswers.getInt(3),
+                    jsonAnswers.getInt(4),
+                    jsonAnswers.getInt(5),
+                    jsonAnswers.getInt(6),
+                    jsonAnswers.getInt(7),
+                    jsonAnswers.getInt(8),
+                    jsonAnswers.getInt(9),
+                    jsonAnswers.getInt(10),
+                    jsonAnswers.getInt(11),
+                    jsonAnswers.getInt(12),
+                    jsonAnswers.getInt(13),
+                    jsonAnswers.getInt(14),
+                    jsonAnswers.getInt(15),
+                    jsonAnswers.getInt(16),
+                    jsonAnswers.getInt(17),
             };
             if (Questionnaire.checkParametersAreValid(LecturerID, ClassID, gender, answers, comment)) {
                 addResourceToDatabase(new Questionnaire(
-                    LecturerID, ClassID, QuestionnaireID, gender, answers, comment));
+                        LecturerID, ClassID, QuestionnaireID, gender, answers, comment));
             } else {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 response.getWriter().print("One or more parameters is invalid: %s, %s, %s, %s".format(p_LecturerID, p_ClassID, p_Gender, p_Answers));
@@ -181,10 +224,10 @@ public class QuestionnaireApi extends ResourceApi {
 
     @Override
     protected void doDelete(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
+            throws ServletException, IOException {
         if (request.getParameterMap().containsKey(p_LecturerID)
-            && request.getParameterMap().containsKey(p_ClassID)
-            && request.getParameterMap().containsKey(p_QuestionnaireID)) {
+                && request.getParameterMap().containsKey(p_ClassID)
+                && request.getParameterMap().containsKey(p_QuestionnaireID)) {
             try {
                 String LecturerID = request.getParameter(p_LecturerID);
                 String ClassID = request.getParameter(p_ClassID);
@@ -198,7 +241,7 @@ public class QuestionnaireApi extends ResourceApi {
         } else {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             response.getWriter().print("Missing parameters: %s, %s, %s".format(
-                p_LecturerID, p_ClassID, p_QuestionnaireID));
+                    p_LecturerID, p_ClassID, p_QuestionnaireID));
         }
     }
 
@@ -208,7 +251,7 @@ public class QuestionnaireApi extends ResourceApi {
     }
 
     private void deleteResourceFromDataBase(
-        String LecturerID, String ClassID, int QuestionnaireID) {
+            String LecturerID, String ClassID, int QuestionnaireID) {
         // TODO
     }
 }
