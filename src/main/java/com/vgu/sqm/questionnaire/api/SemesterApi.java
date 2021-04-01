@@ -65,7 +65,7 @@ public class SemesterApi extends ResourceApi {
             } else {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 response.getWriter().print(
-                    "Invalid parameters: %s, %s".format(p_SemesterID, p_AYearID));
+                    "One or more parameters is invalid: %s, %s".format(p_SemesterID, p_AYearID));
             }
         } catch (NumberFormatException e) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);

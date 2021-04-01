@@ -65,7 +65,7 @@ public class ProgramApi extends ResourceApi {
             } else {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 response.getWriter().print(
-                    "Invalid parameters: %s, %s".format(p_ProgramID, p_ProgramName));
+                    "One or more parameters is invalid: %s, %s".format(p_ProgramID, p_ProgramName));
             }
         } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);

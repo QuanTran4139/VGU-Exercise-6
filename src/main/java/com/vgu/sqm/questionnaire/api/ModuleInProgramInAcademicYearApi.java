@@ -71,7 +71,7 @@ public class ModuleInProgramInAcademicYearApi extends ResourceApi {
             } else {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 response.getWriter().print(
-                    "Invalid parameters: %s, %s, %s".format(p_ModuleID, p_ProgramID, p_AYearID));
+                    "One or more parameters is invalid: %s, %s, %s".format(p_ModuleID, p_ProgramID, p_AYearID));
             }
         } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);

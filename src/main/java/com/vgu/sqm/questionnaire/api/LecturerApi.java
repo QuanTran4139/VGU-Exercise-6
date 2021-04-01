@@ -65,7 +65,7 @@ public class LecturerApi extends ResourceApi {
             } else {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 response.getWriter().print(
-                    "Invalid parameters: %s, %s".format(p_LecturerID, p_LecturerName));
+                    "One or more parameters is invalid: %s, %s".format(p_LecturerID, p_LecturerName));
             }
         } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);

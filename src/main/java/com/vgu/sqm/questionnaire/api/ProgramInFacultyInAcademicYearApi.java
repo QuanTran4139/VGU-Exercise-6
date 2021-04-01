@@ -71,7 +71,7 @@ public class ProgramInFacultyInAcademicYearApi extends ResourceApi {
             } else {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 response.getWriter().print(
-                    "Invalid parameters: %s, %s, %s".format(p_ProgramID, p_FacultyID, p_AYearID));
+                    "One or more parameters is invalid: %s, %s, %s".format(p_ProgramID, p_FacultyID, p_AYearID));
             }
         } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
