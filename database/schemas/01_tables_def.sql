@@ -135,11 +135,11 @@ CREATE TABLE IF NOT EXISTS Questionnaire (
     Question15 ENUM('1','2','3','4','5','N/A') NOT NULL,
     Question16 ENUM('1','2','3','4','5','N/A') NOT NULL,
     Question17 ENUM('1','2','3','4','5','N/A') NOT NULL,
-    Comment MEDIUMTEXT,
+    Comment TEXT,
     
     PRIMARY KEY (QuestionnaireId),
     FOREIGN KEY (LecturerId)
-		REFERENCES Lecturer (LecturerId),
+		REFERENCES Teaching (LecturerId),
 	FOREIGN KEY (ClassId)
-		REFERENCES Class (ClassId)
+		REFERENCES Teaching (ClassId)
 );

@@ -71,16 +71,6 @@ INSERT INTO `Class` (`ClassId`,`Size` ,`SemesterId`, `ModuleId`) VALUES 	('1', '
 																			('5', '30', 'WS01', 'Ba'),
 																		    ('6', '50', 'SS01', 'Phy');
 
-INSERT INTO `Questionnaire` (`LecturerId`, `ClassId`,`Gender`) VALUES 	('1','1','M'),
-																		('1','1','M'),
-																	    ('1','1','F'),
-																	    ('1','1','F'),
-																		('1','1','M'),
-																		('1','1','N'),
-																		('1','1','M'),
-																        ('2','1','M'),
-																        ('1','1','F');
-                                                                
 
 INSERT INTO `Teaching` (`LecturerId`, `ClassId`) VALUES ('1', '1'),
 														('1', '2'),
@@ -92,3 +82,15 @@ INSERT INTO `Teaching` (`LecturerId`, `ClassId`) VALUES ('1', '1'),
 														('3', '2'),
 														('4', '1'),
 														('5', '1');
+                                                        
+INSERT INTO `Questionnaire` (`LecturerId`, `ClassId`,`Gender`) VALUES 	('1','1','M'),
+																		('1','1','M'),
+																	    ('1','1','F'),
+																	    ('1','1','F'),
+																		('1','1','M'),
+																		('1','1','N'),
+																		('1','1','M'),
+																        ('2','1','M'),
+																        ('1','1','F');
+                                                                
+
