@@ -36,7 +36,7 @@ public class Questionnaire implements Resource {
     }
 
     public static boolean checkParametersAreValid(
-        String LecturerID, String ClassID, char gender, int[] answers) {
+        String LecturerID, String ClassID, char gender, int[] answers, String comment) {
         return
             // LecturerID
             LecturerID.length() > 0 && LecturerID.length() <= 10
@@ -64,6 +64,8 @@ public class Questionnaire implements Resource {
             && answers[14] >= 0 && answers[14] <= 5
             && answers[15] >= 0 && answers[15] <= 5
             && answers[16] >= 0 && answers[16] <= 5
-            && answers[17] >= 0 && answers[17] <= 5;
+            && answers[17] >= 0 && answers[17] <= 5
+            // Comment max character count = 500
+            && comment.length() <= 500;
     }
 }

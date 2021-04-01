@@ -213,6 +213,8 @@ To add an object to the database, make a `PUT` request to the corresponding reso
 
 `qa` is an `int` array of length 18, where each element can be in the range 0-5 (except 5,6,7) and `0` represents "N/A".
 
+`comment`'s max length is 500.
+
 ### `semester`
 
 ```json

@@ -166,7 +166,7 @@ public class QuestionnaireApi extends ResourceApi {
                 jsonAnswers.getInt(16),
                 jsonAnswers.getInt(17),
             };
-            if (Questionnaire.checkParametersAreValid(LecturerID, ClassID, gender, answers)) {
+            if (Questionnaire.checkParametersAreValid(LecturerID, ClassID, gender, answers, comment)) {
                 addResourceToDatabase(new Questionnaire(
                     LecturerID, ClassID, QuestionnaireID, gender, answers, comment));
             } else {
