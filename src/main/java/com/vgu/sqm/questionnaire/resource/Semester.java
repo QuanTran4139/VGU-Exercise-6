@@ -20,4 +20,9 @@ public class Semester implements Resource {
         JsonObject obj = builder.build();
         return obj;
     }
+
+    public static boolean checkParametersAreValid(String SemesterID, int AYearID) {
+        return SemesterID.length() > 0 && SemesterID.length() <= 10 && !SemesterID.isBlank()
+            && AYearID > 0;
+    }
 }

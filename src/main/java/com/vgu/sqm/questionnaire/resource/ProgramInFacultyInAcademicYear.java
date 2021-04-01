@@ -23,4 +23,9 @@ public class ProgramInFacultyInAcademicYear implements Resource {
         JsonObject obj = builder.build();
         return obj;
     }
+    public static boolean checkParametersAreValid(String ProgramID, String FacultyID, int AYearID) {
+        return ProgramID.length() > 1 && ProgramID.length() <= 10 & !ProgramID.isBlank()
+            && FacultyID.length() > 1 && FacultyID.length() <= 10 & !FacultyID.isBlank()
+            && AYearID > 0;
+    }
 }

@@ -25,6 +25,14 @@ public class QuestionnaireApi extends ResourceApi {
     private final static Logger LOGGER = Logger.getLogger(QuestionnaireApi.class.getName());
     private static final long serialVersionUID = 1L;
 
+    // parameter names
+    private final static String p_LecturerID = "lid";
+    private final static String p_ClassID = "cid";
+    private final static String p_QuestionnaireID = "qid";
+    private final static String p_Gender = "gender";
+    private final static String p_Answers = "qa";
+    private final static String p_Comment = "comment";
+
     public QuestionnaireApi() {
         super();
     }
@@ -127,13 +135,68 @@ public class QuestionnaireApi extends ResourceApi {
     @Override
     protected void doPut(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
-        // TODO
+        JsonObject json = JsonUtils.extractJsonRequestBody(request);
+        try {
+            String LecturerID = json.getJsonString(p_LecturerID).getString();
+            String ClassID = json.getJsonString(p_ClassID).getString();
+            // Placeholder QID, to be auto-incremented
+            int QuestionnaireID = 0;
+            // Gender should be a single character
+            char gender = json.getJsonString(p_Gender).getChars().charAt(0);
+            String comment = json.getJsonString(p_Comment).getString();
+            // Get the answers
+            JsonArray jsonAnswers = json.getJsonArray(p_Answers);
+            int[] answers = {
+                jsonAnswers.getInt(0),
+                jsonAnswers.getInt(1),
+                jsonAnswers.getInt(2),
+                jsonAnswers.getInt(3),
+                jsonAnswers.getInt(4),
+                jsonAnswers.getInt(5),
+                jsonAnswers.getInt(6),
+                jsonAnswers.getInt(7),
+                jsonAnswers.getInt(8),
+                jsonAnswers.getInt(9),
+                jsonAnswers.getInt(10),
+                jsonAnswers.getInt(11),
+                jsonAnswers.getInt(12),
+                jsonAnswers.getInt(13),
+                jsonAnswers.getInt(14),
+                jsonAnswers.getInt(15),
+                jsonAnswers.getInt(16),
+                jsonAnswers.getInt(17),
+            };
+            if (Questionnaire.checkParametersAreValid(LecturerID, ClassID, gender, answers)) {
+                addResourceToDatabase(new Questionnaire(
+                    LecturerID, ClassID, QuestionnaireID, gender, answers, comment));
+            }
+        } catch (Exception e) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.getWriter().print("Malformed JSON request body");
+        }
     }
 
     @Override
     protected void doDelete(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
-        // TODO
+        if (request.getParameterMap().containsKey(p_LecturerID)
+            && request.getParameterMap().containsKey(p_ClassID)
+            && request.getParameterMap().containsKey(p_QuestionnaireID)) {
+            try {
+                String LecturerID = request.getParameter(p_LecturerID);
+                String ClassID = request.getParameter(p_ClassID);
+                int QuestionnaireID = Integer.parseInt(request.getParameter(p_QuestionnaireID));
+                deleteResourceFromDataBase(LecturerID, ClassID, QuestionnaireID);
+                response.setStatus(HttpServletResponse.SC_OK);
+            } catch (NumberFormatException e) {
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                response.getWriter().print("qid must be int");
+            }
+        } else {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.getWriter().print("Missing parameters: %s, %s, %s".format(
+                p_LecturerID, p_ClassID, p_QuestionnaireID));
+        }
     }
 
     @Override
@@ -141,7 +204,8 @@ public class QuestionnaireApi extends ResourceApi {
         // TODO
     }
 
-    private void deleteResourceFromDataBase(int AYearID) {
+    private void deleteResourceFromDataBase(
+        String LecturerID, String ClassID, int QuestionnaireID) {
         // TODO
     }
 }

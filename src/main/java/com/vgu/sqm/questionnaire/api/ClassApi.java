@@ -26,6 +26,12 @@ public class ClassApi extends ResourceApi {
     private final static Logger LOGGER = Logger.getLogger(ClassApi.class.getName());
     private static final long serialVersionUID = 1L;
 
+    // parameter names
+    private final static String p_ClassID = "cid";
+    private final static String p_Size = "size";
+    private final static String p_SemesterID = "sid";
+    private final static String p_ModuleID = "mid";
+
     public ClassApi() {
         super();
     }
@@ -74,10 +80,10 @@ public class ClassApi extends ResourceApi {
     protected void doGetCustomAction(HttpServletRequest request, HttpServletResponse response,
         String action) throws ServletException, IOException {
         if (action.equals("getClassOptions")) {
-            if (request.getParameterMap().containsKey("cid")) {
+            if (request.getParameterMap().containsKey(p_ClassID)) {
                 response.setStatus(HttpServletResponse.SC_OK);
                 response.setContentType("application/json");
-                response.getWriter().print(getClassOptions(request.getParameter("cid")));
+                response.getWriter().print(getClassOptions(request.getParameter(p_ClassID)));
             } else {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 response.getWriter().print(
@@ -94,12 +100,36 @@ public class ClassApi extends ResourceApi {
     protected void doPut(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
         // TODO
+        try {
+            JsonObject json = JsonUtils.extractJsonRequestBody(request);
+            String ClassID = json.getJsonString(p_ClassID).getString();
+            int Size = json.getJsonNumber(p_Size).intValue();
+            String SemesterID = json.getJsonString(p_SemesterID).getString();
+            String ModuleID = json.getJsonString(p_ModuleID).getString();
+            if (Class.checkParametersAreValid(ClassID, Size, SemesterID, ModuleID)) {
+                addResourceToDatabase(new Class(ClassID, Size, SemesterID, ModuleID));
+                response.setStatus(HttpServletResponse.SC_OK);
+            } else {
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                response.getWriter().print(
+                    "Invalid parameters: %s, %s, %s, %s".format(
+                        p_ClassID, p_Size, p_SemesterID, p_ModuleID));
+            }
+        } catch (Exception e) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.getWriter().print("Malformed JSON request body");
+        }
     }
 
     @Override
     protected void doDelete(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
-        // TODO
+        if (request.getParameterMap().containsKey(p_ClassID)) {
+            deleteResourceFromDataBase(request.getParameter(p_ClassID));
+        } else {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.getWriter().print("Missing parameter: cid");
+        }
     }
 
     @Override
@@ -107,7 +137,7 @@ public class ClassApi extends ResourceApi {
         // TODO
     }
 
-    private void deleteResourceFromDataBase(int AYearID) {
+    private void deleteResourceFromDataBase(String ClassID) {
         // TODO
     }
 }

@@ -20,4 +20,9 @@ public class Module implements Resource {
         JsonObject obj = builder.build();
         return obj;
     }
+
+    public static boolean checkParametersAreValid(String ModuleID, String ModuleName) {
+        return ModuleID.length() > 0 && ModuleID.length() <= 10 && !ModuleID.isBlank()
+            && ModuleName.length() > 0 && ModuleName.length() <= 100 && !ModuleName.isBlank();
+    }
 }
