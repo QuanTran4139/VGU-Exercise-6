@@ -2,9 +2,35 @@
 <html>
 	<head>
 		<title>Questionnaire</title>
+		<script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+		<script src = "https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+		<script type="text/javascript" src="js/getClassOptions.js"></script>
 	</head>
 	
 	<body>
+		<!-- <form id = "ClassIDSelect" action="/Questionnaire/api/class?action=getClassOptions" method="GET"> -->
+			<!-- <label for="ClassID">ClassID</label> -->
+			<div>ClassID:
+				<select id="cid" name="cid">
+					<option value="0">---Please select an option---</option>
+					<option value="1">1</option>
+					<option value="2">2</option>
+					<option value="3">3</option>
+					<option value="4">4</option>
+					<option value="5">5</option>
+					<option value="6">6</option>
+				</select>
+			</div>
+		<!-- </form> -->
+		
+		<div>Semester:</div>
+		<div>Faculty:</div>
+		<div>Program:</div>
+		<div>Lecturer:</div>
+		<button id="SubmitClassID" type="submit">Submit</button>
+		
+		<br><br>
+	
 		<form id = "attendClass"><!--action="C:/Users/NOE/Desktop/PE/JS/input.html"-->
 			<label for="attendClassLabel">How often did you attend class for this module? </label>
 			<select id="attendClassLabel" name="attendClassName">
