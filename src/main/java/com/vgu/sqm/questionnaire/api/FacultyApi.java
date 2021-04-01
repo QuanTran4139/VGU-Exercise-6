@@ -37,8 +37,8 @@ public class FacultyApi extends ResourceApi {
             CallableStatement st = db.prepareCall("CALL DumpFaculty()");
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
-                String id = rs.getString(1); // Attribute name FacultyID
-                String name = rs.getString(2); // Attribute name FacultyName
+                String id = rs.getString("FacultyID"); // Attribute name FacultyID
+                String name = rs.getString("FacultyName"); // Attribute name FacultyName
 
                 resources.add(new Faculty(id, name));
             }

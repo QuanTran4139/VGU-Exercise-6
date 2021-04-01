@@ -39,9 +39,9 @@ public class ModuleInProgramInAcademicYearApi extends ResourceApi {
             CallableStatement st = db.prepareCall("CALL DumpModuleInProgramInAcademicYear();");
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
-                String pId = rs.getString(1); // Attribute name: ProgramID
-                String mId = rs.getString(2); // Attribute name: ModuleID
-                int yID = rs.getInt(3); // Attribute name: AYearID
+                String pId = rs.getString("ProgramID"); // Attribute name: ProgramID
+                String mId = rs.getString("ModuleID"); // Attribute name: ModuleID
+                int yID = rs.getInt("AYearID"); // Attribute name: AYearID
 
                 resources.add(new ModuleInProgramInAcademicYear(pId, mId, yID));
             }

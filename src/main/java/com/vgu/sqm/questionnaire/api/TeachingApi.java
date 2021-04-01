@@ -37,8 +37,8 @@ public class TeachingApi extends ResourceApi {
             CallableStatement st = db.prepareCall("CALL DumpTeaching()");
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
-                String lId = rs.getString(1); // Attribute name LectureID
-                String cId = rs.getString(2); // Attribute name ClassID
+                String lId = rs.getString("LecturerID"); // Attribute name LecturerID
+                String cId = rs.getString("ClassID"); // Attribute name ClassID
 
                 resources.add(new Teaching(lId, cId));
             }

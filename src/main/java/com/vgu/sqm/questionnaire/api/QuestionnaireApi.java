@@ -13,7 +13,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.json.Json;
 import javax.json.JsonArray;
-import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import javax.naming.NamingException;
@@ -25,7 +24,7 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/api/questionnaire")
 public class QuestionnaireApi extends ResourceApi {
     private final static Logger LOGGER = Logger.getLogger(QuestionnaireApi.class.getName());
-    private static final long serialVersionUID = 1L;
+    private final static long serialVersionUID = 1L;
 
     // parameter names
     private final static String p_LecturerID = "lid";
@@ -51,10 +50,8 @@ public class QuestionnaireApi extends ResourceApi {
                 String lId = rs.getString("LecturerId"); // Attribute name LecturerId
                 String cId = rs.getString("ClassId"); // Attribute name ClassId
                 char gender = rs.getString("Gender").charAt(0); // Attribute name Gender
-                String question0 = rs.getString("Question0"); // Attribute name Question0
 
                 //TODO need to fixed type question[0]
-                //TODO change 'char' to string?
                 int[] answers = new int[18];
 
                 answers[0] = 0;
@@ -131,8 +128,31 @@ public class QuestionnaireApi extends ResourceApi {
     }
 
     private float getReponseRate(String ClassID, String LecturerID, String QuestionnaireID) {
-        // TODO get the reponse rate (COUNT(questionnaires) / Class.Size)
-        return 1;
+        float result = -1.0f;
+        try {
+            Connection db = Database.getAcademiaConnection();
+            CallableStatement st = db.prepareCall("CALL GetResponseRate(?,?,?)");
+            st.setString(1, ClassID);
+            st.setString(2, LecturerID);
+            st.registerOutParameter(3, Types.INTEGER);
+
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                result = rs.getInt("Response_Rate");
+            }
+
+            //status
+            int status = st.getInt(3);
+            LOGGER.log(Level.INFO, "status is " + status);
+
+            LOGGER.log(Level.INFO, "Getting info from database successfully.");
+            db.close();
+        } catch (SQLException e1) {
+            LOGGER.log(Level.SEVERE, e1.toString());
+        } catch (NamingException e2) {
+            LOGGER.log(Level.SEVERE, e2.toString());
+        }
+        return result;
     }
 
     @Override

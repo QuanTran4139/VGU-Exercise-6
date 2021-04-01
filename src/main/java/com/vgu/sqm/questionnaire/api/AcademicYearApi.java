@@ -36,7 +36,7 @@ public class AcademicYearApi extends ResourceApi {
             CallableStatement st = db.prepareCall("CALL DumpAcademicYear();");
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
-                int id = rs.getInt(1); // Attribute name: aYearId
+                int id = rs.getInt("aYearId"); // Attribute name: aYearId
 
                 resources.add(new AcademicYear(id));
             }

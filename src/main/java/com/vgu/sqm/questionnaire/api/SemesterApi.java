@@ -37,8 +37,8 @@ public class SemesterApi extends ResourceApi {
             CallableStatement st = db.prepareCall("CALL DumpSemester();");
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
-                String sId = rs.getString(1); // Attribute name: SemesterID
-                int aId = rs.getInt(2); // Attribute name: AYearID
+                String sId = rs.getString("SemesterID"); // Attribute name: SemesterID
+                int aId = rs.getInt("AYearID"); // Attribute name: AYearID
 
                 resources.add(new Semester(sId, aId));
             }

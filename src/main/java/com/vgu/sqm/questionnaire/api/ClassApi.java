@@ -78,10 +78,10 @@ public class ClassApi extends ResourceApi {
 
 
             while (rs.next()) {
-                String sID = rs.getString(1); // Attribute name: semesterId
-                String fName = rs.getString(2); // Attribute name: facultyName
-                String pName = rs.getString(3); // Attribute name: programName
-                String lName = rs.getString(4); // Attribute name: lecturerName
+                String sID = rs.getString("semesterId"); // Attribute name: semesterId
+                String fName = rs.getString("facultyName"); // Attribute name: facultyName
+                String pName = rs.getString("programName"); // Attribute name: programName
+                String lName = rs.getString("lecturerName"); // Attribute name: lecturerName
                 LOGGER.log(Level.INFO, "sId = " + sID);
                 LOGGER.log(Level.INFO, "fName = " + fName);
                 LOGGER.log(Level.INFO, "pName = " + pName);

@@ -37,8 +37,8 @@ public class ModuleApi extends ResourceApi {
             CallableStatement st = db.prepareCall("CALL DumpModule()");
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
-                String id = rs.getString(1); // Attribute name ModuleId
-                String name = rs.getString(2); // Attribute name ModuleName
+                String id = rs.getString("ModuleId"); // Attribute name ModuleId
+                String name = rs.getString("ModuleName"); // Attribute name ModuleName
 
                 resources.add(new Module(id, name));
             }

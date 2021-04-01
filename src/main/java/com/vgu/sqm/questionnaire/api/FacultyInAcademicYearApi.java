@@ -37,8 +37,8 @@ public class FacultyInAcademicYearApi extends ResourceApi {
             CallableStatement st = db.prepareCall("CALL DumpFacultyInAcademicYear();");
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
-                String fId = rs.getString(1); // Attribute name: SemesterID
-                int aId = rs.getInt(2); // Attribute name: AYearID
+                String fId = rs.getString("FacultyID"); // Attribute name: FacultyID
+                int aId = rs.getInt("AYearId"); // Attribute name: AYearID
 
                 resources.add(new FacultyInAcademicYear(fId, aId));
             }

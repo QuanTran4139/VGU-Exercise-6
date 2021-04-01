@@ -37,8 +37,8 @@ public class ProgramApi extends ResourceApi {
             CallableStatement st = db.prepareCall("CALL DumpProgram()");
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
-                String id = rs.getString(1); // Attribute name ProgramId
-                String name = rs.getString(2); // Attribute name ProgramName
+                String id = rs.getString("ProgramId"); // Attribute name ProgramId
+                String name = rs.getString("ProgramName"); // Attribute name ProgramName
 
                 resources.add(new Program(id, name));
             }
