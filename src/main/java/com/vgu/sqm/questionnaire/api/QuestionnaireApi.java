@@ -169,6 +169,9 @@ public class QuestionnaireApi extends ResourceApi {
             if (Questionnaire.checkParametersAreValid(LecturerID, ClassID, gender, answers)) {
                 addResourceToDatabase(new Questionnaire(
                     LecturerID, ClassID, QuestionnaireID, gender, answers, comment));
+            } else {
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                response.getWriter().print("Invalid parameters: %s, %s, %s, %s".format(p_LecturerID, p_ClassID, p_Gender, p_Answers));
             }
         } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
