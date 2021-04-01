@@ -84,7 +84,7 @@ public class SemesterApi extends ResourceApi {
             response.setStatus(HttpServletResponse.SC_OK);
         } else {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            response.getWriter().print("Missing parameter: %s");
+            response.getWriter().print("Missing parameter: %s".format(p_SemesterID));
         }
     }
 

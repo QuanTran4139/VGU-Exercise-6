@@ -82,7 +82,7 @@ public class TeachingApi extends ResourceApi {
             response.setStatus(HttpServletResponse.SC_OK);
         } else {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            response.getWriter().print("Missing parameter: %s");
+            response.getWriter().print("Missing parameter: %s, %s".format(p_LecturerID, p_ClassID));
         }
     }
 
