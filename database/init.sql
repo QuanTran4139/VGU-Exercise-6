@@ -4,6 +4,7 @@ source StoredProcedures/GetTotalClassesSize.sql;
 source StoredProcedures/GetClassOptions.sql;
 source StoredProcedures/GetGenderCountByID.sql;
 source StoredProcedures/GetResponseRate.sql;
+source StoredProcedures/GetResponseByQuestion.sql;
 source StoredProcedures/DumpAcademicYear.sql;
 source StoredProcedures/DumpSemester.sql;
 source StoredProcedures/DumpFaculty.sql;
