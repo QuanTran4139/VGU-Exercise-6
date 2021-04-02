@@ -87,20 +87,21 @@ public class QuestionnaireApi extends ResourceApi {
             st.registerOutParameter(3, Types.INTEGER);
 
             ResultSet rs = st.executeQuery();
-            HashMap<String, Integer> counts = new HashMap<>();
-
-            while (rs.next()) {
-                String gender = rs.getString("Gender");
-                int count = rs.getInt("Count");
-
-                counts.put(gender, count);
-            }
+            HashMap<String, Integer> countsByGender = new HashMap<>();
 
             // get status
             int status = st.getInt(3);
             LOGGER.log(Level.INFO, "status is " + status);
+            if (status == 200 ) {
+                while (rs.next()) {
+                    String gender = rs.getString("Gender");
+                    int count = rs.getInt("Count");
 
-            LOGGER.log(Level.INFO, "Getting info from database successfully.");
+                    countsByGender.put(gender, count);
+                }
+            }
+
+            printError(status, this.getClass().getName());
             db.close();
 
             // TODO get list of answer
@@ -108,9 +109,9 @@ public class QuestionnaireApi extends ResourceApi {
 
             JsonObjectBuilder objBuilder = Json.createObjectBuilder();
             JsonObject genderCounts = Json.createObjectBuilder()
-                                          .add("M", counts.get("M"))
-                                          .add("F", counts.get("F"))
-                                          .add("N", counts.get("N"))
+                                          .add("M", countsByGender.get("M") == null ? -1 : countsByGender.get("M"))
+                                          .add("F", countsByGender.get("F") == null ? -1 : countsByGender.get("F"))
+                                          .add("N", countsByGender.get("N") == null ? -1 : countsByGender.get("N"))
                                           .build();
             JsonArray qaArray = JsonUtils.arrayToJson(qa);
             objBuilder.add("genders", genderCounts).add("qa", qaArray);
@@ -130,20 +131,21 @@ public class QuestionnaireApi extends ResourceApi {
         try {
             Connection db = Database.getAcademiaConnection();
             CallableStatement st = db.prepareCall("CALL GetResponseRate(?,?,?)");
-            st.setString(1, ClassID);
-            st.setString(2, LecturerID);
+            st.setString(1, LecturerID);
+            st.setString(2, ClassID);
             st.registerOutParameter(3, Types.INTEGER);
 
             ResultSet rs = st.executeQuery();
-            if (rs.next()) {
-                result = rs.getInt("Response_Rate");
-            }
 
             // status
             int status = st.getInt(3);
             LOGGER.log(Level.INFO, "status is " + status);
 
-            LOGGER.log(Level.INFO, "Getting info from database successfully.");
+            if (status == 200 && rs.next()) {
+                result = rs.getInt("Response_Rate");
+            }
+
+            printError(status,this.getClass().getName());
             db.close();
         } catch (SQLException e1) {
             LOGGER.log(Level.SEVERE, e1.toString());
