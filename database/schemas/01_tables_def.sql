@@ -137,9 +137,11 @@ CREATE TABLE IF NOT EXISTS Questionnaire (
     Question17 ENUM('1','2','3','4','5','N/A') NOT NULL,
     Comment TEXT,
     
-    PRIMARY KEY (QuestionnaireId),
+    PRIMARY KEY (QuestionnaireId,LecturerId,ClassId),
     FOREIGN KEY (LecturerId)
 		REFERENCES Teaching (LecturerId),
 	FOREIGN KEY (ClassId)
 		REFERENCES Teaching (ClassId)
+	CONSTRAINT Questionnaire
+		UNIQUE (QuestionnaireId)
 );
