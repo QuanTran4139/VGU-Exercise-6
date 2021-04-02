@@ -48,7 +48,7 @@ This dumps the entire table for each resource/endpoint. The response is formatte
 
 ##### `getCounts`
 
-Calling `questionnaire?action=getCounts` will return the counts of the answers to all questions in the Questionnaire.
+Calling `questionnaire?action=getCounts?cid=_ClassID_&lid=_LecturerID_` will return the counts of the answers to all questions in the corresponding Questionnaire.
 
 The response is formatted as follows:
 
@@ -71,7 +71,7 @@ Where `"qa"` (questions-answers) is an array of questions, and each question is 
 
 ##### `getResponseRate`
 
-Calling `questionnaire?action=getResponseRate&cid=_ClassID_&lid=_LecturerID_&qid=_QuestionnaireID` will return a `float` representing the response rate of the corresponding questionnaire.
+Calling `questionnaire?action=getResponseRate&cid=_ClassID_&lid=_LecturerID_` will return a `float` representing the response rate of the corresponding questionnaire.
 
 #### `class`
 
