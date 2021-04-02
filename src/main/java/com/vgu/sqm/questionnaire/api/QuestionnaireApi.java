@@ -92,7 +92,7 @@ public class QuestionnaireApi extends ResourceApi {
             // get status
             int status = st.getInt(3);
             LOGGER.log(Level.INFO, "status is " + status);
-            if (status == 200 ) {
+            if (status == 200) {
                 while (rs.next()) {
                     String gender = rs.getString("Gender");
                     int count = rs.getInt("Count");
@@ -108,11 +108,12 @@ public class QuestionnaireApi extends ResourceApi {
             int[][] qa = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9, 0}};
 
             JsonObjectBuilder objBuilder = Json.createObjectBuilder();
-            JsonObject genderCounts = Json.createObjectBuilder()
-                                          .add("M", countsByGender.get("M") == null ? -1 : countsByGender.get("M"))
-                                          .add("F", countsByGender.get("F") == null ? -1 : countsByGender.get("F"))
-                                          .add("N", countsByGender.get("N") == null ? -1 : countsByGender.get("N"))
-                                          .build();
+            JsonObject genderCounts =
+                Json.createObjectBuilder()
+                    .add("M", countsByGender.get("M") == null ? -1 : countsByGender.get("M"))
+                    .add("F", countsByGender.get("F") == null ? -1 : countsByGender.get("F"))
+                    .add("N", countsByGender.get("N") == null ? -1 : countsByGender.get("N"))
+                    .build();
             JsonArray qaArray = JsonUtils.arrayToJson(qa);
             objBuilder.add("genders", genderCounts).add("qa", qaArray);
             JsonObject obj = objBuilder.build();
@@ -126,7 +127,7 @@ public class QuestionnaireApi extends ResourceApi {
         return null;
     }
 
-    private float getReponseRate(String ClassID, String LecturerID, String QuestionnaireID) {
+    private float getReponseRate(String ClassID, String LecturerID) {
         float result = -1.0f;
         try {
             Connection db = Database.getAcademiaConnection();
@@ -145,7 +146,7 @@ public class QuestionnaireApi extends ResourceApi {
                 result = rs.getInt("Response_Rate");
             }
 
-            printError(status,this.getClass().getName());
+            printError(status, this.getClass().getName());
             db.close();
         } catch (SQLException e1) {
             LOGGER.log(Level.SEVERE, e1.toString());
@@ -173,18 +174,16 @@ public class QuestionnaireApi extends ResourceApi {
             }
         } else if (action.equals("getResponseRate")) { // action = getReponseRate
             if (request.getParameterMap().containsKey("cid")
-                && request.getParameterMap().containsKey("lid")
-                && request.getParameterMap().containsKey("qid")) {
+                && request.getParameterMap().containsKey("lid")) {
                 response.setContentType("application/json");
                 response.setStatus(HttpServletResponse.SC_OK);
                 String cid = request.getParameter("cid");
                 String lid = request.getParameter("lid");
-                String qid = request.getParameter("qid");
-                response.getWriter().print(getReponseRate(cid, lid, qid));
+                response.getWriter().print(getReponseRate(cid, lid));
             } else { // missing parameters
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 response.getWriter().print(
-                    "The following parameters are required for 'getReponseRate': cid, lid, qid");
+                    "The following parameters are required for 'getReponseRate': cid, lid");
             }
         } else {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
