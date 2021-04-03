@@ -4,6 +4,7 @@ import com.vgu.sqm.questionnaire.database.Database;
 import com.vgu.sqm.questionnaire.resource.Questionnaire;
 import com.vgu.sqm.questionnaire.resource.Resource;
 import com.vgu.sqm.questionnaire.utils.JsonUtils;
+import com.vgu.sqm.questionnaire.exception.SQLCustomException;
 import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
@@ -77,8 +78,6 @@ public class QuestionnaireApi extends ResourceApi {
     }
 
     private JsonObject getCounts(String ClassID, String LecturerID) {
-        // TODO replace these placeholder values with data from the DB
-
         try {
             Connection db = Database.getAcademiaConnection();
             CallableStatement st = db.prepareCall("CALL GetGenderCountByID(?,?,?)");
@@ -91,7 +90,7 @@ public class QuestionnaireApi extends ResourceApi {
 
             // get status
             int status = st.getInt(3);
-            LOGGER.log(Level.INFO, "status is " + status);
+            LOGGER.log(Level.INFO, "status (count gender) is " + status);
             if (status == 200) {
                 while (rs.next()) {
                     String gender = rs.getString("Gender");
@@ -99,13 +98,39 @@ public class QuestionnaireApi extends ResourceApi {
 
                     countsByGender.put(gender, count);
                 }
+            } else {
+                throw new SQLCustomException(status,this.getClass().getName());
             }
 
-            printError(status, this.getClass().getName());
-            db.close();
+            int[][] qa = new int[18][6];
 
-            // TODO get list of answer
-            int[][] qa = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9, 0}};
+            //TODO need to change Question0 after
+            for (int i =0 ; i < 6; i++) {
+                qa[0][i] = 0;
+            }
+            for (int i = 1; i < 18; i++) {
+                st = db.prepareCall("CALL GetResponseByQuestion(?,?,?,?)");
+                st.setString(1, ClassID);
+                st.setString(2, LecturerID);
+                st.setInt(3, i);
+                st.registerOutParameter(4, Types.INTEGER);
+
+                rs = st.executeQuery();
+
+                // get status
+                status = st.getInt(4);
+                LOGGER.log(Level.INFO, "status (get response) is " + status);
+                if (status == 200) {
+                    while (rs.next()) {
+                        for (int j = 0; j <= 5; j++) {
+                            qa[i][j] = rs.getInt(j + 4);
+                        }
+                    }
+                } else {
+                    throw new SQLCustomException(status,this.getClass().getName());
+                }
+            }
+            db.close();
 
             JsonObjectBuilder objBuilder = Json.createObjectBuilder();
             JsonObject genderCounts =
@@ -144,9 +169,10 @@ public class QuestionnaireApi extends ResourceApi {
 
             if (status == 200 && rs.next()) {
                 result = rs.getInt("Response_Rate");
+            } else {
+                throw new SQLCustomException(status,this.getClass().getName());
             }
 
-            printError(status, this.getClass().getName());
             db.close();
         } catch (SQLException e1) {
             LOGGER.log(Level.SEVERE, e1.toString());

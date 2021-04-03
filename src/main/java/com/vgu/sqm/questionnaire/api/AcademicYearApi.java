@@ -84,10 +84,37 @@ public class AcademicYearApi extends ResourceApi {
 
     @Override
     protected void addResourceToDatabase(Resource resource) {
+        JsonObject entity = resource.exportResourceJson();
+        int id = entity.getJsonNumber("AYearID").intValue();
+
+        try {
+            Connection db = Database.getAcademiaConnection();
+            PreparedStatement st = db.prepareStatement("INSERT INTO academicyear(AYearId) VALUES (?);");
+            st.setInt(1, id);
+            st.execute();
+
+        } catch (SQLException e1) {
+            LOGGER.log(Level.SEVERE, e1.toString());
+        } catch (NamingException e2) {
+            LOGGER.log(Level.SEVERE, e2.toString());
+        }
+
         // TODO
     }
 
     private void deleteResourceFromDataBase(int AYearID) {
+        try {
+            Connection db = Database.getAcademiaConnection();
+            PreparedStatement st = db.prepareStatement("DELETE FROM academicyear where AYearId = ?;");
+            st.setInt(1, AYearID);
+            st.execute();
+
+        } catch (SQLException e1) {
+            LOGGER.log(Level.SEVERE, e1.toString());
+        } catch (NamingException e2) {
+            LOGGER.log(Level.SEVERE, e2.toString());
+        }
+
         // TODO
     }
 }
