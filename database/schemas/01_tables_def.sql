@@ -141,7 +141,7 @@ CREATE TABLE IF NOT EXISTS Questionnaire (
     FOREIGN KEY (LecturerId)
 		REFERENCES Teaching (LecturerId),
 	FOREIGN KEY (ClassId)
-		REFERENCES Teaching (ClassId)
+		REFERENCES Teaching (ClassId),
 	CONSTRAINT Questionnaire
 		UNIQUE (QuestionnaireId)
 );
