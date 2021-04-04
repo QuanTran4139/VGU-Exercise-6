@@ -3,8 +3,6 @@ CREATE TABLE IF NOT EXISTS AcademicYear (
     
     PRIMARY KEY (AYearId)
 );
-
-
 CREATE TABLE IF NOT EXISTS Semester (
 	SemesterId VARCHAR(10),
     AYearId INT NOT NULL,
@@ -112,34 +110,37 @@ CREATE TABLE IF NOT EXISTS Teaching (
 		REFERENCES Class (ClassId)
 );
 
-CREATE TABLE IF NOT EXISTS Questionnaire (
-    LecturerId VARCHAR(10),
-    ClassId VARCHAR(10),
-    Content LONGBLOB, 
 
-    PRIMARY KEY (LecturerId,ClassId),
+DROP TABLE questionnaire;
+CREATE TABLE IF NOT EXISTS Questionnaire (
+    LecturerId VARCHAR(10) NOT NULL,
+    ClassId VARCHAR(10) NOT NULL, 
+    QuestionnaireId INT NOT NULL AUTO_INCREMENT,
+    PRIMARY KEY (LecturerId,ClassID,QuestionnaireId),
+    Gender CHAR,
+    Question0 ENUM('Never','Rarely','Sometimes','Often','Always') NOT NULL,
+	Question1 ENUM('1','2','3','4','5','N/A') NOT NULL,
+    Question2 ENUM('1','2','3','4','5','N/A') NOT NULL,
+    Question3 ENUM('1','2','3','4','5','N/A') NOT NULL,
+    Question4 ENUM('1','2','3','4','5','N/A') NOT NULL,
+    Question5 ENUM('1','2','3','4','5') NOT NULL,
+    Question6 ENUM('1','2','3','4','5') NOT NULL,
+    Question7 ENUM('1','2','3','4','5') NOT NULL,
+    Question8 ENUM('1','2','3','4','5','N/A') NOT NULL,
+    Question9 ENUM('1','2','3','4','5','N/A') NOT NULL,
+    Question10 ENUM('1','2','3','4','5','N/A') NOT NULL,
+    Question11 ENUM('1','2','3','4','5','N/A') NOT NULL,
+    Question12 ENUM('1','2','3','4','5','N/A') NOT NULL,
+    Question13 ENUM('1','2','3','4','5','N/A') NOT NULL,
+    Question14 ENUM('1','2','3','4','5','N/A') NOT NULL,
+    Question15 ENUM('1','2','3','4','5','N/A') NOT NULL,
+    Question16 ENUM('1','2','3','4','5','N/A') NOT NULL,
+    Question17 ENUM('1','2','3','4','5','N/A') NOT NULL,
+    Comment TEXT,
+    
+    
     FOREIGN KEY (LecturerId)
-		REFERENCES Lecturer (LecturerId),
+		REFERENCES Teaching (LecturerId),
 	FOREIGN KEY (ClassId)
-		REFERENCES Class (ClassId)
-);
-ALTER TABLE questionnaire 
-ADD COLUMN `attendance` int NOT NULL AFTER `ClassID`, 
-ADD COLUMN `gender` char NOT NULL AFTER `attendance`, 
-ADD COLUMN `1_module_objective` int NOT NULL AFTER `gender`, 
-ADD COLUMN `1_learning_material` int NOT NULL AFTER `1_module_objective`, 
-ADD COLUMN `1_module_content` int NOT NULL AFTER `1_learning_material`, 
-ADD COLUMN `1_lesson_intersting` int NOT NULL AFTER `1_module_content`, 
-ADD COLUMN `2_workload_length` int NOT NULL AFTER `1_lesson_intersting`, 
-ADD COLUMN `2_workload_intensity` int NOT NULL AFTER `2_workload_length`, 
-ADD COLUMN `2_workload_difficulty` int NOT NULL AFTER `2_workload_intensity`, 
-ADD COLUMN `3_module_presentation` int NOT NULL AFTER `2_workload_difficulty`, 
-ADD COLUMN `3_learning_activity` int NOT NULL AFTER `3_module_presentation`, 
-ADD COLUMN `3_learning_activity_outcome` int NOT NULL AFTER `3_learning_activity`, 
-ADD COLUMN `3_assessment_methods` int NOT NULL AFTER `3_learning_activity_outcome`, 
-ADD COLUMN `3_student_encouragement` int NOT NULL AFTER `3_assessment_methods`, 
-ADD COLUMN `3_lecturer_feedback` int NOT NULL AFTER `3_student_encouragement`, 
-ADD COLUMN `3_lectuer_language` int NOT NULL AFTER `3_lecturer_feedback`, 
-ADD COLUMN `3_lectuer_listen` int NOT NULL AFTER `3_lectuer_language`, 
-ADD COLUMN `3_lectuer_encourage` int NOT NULL AFTER `3_lectuer_listen`,
-ADD COLUMN `3_lectuer_consultation` int NOT NULL AFTER `3_lectuer_encourage`;
+		REFERENCES Teaching (ClassId)
+)ENGINE=MyISAM;
