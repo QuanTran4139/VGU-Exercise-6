@@ -1,7 +1,4 @@
 var semester, faculty, program, lecturerName;
-var lecturerQuery;
-var lecturerIndex;
-var classQuery;
 $(document).ready(function()
 {
 	var txt ="";
@@ -23,7 +20,9 @@ $(document).ready(function()
 	$("#cid").on("change", function (event)
 	{
 		$("#lecturerID").val("---Select---").trigger('change');
-		classQuery = $('#cid').val();
+		var classQuery = $('#cid').val();
+		var lecturerQuery;
+		var lecturerIndex;
 		console.log(classQuery);
 		if (classQuery != 0)
 		{
@@ -48,21 +47,10 @@ $(document).ready(function()
 						$("#lecturerID").on("change", function(event)
 						{
 							lecturerQuery = $('#lecturerID').val();
-							if (lecturerQuery != 0 || lecturerQuery != '')
-							{
-								lecturerIndex = arrLec2.indexOf(lecturerQuery);
-								semester = data.Semesters[lecturerIndex].SemesterID;
-								faculty = data.Faculties[lecturerIndex].FacultyName;
-								program = data.Programs[lecturerIndex].ProgramName;
-								
-								document.getElementById("SemesterID").innerHTML = semester;
-								document.getElementById("ProgramName").innerHTML = program;
-								document.getElementById("FacultyName").innerHTML = faculty;
-							}
-							else
-							{
-								alert("Please select an option");
-							}
+							lecturerIndex = arrLec2.indexOf(lecturerQuery);
+							semester = data.Semesters[lecturerIndex].SemesterID;
+							faculty = data.Faculties[lecturerIndex].FacultyName;
+							program = data.Programs[lecturerIndex].ProgramName;	
 						});
 					});
 					console.log(arrLec2);
@@ -75,4 +63,11 @@ $(document).ready(function()
 			alert("Please select an option");
 		}
 	});
+	
+	$("#lecturerID").on("change", function(event)
+	{
+		document.getElementById("SemesterID").innerHTML = semester;
+		document.getElementById("ProgramName").innerHTML = program;
+		document.getElementById("FacultyName").innerHTML = faculty;
+	})
 });

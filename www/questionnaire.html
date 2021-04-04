@@ -5,24 +5,32 @@
 		<script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 		<script src = "https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
 		<script type="text/javascript" src="js/getClassOptions.js"></script>
+		<script type="text/javascript" src="js/Submit.js"></script>
+		<style>  
+			.container{  
+			text-align: center;  
+			}  
+			#SubmitQuestionnaireID{  
+			font-size: 25px;  
+			}  
+		</style>
 	</head>
 	
 	<body>
+		<!-- <form id = "ClassIDSelect" action="/Questionnaire/api/class?action=getClassOptions" method="GET"> -->
+			<!-- <label for="ClassID">ClassID</label> -->
 		<tr><td>ClassID: <select id="cid"><option value='0'>---Select---</option></select></td></tr>
 		<br>
 		<tr><td>Lecturer: <select id="lecturerID"><option value='0'>---Select---</option></select></td></tr>
-		
 		<table>
 			<tr>
 				<td>Semester:</td>
 				<td id="SemesterID"></td>
 			</tr>
-			
 			<tr>
 				<td>Program:</td>
 				<td id="ProgramName"></td>
 			</tr>
-			
 			<tr>
 				<td>Faculty:</td>
 				<td id="FacultyName"></td>
@@ -319,5 +327,8 @@
 			<label for="question18Label">18. Additional comments about what you liked or disliked and suggestions for further improvement:</label>
 			<input type="text" id="quesntion18Input" name="question18Name" style="width: 200px; height:150px;">
 		</form>
+		<div class="container">
+		<button id="SubmitQuestionnaireID" type="submit">Submit</button>
+		</div>
 	</body>
 </html>

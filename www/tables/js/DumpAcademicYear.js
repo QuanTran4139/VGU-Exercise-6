@@ -10,13 +10,14 @@ $(document).ready(function()
 		
 		console.log(JSON.stringify(data));
 		var txt = "", x;
-		txt += "<table border='1'>"
+		var a=0;
+		txt += "<table border='1' stripe='1'>"
 		for (x in data)
 		{
-			txt += "<tr><td>" + JSON.stringify(data[x].AYearID) + "</td></tr>";
+			txt += "<tr><td>" + JSON.stringify(data[x].AYearID) + "</td>";
 		}
-		
 		txt += "</table>"
 		document.getElementById("AYearID_2").innerHTML = txt;
 	});
+	
 });

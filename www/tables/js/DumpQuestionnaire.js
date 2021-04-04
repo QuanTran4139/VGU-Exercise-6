@@ -8,9 +8,10 @@ $(document).ready(function()
 		txt += "<table border='1'>"
 		for (x in data)
 		{
-			txt += "<tr><td>" + JSON.stringify(data[x].QuestionaireID) + "</td>";
+			txt += "<tr><td>" + JSON.stringify(data[x].QuestionnaireID) + "</td>";
 			txt += "<td>" + JSON.stringify(data[x].LecturerID) + "</td>";
-			txt += "<td>" + JSON.stringify(data[x].ClassID) + "</td></tr>";
+			txt += "<td>" + JSON.stringify(data[x].ClassID) + "</td>";
+			txt += "<td>" + JSON.stringify(data[x].gender) + "</td>";
 		}
 		txt += "</table>"
 		document.getElementById("QuestionaireID").innerHTML = txt;
