@@ -20,4 +20,9 @@ public class Lecturer implements Resource {
         JsonObject obj = builder.build();
         return obj;
     }
+
+    public static boolean checkParametersAreValid(String LecturerID, String LecturerName) {
+        return LecturerID.length() > 0 && LecturerID.length() <= 10 && !LecturerID.isBlank()
+            && LecturerName.length() > 0 && LecturerName.length() <= 100 && !LecturerName.isBlank();
+    }
 }

@@ -20,4 +20,9 @@ public class FacultyInAcademicYear implements Resource {
         JsonObject obj = builder.build();
         return obj;
     }
+
+    public static boolean checkParametersAreValid(String FacultyID, int AYearID) {
+        return FacultyID.length() > 0 && FacultyID.length() <= 1 && !FacultyID.isBlank()
+            && AYearID > 0;
+    }
 }

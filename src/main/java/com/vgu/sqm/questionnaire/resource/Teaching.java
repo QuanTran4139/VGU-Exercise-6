@@ -20,4 +20,9 @@ public class Teaching implements Resource {
         JsonObject obj = builder.build();
         return obj;
     }
+
+    public static boolean checkParametersAreValid(String LecturerID, String ClassID) {
+        return LecturerID.length() > 0 && LecturerID.length() <= 10 && !LecturerID.isBlank()
+            && LecturerID.length() > 0 && LecturerID.length() <= 10 && !LecturerID.isBlank();
+    }
 }
