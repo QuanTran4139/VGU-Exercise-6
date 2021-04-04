@@ -111,12 +111,10 @@ CREATE TABLE IF NOT EXISTS Teaching (
 );
 
 
-DROP TABLE questionnaire;
 CREATE TABLE IF NOT EXISTS Questionnaire (
     LecturerId VARCHAR(10) NOT NULL,
     ClassId VARCHAR(10) NOT NULL, 
     QuestionnaireId INT NOT NULL AUTO_INCREMENT,
-    PRIMARY KEY (LecturerId,ClassID,QuestionnaireId),
     Gender CHAR,
     Question0 ENUM('Never','Rarely','Sometimes','Often','Always') NOT NULL,
 	Question1 ENUM('1','2','3','4','5','N/A') NOT NULL,
@@ -138,7 +136,7 @@ CREATE TABLE IF NOT EXISTS Questionnaire (
     Question17 ENUM('1','2','3','4','5','N/A') NOT NULL,
     Comment TEXT,
     
-    
+    PRIMARY KEY (LecturerId,ClassId,QuestionnaireId),
     FOREIGN KEY (LecturerId)
 		REFERENCES Teaching (LecturerId),
 	FOREIGN KEY (ClassId)
