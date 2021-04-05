@@ -8,7 +8,7 @@ BEGIN
 	CASE
 		WHEN inCLassId NOT IN (SELECT ClassId FROM Class) THEN SET statusCode = 407; -- wrong ClassID
         ELSE SET statusCode = 200; -- Success
-        SELECT SemesterId, FacultyName, ProgramName, LecturerName
+        SELECT SemesterId, FacultyName, ProgramName, LecturerName, LecturerId
         FROM Class
 					NATURAL JOIN Semester
 					NATURAL JOIN Faculty
