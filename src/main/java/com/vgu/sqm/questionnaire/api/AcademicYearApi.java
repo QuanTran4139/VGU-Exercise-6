@@ -75,11 +75,11 @@ public class AcademicYearApi extends ResourceApi {
                 response.setStatus(HttpServletResponse.SC_OK);
             } catch (NumberFormatException e) {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                response.getWriter().print("%s must be an int".format(AcademicYearApi.p_AYearID));
+                response.getWriter().print(String.format("%s must be an int", AcademicYearApi.p_AYearID));
             }
         } else {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            response.getWriter().print("Missing parameter: %s".format(AcademicYearApi.p_AYearID));
+            response.getWriter().print(String.format("Missing parameter: %s", AcademicYearApi.p_AYearID));
         }
     }
 

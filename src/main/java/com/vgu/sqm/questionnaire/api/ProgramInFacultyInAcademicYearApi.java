@@ -74,10 +74,11 @@ public class ProgramInFacultyInAcademicYearApi extends ResourceApi {
                 response.setStatus(HttpServletResponse.SC_OK);
             } else {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                response.getWriter().print("One or more parameters is invalid: %s, %s, %s".format(
-                    ProgramInFacultyInAcademicYearApi.p_ProgramID,
-                    ProgramInFacultyInAcademicYearApi.p_FacultyID,
-                    ProgramInFacultyInAcademicYearApi.p_AYearID));
+                response.getWriter().print(
+                    String.format("One or more parameters is invalid: %s, %s, %s",
+                        ProgramInFacultyInAcademicYearApi.p_ProgramID,
+                        ProgramInFacultyInAcademicYearApi.p_FacultyID,
+                        ProgramInFacultyInAcademicYearApi.p_AYearID));
             }
         } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);

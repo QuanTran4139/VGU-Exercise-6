@@ -65,12 +65,13 @@ public class SemesterApi extends ResourceApi {
                 response.setStatus(HttpServletResponse.SC_OK);
             } else {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                response.getWriter().print("One or more parameters is invalid: %s, %s".format(
-                    SemesterApi.p_SemesterID, SemesterApi.p_AYearID));
+                response.getWriter().print(
+                    String.format("One or more parameters is invalid: %s, %s",
+                        SemesterApi.p_SemesterID, SemesterApi.p_AYearID));
             }
         } catch (NumberFormatException e) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            response.getWriter().print("%s must be int".format(SemesterApi.p_AYearID));
+            response.getWriter().print(String.format("%s must be int", SemesterApi.p_AYearID));
         } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             response.getWriter().print("Malformed JSON request body");
@@ -85,7 +86,8 @@ public class SemesterApi extends ResourceApi {
             response.setStatus(HttpServletResponse.SC_OK);
         } else {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            response.getWriter().print("Missing parameter: %s".format(SemesterApi.p_SemesterID));
+            response.getWriter().print(
+                String.format("Missing parameter: %s", SemesterApi.p_SemesterID));
         }
     }
 

@@ -203,14 +203,15 @@ public class QuestionnaireApi extends ResourceApi {
                     response.getWriter().print(getCounts(cid, lid, question));
                 } else { // invalid question for counting
                     response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                    response.getWriter().print("Question %s is unvailable".format(question));
+                    response.getWriter().print(
+                        String.format("Question %s is unvailable", question));
                 }
             } else { // missing parameters
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                response.getWriter().print(
-                    "The following parameters are required for 'getCounts': %s, %s, %s".format(
-                        QuestionnaireApi.p_ClassID, QuestionnaireApi.p_LecturerID,
-                        QuestionnaireApi.p_Question));
+                response.getWriter().print(String.format(
+                    "The following parameters are required for 'getCounts': %s, %s, %s",
+                    QuestionnaireApi.p_ClassID, QuestionnaireApi.p_LecturerID,
+                    QuestionnaireApi.p_Question));
             }
         } else if (action.equals("getResponseRate")) { // action = getReponseRate
             if (request.getParameterMap().containsKey(QuestionnaireApi.p_ClassID)
@@ -222,9 +223,9 @@ public class QuestionnaireApi extends ResourceApi {
                 response.getWriter().print(getReponseRate(cid, lid));
             } else { // missing parameters
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                response.getWriter().print(
-                    "The following parameters are required for 'getReponseRate': %s, %s".format(
-                        QuestionnaireApi.p_ClassID, QuestionnaireApi.p_LecturerID));
+                response.getWriter().print(String.format(
+                    "The following parameters are required for 'getReponseRate': %s, %s",
+                    QuestionnaireApi.p_ClassID, QuestionnaireApi.p_LecturerID));
             }
         } else {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -274,7 +275,7 @@ public class QuestionnaireApi extends ResourceApi {
             } else {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 response.getWriter().print(
-                    "One or more parameters is invalid: %s, %s, %s, %s".format(
+                    String.format("One or more parameters is invalid: %s, %s, %s, %s",
                         QuestionnaireApi.p_LecturerID, QuestionnaireApi.p_ClassID,
                         QuestionnaireApi.p_Gender, QuestionnaireApi.p_Answers));
             }
@@ -300,12 +301,12 @@ public class QuestionnaireApi extends ResourceApi {
             } catch (NumberFormatException e) {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 response.getWriter().print(
-                    "%s must be int".format(QuestionnaireApi.p_QuestionnaireID));
+                    String.format("%s must be int", QuestionnaireApi.p_QuestionnaireID));
             }
         } else {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             response.getWriter().print(
-                "Missing parameters: %s, %s, %s".format(QuestionnaireApi.p_LecturerID,
+                String.format("Missing parameters: %s, %s, %s", QuestionnaireApi.p_LecturerID,
                     QuestionnaireApi.p_ClassID, QuestionnaireApi.p_QuestionnaireID));
         }
     }

@@ -65,8 +65,9 @@ public class TeachingApi extends ResourceApi {
                 response.setStatus(HttpServletResponse.SC_OK);
             } else {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                response.getWriter().print("One or more parameters is invalid: %s, %s".format(
-                    TeachingApi.p_LecturerID, TeachingApi.p_ClassID));
+                response.getWriter().print(
+                    String.format("One or more parameters is invalid: %s, %s",
+                        TeachingApi.p_LecturerID, TeachingApi.p_ClassID));
             }
         } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -84,8 +85,8 @@ public class TeachingApi extends ResourceApi {
             response.setStatus(HttpServletResponse.SC_OK);
         } else {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            response.getWriter().print("Missing parameter: %s, %s".format(
-                TeachingApi.p_LecturerID, TeachingApi.p_ClassID));
+            response.getWriter().print(String.format(
+                "Missing parameter: %s, %s", TeachingApi.p_LecturerID, TeachingApi.p_ClassID));
         }
     }
 

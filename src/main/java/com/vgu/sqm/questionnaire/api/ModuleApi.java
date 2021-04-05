@@ -65,8 +65,9 @@ public class ModuleApi extends ResourceApi {
                 response.setStatus(HttpServletResponse.SC_OK);
             } else {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                response.getWriter().print("One or more parameters is invalid: %s, %s".format(
-                    ModuleApi.p_ModuleID, ModuleApi.p_ModuleName));
+                response.getWriter().print(
+                    String.format("One or more parameters is invalid: %s, %s", ModuleApi.p_ModuleID,
+                        ModuleApi.p_ModuleName));
             }
         } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);

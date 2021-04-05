@@ -151,9 +151,9 @@ public class ClassApi extends ResourceApi {
                 response.setStatus(HttpServletResponse.SC_OK);
             } else {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                response.getWriter().print(
-                    "One or more parameters is invalid: %s, %s, %s, %s".format(ClassApi.p_ClassID,
-                        ClassApi.p_Size, ClassApi.p_SemesterID, ClassApi.p_ModuleID));
+                response.getWriter().print(String.format(
+                    "One or more parameters is invalid: %s, %s, %s, %s", ClassApi.p_ClassID,
+                    ClassApi.p_Size, ClassApi.p_SemesterID, ClassApi.p_ModuleID));
             }
         } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);

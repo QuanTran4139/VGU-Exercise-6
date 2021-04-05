@@ -66,7 +66,8 @@ public class FacultyInAcademicYearApi extends ResourceApi {
             } else {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 response.getWriter().print(
-                    "One or more parameters is invalid: %s, %s".format(FacultyInAcademicYearApi.p_FacultyID, FacultyInAcademicYearApi.p_AYearID));
+                    String.format("One or more parameters is invalid: %s, %s",
+                        FacultyInAcademicYearApi.p_FacultyID, FacultyInAcademicYearApi.p_AYearID));
             }
         } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -81,16 +82,19 @@ public class FacultyInAcademicYearApi extends ResourceApi {
             && request.getParameterMap().containsKey(FacultyInAcademicYearApi.p_AYearID)) {
             try {
                 String fid = request.getParameter(FacultyInAcademicYearApi.p_FacultyID);
-                int yid = Integer.parseInt(request.getParameter(FacultyInAcademicYearApi.p_AYearID));
+                int yid =
+                    Integer.parseInt(request.getParameter(FacultyInAcademicYearApi.p_AYearID));
                 deleteResourceFromDataBase(fid, yid);
                 response.setStatus(HttpServletResponse.SC_OK);
             } catch (NumberFormatException e) {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                response.getWriter().print("%s must be an int".format(FacultyInAcademicYearApi.p_AYearID));
+                response.getWriter().print(
+                    String.format("%s must be an int", FacultyInAcademicYearApi.p_AYearID));
             }
         } else {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            response.getWriter().print("Missing parameter: %s, %s".format(FacultyInAcademicYearApi.p_FacultyID, FacultyInAcademicYearApi.p_AYearID));
+            response.getWriter().print(String.format("Missing parameter: %s, %s",
+                FacultyInAcademicYearApi.p_FacultyID, FacultyInAcademicYearApi.p_AYearID));
         }
     }
 
