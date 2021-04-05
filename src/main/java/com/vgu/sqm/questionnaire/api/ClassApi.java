@@ -176,10 +176,10 @@ public class ClassApi extends ResourceApi {
         throws SQLCustomException, SQLException, NamingException {
 
         JsonObject entity = resource.exportResourceJson();
-        String cId = entity.getJsonNumber(Class.p_ClassID).toString();
+        String cId = entity.getJsonString(Class.p_ClassID).toString();
         int size = entity.getJsonNumber(Class.p_Size).intValue();
-        String sId = entity.getJsonNumber(Class.p_SemesterID).toString();
-        String mId = entity.getJsonNumber(Class.p_ModuleID).toString();
+        String sId = entity.getJsonString(Class.p_SemesterID).toString();
+        String mId = entity.getJsonString(Class.p_ModuleID).toString();
 
         try {
             Connection db = Database.getAcademiaConnection();
