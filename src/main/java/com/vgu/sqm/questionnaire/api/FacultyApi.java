@@ -92,8 +92,8 @@ public class FacultyApi extends ResourceApi {
         // TODO
 
         JsonObject entity = resource.exportResourceJson();
-        String fId = entity.getJsonNumber("AYearID").toString();
-        String fName = entity.getJsonNumber("SemesterId").toString();
+        String fId = entity.getJsonString("FacultyID").toString();
+        String fName = entity.getJsonString("FacultyName").toString();
 
         try {
             Connection db = Database.getAcademiaConnection();
