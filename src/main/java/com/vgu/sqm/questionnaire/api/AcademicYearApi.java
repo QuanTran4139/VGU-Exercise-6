@@ -1,9 +1,11 @@
 package com.vgu.sqm.questionnaire.api;
 
 import com.vgu.sqm.questionnaire.database.Database;
+import com.vgu.sqm.questionnaire.exception.SQLCustomException;
 import com.vgu.sqm.questionnaire.resource.AcademicYear;
 import com.vgu.sqm.questionnaire.resource.Resource;
 import com.vgu.sqm.questionnaire.utils.JsonUtils;
+
 import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
@@ -89,19 +91,23 @@ public class AcademicYearApi extends ResourceApi {
 
         try {
             Connection db = Database.getAcademiaConnection();
-            PreparedStatement st = db.prepareStatement("INSERT INTO academicyear(AYearId) VALUES (?);");
+            CallableStatement st = db.prepareCall("CALL AddAcademicYear(?,?);");
             st.setInt(1, id);
+            st.registerOutParameter(2, Types.INTEGER);
 
-            LOGGER.log(Level.INFO,"Adding resource in process...");
             st.execute();
+
+            int status = st.getInt(2);
+            LOGGER.log(Level.INFO,"Status: " + status);
+            if (status != 200) {
+                throw new SQLCustomException(status, this.getClass().getName());
+            }
 
         } catch (SQLException e1) {
             LOGGER.log(Level.SEVERE, e1.toString());
         } catch (NamingException e2) {
             LOGGER.log(Level.SEVERE, e2.toString());
         }
-
-        // TODO
     }
 
     private void deleteResourceFromDataBase(int AYearID) {

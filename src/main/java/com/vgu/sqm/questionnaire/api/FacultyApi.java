@@ -3,6 +3,7 @@ package com.vgu.sqm.questionnaire.api;
 import com.vgu.sqm.questionnaire.database.Database;
 import com.vgu.sqm.questionnaire.resource.Faculty;
 import com.vgu.sqm.questionnaire.resource.Resource;
+import com.vgu.sqm.questionnaire.exception.SQLCustomException;
 import com.vgu.sqm.questionnaire.utils.JsonUtils;
 import java.io.IOException;
 import java.sql.*;
@@ -88,6 +89,31 @@ public class FacultyApi extends ResourceApi {
     @Override
     protected void addResourceToDatabase(Resource resource) {
         // TODO
+
+        JsonObject entity = resource.exportResourceJson();
+        String fId = entity.getJsonNumber("AYearID").toString();
+        String fName = entity.getJsonNumber("SemesterId").toString();
+
+        try {
+            Connection db = Database.getAcademiaConnection();
+            CallableStatement st = db.prepareCall("CALL AddFaculty(?,?,?);");
+            st.setString(1, fId);
+            st.setString(2, fName);
+            st.registerOutParameter(3, Types.INTEGER);
+
+            st.execute();
+
+            int status = st.getInt(3);
+            LOGGER.log(Level.INFO,"Status: " + status);
+            if (status != 200) {
+                throw new SQLCustomException(status, this.getClass().getName());
+            }
+
+        } catch (SQLException e1) {
+            LOGGER.log(Level.SEVERE, e1.toString());
+        } catch (NamingException e2) {
+            LOGGER.log(Level.SEVERE, e2.toString());
+        }
     }
 
     private void deleteResourceFromDataBase(String FacultyID) {

@@ -1,6 +1,7 @@
 package com.vgu.sqm.questionnaire.api;
 
 import com.vgu.sqm.questionnaire.database.Database;
+import com.vgu.sqm.questionnaire.exception.SQLCustomException;
 import com.vgu.sqm.questionnaire.resource.Class;
 import com.vgu.sqm.questionnaire.resource.Faculty;
 import com.vgu.sqm.questionnaire.resource.Lecturer;
@@ -78,16 +79,18 @@ public class ClassApi extends ResourceApi {
 
 
             while (rs.next()) {
-                String sID = rs.getString("semesterId"); // Attribute name: semesterId
+                String sId = rs.getString("semesterId"); // Attribute name: semesterId
                 String fName = rs.getString("facultyName"); // Attribute name: facultyName
                 String pName = rs.getString("programName"); // Attribute name: programName
                 String lName = rs.getString("lecturerName"); // Attribute name: lecturerName
-                LOGGER.log(Level.INFO, "sId = " + sID);
+                String lId = rs.getString("LecturerId"); //Attribute name: LecturerId
+                LOGGER.log(Level.INFO, "sId = " + sId);
                 LOGGER.log(Level.INFO, "fName = " + fName);
                 LOGGER.log(Level.INFO, "pName = " + pName);
                 LOGGER.log(Level.INFO, "lName = " + lName);
 
-                classInfos.add(new ClassInfo(sID, fName, pName, lName));
+                //TODO ouput using ArrayList<Resource>
+                classInfos.add(new ClassInfo(sId, fName, pName, lName));
             }
             //get status
             int status = st.getInt(2);
@@ -183,14 +186,20 @@ public class ClassApi extends ResourceApi {
 
         try {
             Connection db = Database.getAcademiaConnection();
-            PreparedStatement st = db.prepareStatement("INSERT INTO class(ClassID) VALUES (?,?,?,?);");
+            CallableStatement st = db.prepareCall("CALL AddClass(?,?,?,?,?);");
             st.setString(1, cId);
             st.setInt(2, size);
             st.setString(3, sId);
             st.setString(4, mId);
+            st.registerOutParameter(5, Types.INTEGER);
 
-            LOGGER.log(Level.INFO,"Adding resource in process...");
             st.execute();
+
+            int status = st.getInt(5);
+            LOGGER.log(Level.INFO,"Status: " + status);
+            if (status != 200) {
+                throw new SQLCustomException(status, this.getClass().getName());
+            }
 
         } catch (SQLException e1) {
             LOGGER.log(Level.SEVERE, e1.toString());
