@@ -111,12 +111,11 @@ CREATE TABLE IF NOT EXISTS Teaching (
 );
 
 
-DROP TABLE questionnaire;
 CREATE TABLE IF NOT EXISTS Questionnaire (
+	QuestionnaireId INT NOT NULL AUTO_INCREMENT,
     LecturerId VARCHAR(10) NOT NULL,
     ClassId VARCHAR(10) NOT NULL, 
-    QuestionnaireId INT NOT NULL AUTO_INCREMENT,
-    PRIMARY KEY (LecturerId,ClassID,QuestionnaireId),
+    PRIMARY KEY (QuestionnaireId,LecturerId,ClassID),
     Gender CHAR,
     Question0 ENUM('Never','Rarely','Sometimes','Often','Always') NOT NULL,
 	Question1 ENUM('1','2','3','4','5','N/A') NOT NULL,
@@ -143,4 +142,18 @@ CREATE TABLE IF NOT EXISTS Questionnaire (
 		REFERENCES Teaching (LecturerId),
 	FOREIGN KEY (ClassId)
 		REFERENCES Teaching (ClassId)
-)ENGINE=MyISAM;
+);
+
+/*Trigger to auto_increment QID based on LID-CID*/
+DELIMITER $$
+
+CREATE TRIGGER QID_AutoIncrement BEFORE INSERT ON questionnaire
+FOR EACH ROW BEGIN
+    SELECT MAX(Questionnaireid) INTO @auto_id
+    FROM questionnaire
+    where lecturerID = NEW.LecturerId and classID= NEW.classID;
+    SET NEW.questionnaireid = COALESCE(@AUTO_ID +1,1);
+
+END $$
+
+DELIMITER ;	
