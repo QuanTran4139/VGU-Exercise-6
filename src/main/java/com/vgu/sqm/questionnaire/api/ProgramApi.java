@@ -89,8 +89,31 @@ public class ProgramApi extends ResourceApi {
 
     @Override
     protected void addResourceToDatabase(Resource resource)
-        throws SQLCustomException, SQLException, NamingException {
-        // TODO
+        throws SQLException, NamingException {
+        JsonObject entity = resource.exportResourceJson();
+        String pId = entity.getJsonString(Program.p_ProgramID).toString();
+        String pName = entity.getJsonString(Program.p_ProgramName).toString();
+
+        try {
+            Connection db = Database.getAcademiaConnection();
+            CallableStatement st = db.prepareCall("CALL AddProgram(?,?,?);");
+            st.setString(1, pId);
+            st.setString(2, pName);
+            st.registerOutParameter(3, Types.INTEGER);
+
+            st.execute();
+
+            int status = st.getInt(3);
+            LOGGER.log(Level.INFO, "Status: " + status);
+            if (status != 200) {
+                throw new SQLCustomException(status, this.getClass().getName());
+            }
+            db.close();
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE,e.toString());
+        } catch (NamingException e) {
+            LOGGER.log(Level.SEVERE,e.toString());
+        }
     }
 
     private void deleteResourceFromDataBase(String ProgramID) {

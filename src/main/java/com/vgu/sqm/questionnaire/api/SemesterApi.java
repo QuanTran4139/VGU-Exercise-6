@@ -93,8 +93,31 @@ public class SemesterApi extends ResourceApi {
 
     @Override
     protected void addResourceToDatabase(Resource resource)
-        throws SQLException, SQLCustomException, NamingException {
-        // TODO
+        throws SQLException, NamingException {
+        JsonObject entity = resource.exportResourceJson();
+        int aYearId = entity.getJsonNumber(Semester.p_AYearID).intValue();
+        String sId = entity.getJsonString(Semester.p_SemesterID).toString();
+
+        try {
+            Connection db = Database.getAcademiaConnection();
+            CallableStatement st = db.prepareCall("CALL AddSemester(?,?,?);");
+            st.setInt(1, aYearId);
+            st.setString(2, sId);
+            st.registerOutParameter(3, Types.INTEGER);
+
+            st.execute();
+
+            int status = st.getInt(3);
+            LOGGER.log(Level.INFO, "Status: " + status);
+            if (status != 200) {
+                throw new SQLCustomException(status, this.getClass().getName());
+            }
+            db.close();
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE,e.toString());
+        } catch (NamingException e) {
+            LOGGER.log(Level.SEVERE,e.toString());
+        }
     }
 
     private void deleteResourceFromDataBase(String SemesterID) {

@@ -89,8 +89,31 @@ public class LecturerApi extends ResourceApi {
 
     @Override
     protected void addResourceToDatabase(Resource resource)
-        throws SQLCustomException, SQLException, NamingException {
-        // TODO
+        throws SQLException, NamingException {
+        JsonObject entity = resource.exportResourceJson();
+        String lId = entity.getJsonString(Lecturer.p_LecturerID).toString();
+        String lName = entity.getJsonString(Lecturer.p_LecturerName).toString();
+
+        try {
+            Connection db = Database.getAcademiaConnection();
+            CallableStatement st = db.prepareCall("CALL AddLecturer(?,?,?);");
+            st.setString(1, lId);
+            st.setString(2, lName);
+            st.registerOutParameter(3, Types.INTEGER);
+
+            st.execute();
+
+            int status = st.getInt(3);
+            LOGGER.log(Level.INFO, "Status: " + status);
+            if (status != 200) {
+                throw new SQLCustomException(status, this.getClass().getName());
+            }
+            db.close();
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE,e.toString());
+        } catch (NamingException e) {
+            LOGGER.log(Level.SEVERE,e.toString());
+        }
     }
 
     private void deleteResourceFromDataBase(String LectureID) {

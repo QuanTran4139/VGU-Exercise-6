@@ -89,9 +89,7 @@ public class FacultyApi extends ResourceApi {
 
     @Override
     protected void addResourceToDatabase(Resource resource)
-        throws SQLException, SQLCustomException, NamingException {
-        // TODO
-
+        throws SQLException, NamingException {
         JsonObject entity = resource.exportResourceJson();
         String fId = entity.getJsonString(Faculty.p_FacultyID).toString();
         String fName = entity.getJsonString(Faculty.p_FacultyName).toString();

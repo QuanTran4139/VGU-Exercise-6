@@ -174,7 +174,7 @@ public class ClassApi extends ResourceApi {
 
     @Override
     protected void addResourceToDatabase(Resource resource)
-        throws SQLCustomException, SQLException, NamingException {
+        throws SQLException, NamingException {
         JsonObject entity = resource.exportResourceJson();
         String cId = entity.getJsonString(Class.p_ClassID).toString();
         int size = entity.getJsonNumber(Class.p_Size).intValue();
