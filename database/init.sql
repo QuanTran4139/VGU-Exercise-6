@@ -17,3 +17,4 @@ source StoredProcedures/DumpTeaching.sql;
 source StoredProcedures/DumpFacultyInAcademicYear.sql;
 source StoredProcedures/DumpProgramInFacultyInAcademicYear.sql;
 source StoredProcedures/DumpModuleInProgramInAcademicYear.sql;
+source StoredProcedures/AllAddingProcedure.sql;
