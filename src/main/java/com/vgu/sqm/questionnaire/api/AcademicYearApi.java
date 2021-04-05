@@ -56,7 +56,7 @@ public class AcademicYearApi extends ResourceApi {
         throws ServletException, IOException {
         try {
             JsonObject json = JsonUtils.extractJsonRequestBody(request);
-            int id = json.getJsonNumber(p_AYearID).intValue();
+            int id = json.getJsonNumber(AcademicYearApi.p_AYearID).intValue();
             addResourceToDatabase(new AcademicYear(id));
             response.setStatus(HttpServletResponse.SC_OK);
         } catch (Exception e) {
@@ -68,18 +68,18 @@ public class AcademicYearApi extends ResourceApi {
     @Override
     protected void doDelete(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
-        if (request.getParameterMap().containsKey(p_AYearID)) {
+        if (request.getParameterMap().containsKey(AcademicYearApi.p_AYearID)) {
             try {
-                int id = Integer.parseInt(request.getParameter(p_AYearID));
+                int id = Integer.parseInt(request.getParameter(AcademicYearApi.p_AYearID));
                 deleteResourceFromDataBase(id);
                 response.setStatus(HttpServletResponse.SC_OK);
             } catch (NumberFormatException e) {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                response.getWriter().print("%s must be an int".format(p_AYearID));
+                response.getWriter().print("%s must be an int".format(AcademicYearApi.p_AYearID));
             }
         } else {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            response.getWriter().print("Missing parameter: %s".format(p_AYearID));
+            response.getWriter().print("Missing parameter: %s".format(AcademicYearApi.p_AYearID));
         }
     }
 

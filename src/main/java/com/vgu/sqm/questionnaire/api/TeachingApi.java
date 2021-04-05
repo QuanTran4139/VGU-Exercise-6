@@ -58,15 +58,15 @@ public class TeachingApi extends ResourceApi {
         throws ServletException, IOException {
         try {
             JsonObject json = JsonUtils.extractJsonRequestBody(request);
-            String LectureID = json.getJsonString(p_LecturerID).getString();
-            String ClassID = json.getJsonString(p_ClassID).getString();
+            String LectureID = json.getJsonString(TeachingApi.p_LecturerID).getString();
+            String ClassID = json.getJsonString(TeachingApi.p_ClassID).getString();
             if (Teaching.checkParametersAreValid(LectureID, ClassID)) {
                 addResourceToDatabase(new Teaching(LectureID, ClassID));
                 response.setStatus(HttpServletResponse.SC_OK);
             } else {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                response.getWriter().print(
-                    "One or more parameters is invalid: %s, %s".format(p_LecturerID, p_ClassID));
+                response.getWriter().print("One or more parameters is invalid: %s, %s".format(
+                    TeachingApi.p_LecturerID, TeachingApi.p_ClassID));
             }
         } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -77,14 +77,15 @@ public class TeachingApi extends ResourceApi {
     @Override
     protected void doDelete(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
-        if (request.getParameterMap().containsKey(p_LecturerID)
-            && request.getParameterMap().containsKey(p_ClassID)) {
-            deleteResourceFromDataBase(
-                request.getParameter(p_LecturerID), request.getParameter(p_ClassID));
+        if (request.getParameterMap().containsKey(TeachingApi.p_LecturerID)
+            && request.getParameterMap().containsKey(TeachingApi.p_ClassID)) {
+            deleteResourceFromDataBase(request.getParameter(TeachingApi.p_LecturerID),
+                request.getParameter(TeachingApi.p_ClassID));
             response.setStatus(HttpServletResponse.SC_OK);
         } else {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            response.getWriter().print("Missing parameter: %s, %s".format(p_LecturerID, p_ClassID));
+            response.getWriter().print("Missing parameter: %s, %s".format(
+                TeachingApi.p_LecturerID, TeachingApi.p_ClassID));
         }
     }
 

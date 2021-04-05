@@ -58,15 +58,15 @@ public class ModuleApi extends ResourceApi {
         throws ServletException, IOException {
         try {
             JsonObject json = JsonUtils.extractJsonRequestBody(request);
-            String id = json.getJsonString(p_ModuleID).getString();
-            String name = json.getJsonString(p_ModuleName).getString();
+            String id = json.getJsonString(ModuleApi.p_ModuleID).getString();
+            String name = json.getJsonString(ModuleApi.p_ModuleName).getString();
             if (Module.checkParametersAreValid(id, name)) {
                 addResourceToDatabase(new Module(id, name));
                 response.setStatus(HttpServletResponse.SC_OK);
             } else {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                response.getWriter().print(
-                    "One or more parameters is invalid: %s, %s".format(p_ModuleID, p_ModuleName));
+                response.getWriter().print("One or more parameters is invalid: %s, %s".format(
+                    ModuleApi.p_ModuleID, ModuleApi.p_ModuleName));
             }
         } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -77,8 +77,8 @@ public class ModuleApi extends ResourceApi {
     @Override
     protected void doDelete(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
-        if (request.getParameterMap().containsKey(p_ModuleID)) {
-            deleteResourceFromDataBase(request.getParameter(p_ModuleID));
+        if (request.getParameterMap().containsKey(ModuleApi.p_ModuleID)) {
+            deleteResourceFromDataBase(request.getParameter(ModuleApi.p_ModuleID));
             response.setStatus(HttpServletResponse.SC_OK);
         } else {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);

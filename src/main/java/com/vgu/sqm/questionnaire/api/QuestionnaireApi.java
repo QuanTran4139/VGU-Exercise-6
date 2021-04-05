@@ -191,12 +191,12 @@ public class QuestionnaireApi extends ResourceApi {
     protected void doGetCustomAction(HttpServletRequest request, HttpServletResponse response,
         String action) throws ServletException, IOException {
         if (action.equals("getCounts")) { // action = getCounts
-            if (request.getParameterMap().containsKey(p_ClassID)
-                && request.getParameterMap().containsKey(p_LecturerID)
-                && request.getParameterMap().containsKey(p_Question)) {
-                String cid = request.getParameter(p_ClassID);
-                String lid = request.getParameter(p_LecturerID);
-                String question = request.getParameter(p_Question);
+            if (request.getParameterMap().containsKey(QuestionnaireApi.p_ClassID)
+                && request.getParameterMap().containsKey(QuestionnaireApi.p_LecturerID)
+                && request.getParameterMap().containsKey(QuestionnaireApi.p_Question)) {
+                String cid = request.getParameter(QuestionnaireApi.p_ClassID);
+                String lid = request.getParameter(QuestionnaireApi.p_LecturerID);
+                String question = request.getParameter(QuestionnaireApi.p_Question);
                 if (questions.contains(question) && !question.equals("comment")) {
                     response.setContentType("application/json");
                     response.setStatus(HttpServletResponse.SC_OK);
@@ -209,21 +209,22 @@ public class QuestionnaireApi extends ResourceApi {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 response.getWriter().print(
                     "The following parameters are required for 'getCounts': %s, %s, %s".format(
-                        p_ClassID, p_LecturerID, p_Question));
+                        QuestionnaireApi.p_ClassID, QuestionnaireApi.p_LecturerID,
+                        QuestionnaireApi.p_Question));
             }
         } else if (action.equals("getResponseRate")) { // action = getReponseRate
-            if (request.getParameterMap().containsKey(p_ClassID)
-                && request.getParameterMap().containsKey(p_LecturerID)) {
+            if (request.getParameterMap().containsKey(QuestionnaireApi.p_ClassID)
+                && request.getParameterMap().containsKey(QuestionnaireApi.p_LecturerID)) {
                 response.setContentType("application/json");
                 response.setStatus(HttpServletResponse.SC_OK);
-                String cid = request.getParameter(p_ClassID);
-                String lid = request.getParameter(p_LecturerID);
+                String cid = request.getParameter(QuestionnaireApi.p_ClassID);
+                String lid = request.getParameter(QuestionnaireApi.p_LecturerID);
                 response.getWriter().print(getReponseRate(cid, lid));
             } else { // missing parameters
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 response.getWriter().print(
                     "The following parameters are required for 'getReponseRate': %s, %s".format(
-                        p_ClassID, p_LecturerID));
+                        QuestionnaireApi.p_ClassID, QuestionnaireApi.p_LecturerID));
             }
         } else {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -237,15 +238,15 @@ public class QuestionnaireApi extends ResourceApi {
         throws ServletException, IOException {
         JsonObject json = JsonUtils.extractJsonRequestBody(request);
         try {
-            String LecturerID = json.getJsonString(p_LecturerID).getString();
-            String ClassID = json.getJsonString(p_ClassID).getString();
+            String LecturerID = json.getJsonString(QuestionnaireApi.p_LecturerID).getString();
+            String ClassID = json.getJsonString(QuestionnaireApi.p_ClassID).getString();
             // Placeholder QID, to be auto-incremented
             int QuestionnaireID = 0;
             // Gender should be a single character
-            char gender = json.getJsonString(p_Gender).getChars().charAt(0);
-            String comment = json.getJsonString(p_Comment).getString();
+            char gender = json.getJsonString(QuestionnaireApi.p_Gender).getChars().charAt(0);
+            String comment = json.getJsonString(QuestionnaireApi.p_Comment).getString();
             // Get the answers
-            JsonArray jsonAnswers = json.getJsonArray(p_Answers);
+            JsonArray jsonAnswers = json.getJsonArray(QuestionnaireApi.p_Answers);
             int[] answers = {
                 jsonAnswers.getInt(0),
                 jsonAnswers.getInt(1),
@@ -274,7 +275,8 @@ public class QuestionnaireApi extends ResourceApi {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 response.getWriter().print(
                     "One or more parameters is invalid: %s, %s, %s, %s".format(
-                        p_LecturerID, p_ClassID, p_Gender, p_Answers));
+                        QuestionnaireApi.p_LecturerID, QuestionnaireApi.p_ClassID,
+                        QuestionnaireApi.p_Gender, QuestionnaireApi.p_Answers));
             }
         } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -285,23 +287,26 @@ public class QuestionnaireApi extends ResourceApi {
     @Override
     protected void doDelete(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
-        if (request.getParameterMap().containsKey(p_LecturerID)
-            && request.getParameterMap().containsKey(p_ClassID)
-            && request.getParameterMap().containsKey(p_QuestionnaireID)) {
+        if (request.getParameterMap().containsKey(QuestionnaireApi.p_LecturerID)
+            && request.getParameterMap().containsKey(QuestionnaireApi.p_ClassID)
+            && request.getParameterMap().containsKey(QuestionnaireApi.p_QuestionnaireID)) {
             try {
-                String LecturerID = request.getParameter(p_LecturerID);
-                String ClassID = request.getParameter(p_ClassID);
-                int QuestionnaireID = Integer.parseInt(request.getParameter(p_QuestionnaireID));
+                String LecturerID = request.getParameter(QuestionnaireApi.p_LecturerID);
+                String ClassID = request.getParameter(QuestionnaireApi.p_ClassID);
+                int QuestionnaireID =
+                    Integer.parseInt(request.getParameter(QuestionnaireApi.p_QuestionnaireID));
                 deleteResourceFromDataBase(LecturerID, ClassID, QuestionnaireID);
                 response.setStatus(HttpServletResponse.SC_OK);
             } catch (NumberFormatException e) {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                response.getWriter().print("%s must be int".format(p_QuestionnaireID));
+                response.getWriter().print(
+                    "%s must be int".format(QuestionnaireApi.p_QuestionnaireID));
             }
         } else {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            response.getWriter().print("Missing parameters: %s, %s, %s".format(
-                p_LecturerID, p_ClassID, p_QuestionnaireID));
+            response.getWriter().print(
+                "Missing parameters: %s, %s, %s".format(QuestionnaireApi.p_LecturerID,
+                    QuestionnaireApi.p_ClassID, QuestionnaireApi.p_QuestionnaireID));
         }
     }
 

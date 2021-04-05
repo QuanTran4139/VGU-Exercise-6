@@ -119,10 +119,11 @@ public class ClassApi extends ResourceApi {
     protected void doGetCustomAction(HttpServletRequest request, HttpServletResponse response,
         String action) throws ServletException, IOException {
         if (action.equals("getClassOptions")) {
-            if (request.getParameterMap().containsKey(p_ClassID)) {
+            if (request.getParameterMap().containsKey(ClassApi.p_ClassID)) {
                 response.setStatus(HttpServletResponse.SC_OK);
                 response.setContentType("application/json");
-                response.getWriter().print(getClassOptions(request.getParameter(p_ClassID)));
+                response.getWriter().print(
+                    getClassOptions(request.getParameter(ClassApi.p_ClassID)));
             } else {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 response.getWriter().print(
@@ -141,18 +142,18 @@ public class ClassApi extends ResourceApi {
         // TODO
         try {
             JsonObject json = JsonUtils.extractJsonRequestBody(request);
-            String ClassID = json.getJsonString(p_ClassID).getString();
-            int Size = json.getJsonNumber(p_Size).intValue();
-            String SemesterID = json.getJsonString(p_SemesterID).getString();
-            String ModuleID = json.getJsonString(p_ModuleID).getString();
+            String ClassID = json.getJsonString(ClassApi.p_ClassID).getString();
+            int Size = json.getJsonNumber(ClassApi.p_Size).intValue();
+            String SemesterID = json.getJsonString(ClassApi.p_SemesterID).getString();
+            String ModuleID = json.getJsonString(ClassApi.p_ModuleID).getString();
             if (Class.checkParametersAreValid(ClassID, Size, SemesterID, ModuleID)) {
                 addResourceToDatabase(new Class(ClassID, Size, SemesterID, ModuleID));
                 response.setStatus(HttpServletResponse.SC_OK);
             } else {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 response.getWriter().print(
-                    "One or more parameters is invalid: %s, %s, %s, %s".format(
-                        p_ClassID, p_Size, p_SemesterID, p_ModuleID));
+                    "One or more parameters is invalid: %s, %s, %s, %s".format(ClassApi.p_ClassID,
+                        ClassApi.p_Size, ClassApi.p_SemesterID, ClassApi.p_ModuleID));
             }
         } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -163,8 +164,8 @@ public class ClassApi extends ResourceApi {
     @Override
     protected void doDelete(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
-        if (request.getParameterMap().containsKey(p_ClassID)) {
-            deleteResourceFromDataBase(request.getParameter(p_ClassID));
+        if (request.getParameterMap().containsKey(ClassApi.p_ClassID)) {
+            deleteResourceFromDataBase(request.getParameter(ClassApi.p_ClassID));
         } else {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             response.getWriter().print("Missing parameter: cid");
@@ -174,7 +175,6 @@ public class ClassApi extends ResourceApi {
     @Override
     protected void addResourceToDatabase(Resource resource)
         throws SQLCustomException, SQLException, NamingException {
-
         JsonObject entity = resource.exportResourceJson();
         String cId = entity.getJsonString(Class.p_ClassID).toString();
         int size = entity.getJsonNumber(Class.p_Size).intValue();
