@@ -1,4 +1,4 @@
-package com.vgu.sqm.questionnaire.exception;
+package com.vgu.sqm.questionnaire.database;
 
 import java.sql.SQLException;
 

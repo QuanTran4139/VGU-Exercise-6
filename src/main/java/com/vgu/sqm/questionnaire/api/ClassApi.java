@@ -1,7 +1,7 @@
 package com.vgu.sqm.questionnaire.api;
 
 import com.vgu.sqm.questionnaire.database.Database;
-import com.vgu.sqm.questionnaire.exception.SQLCustomException;
+import com.vgu.sqm.questionnaire.database.SQLCustomException;
 import com.vgu.sqm.questionnaire.resource.Class;
 import com.vgu.sqm.questionnaire.resource.Faculty;
 import com.vgu.sqm.questionnaire.resource.Lecturer;
@@ -9,7 +9,6 @@ import com.vgu.sqm.questionnaire.resource.Program;
 import com.vgu.sqm.questionnaire.resource.Resource;
 import com.vgu.sqm.questionnaire.resource.Semester;
 import com.vgu.sqm.questionnaire.utils.JsonUtils;
-
 import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
@@ -77,22 +76,21 @@ public class ClassApi extends ResourceApi {
 
             ResultSet rs = st.executeQuery();
 
-
             while (rs.next()) {
                 String sId = rs.getString("semesterId"); // Attribute name: semesterId
                 String fName = rs.getString("facultyName"); // Attribute name: facultyName
                 String pName = rs.getString("programName"); // Attribute name: programName
                 String lName = rs.getString("lecturerName"); // Attribute name: lecturerName
-                String lId = rs.getString("LecturerId"); //Attribute name: LecturerId
+                String lId = rs.getString("LecturerId"); // Attribute name: LecturerId
                 LOGGER.log(Level.INFO, "sId = " + sId);
                 LOGGER.log(Level.INFO, "fName = " + fName);
                 LOGGER.log(Level.INFO, "pName = " + pName);
                 LOGGER.log(Level.INFO, "lName = " + lName);
 
-                //TODO ouput using ArrayList<Resource>
+                // TODO ouput using ArrayList<Resource>
                 classInfos.add(new ClassInfo(sId, fName, pName, lName));
             }
-            //get status
+            // get status
             int status = st.getInt(2);
             LOGGER.log(Level.INFO, "status is " + status);
 
@@ -104,23 +102,22 @@ public class ClassApi extends ResourceApi {
             LOGGER.log(Level.SEVERE, e2.toString());
         }
 
-
         Semester[] semesters = {new Semester("WS2020", 2020), new Semester("SS2021", 2021)};
         Faculty[] faculties = {new Faculty("A", "41414141"), new Faculty("B", "42424242")};
         Program[] programs = {new Program("A", "41414141"), new Program("B", "42424242")};
         Lecturer[] lecturers = {new Lecturer("1", "Bob"), new Lecturer("2", "Alice")};
 
         return Json.createObjectBuilder()
-                .add("Semesters", JsonUtils.arrayToJson(semesters))
-                .add("Faculties", JsonUtils.arrayToJson(faculties))
-                .add("Programs", JsonUtils.arrayToJson(programs))
-                .add("Lecturers", JsonUtils.arrayToJson(lecturers))
-                .build();
+            .add("Semesters", JsonUtils.arrayToJson(semesters))
+            .add("Faculties", JsonUtils.arrayToJson(faculties))
+            .add("Programs", JsonUtils.arrayToJson(programs))
+            .add("Lecturers", JsonUtils.arrayToJson(lecturers))
+            .build();
     }
 
     @Override
     protected void doGetCustomAction(HttpServletRequest request, HttpServletResponse response,
-                                     String action) throws ServletException, IOException {
+        String action) throws ServletException, IOException {
         if (action.equals("getClassOptions")) {
             if (request.getParameterMap().containsKey(p_ClassID)) {
                 response.setStatus(HttpServletResponse.SC_OK);
@@ -129,7 +126,7 @@ public class ClassApi extends ResourceApi {
             } else {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 response.getWriter().print(
-                        "The following parameter is required for 'getClassOptions': cid");
+                    "The following parameter is required for 'getClassOptions': cid");
             }
         } else {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -140,7 +137,7 @@ public class ClassApi extends ResourceApi {
 
     @Override
     protected void doPut(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+        throws ServletException, IOException {
         // TODO
         try {
             JsonObject json = JsonUtils.extractJsonRequestBody(request);
@@ -154,8 +151,8 @@ public class ClassApi extends ResourceApi {
             } else {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 response.getWriter().print(
-                        "One or more parameters is invalid: %s, %s, %s, %s".format(
-                                p_ClassID, p_Size, p_SemesterID, p_ModuleID));
+                    "One or more parameters is invalid: %s, %s, %s, %s".format(
+                        p_ClassID, p_Size, p_SemesterID, p_ModuleID));
             }
         } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -165,7 +162,7 @@ public class ClassApi extends ResourceApi {
 
     @Override
     protected void doDelete(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+        throws ServletException, IOException {
         if (request.getParameterMap().containsKey(p_ClassID)) {
             deleteResourceFromDataBase(request.getParameter(p_ClassID));
         } else {
@@ -175,7 +172,8 @@ public class ClassApi extends ResourceApi {
     }
 
     @Override
-    protected void addResourceToDatabase(Resource resource) {
+    protected void addResourceToDatabase(Resource resource)
+        throws SQLCustomException, SQLException, NamingException {
         // TODO
 
         JsonObject entity = resource.exportResourceJson();
@@ -196,7 +194,7 @@ public class ClassApi extends ResourceApi {
             st.execute();
 
             int status = st.getInt(5);
-            LOGGER.log(Level.INFO,"Status: " + status);
+            LOGGER.log(Level.INFO, "Status: " + status);
             if (status != 200) {
                 throw new SQLCustomException(status, this.getClass().getName());
             }
@@ -215,7 +213,7 @@ public class ClassApi extends ResourceApi {
             PreparedStatement st = db.prepareStatement("DELETE FROM class where ClassId = ?;");
             st.setString(1, ClassID);
 
-            LOGGER.log(Level.INFO,"Deleting resource in process...");
+            LOGGER.log(Level.INFO, "Deleting resource in process...");
             st.execute();
 
         } catch (SQLException e1) {
@@ -232,7 +230,8 @@ class ClassInfo {
     private String programName;
     private String lecturerName;
 
-    public ClassInfo(String semesterId, String facultyName, String programName, String lecturerName) {
+    public ClassInfo(
+        String semesterId, String facultyName, String programName, String lecturerName) {
         this.semesterId = semesterId;
         this.facultyName = facultyName;
         this.programName = programName;

@@ -1,11 +1,10 @@
 package com.vgu.sqm.questionnaire.api;
 
 import com.vgu.sqm.questionnaire.database.Database;
-import com.vgu.sqm.questionnaire.exception.SQLCustomException;
+import com.vgu.sqm.questionnaire.database.SQLCustomException;
 import com.vgu.sqm.questionnaire.resource.AcademicYear;
 import com.vgu.sqm.questionnaire.resource.Resource;
 import com.vgu.sqm.questionnaire.utils.JsonUtils;
-
 import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
@@ -85,7 +84,8 @@ public class AcademicYearApi extends ResourceApi {
     }
 
     @Override
-    protected void addResourceToDatabase(Resource resource) {
+    protected void addResourceToDatabase(Resource resource)
+        throws SQLCustomException, SQLException, NamingException {
         JsonObject entity = resource.exportResourceJson();
         int id = entity.getJsonNumber("AYearID").intValue();
 
@@ -98,7 +98,7 @@ public class AcademicYearApi extends ResourceApi {
             st.execute();
 
             int status = st.getInt(2);
-            LOGGER.log(Level.INFO,"Status: " + status);
+            LOGGER.log(Level.INFO, "Status: " + status);
             if (status != 200) {
                 throw new SQLCustomException(status, this.getClass().getName());
             }
@@ -113,10 +113,11 @@ public class AcademicYearApi extends ResourceApi {
     private void deleteResourceFromDataBase(int AYearID) {
         try {
             Connection db = Database.getAcademiaConnection();
-            PreparedStatement st = db.prepareStatement("DELETE FROM academicyear where AYearId = ?;");
+            PreparedStatement st =
+                db.prepareStatement("DELETE FROM academicyear where AYearId = ?;");
             st.setInt(1, AYearID);
 
-            LOGGER.log(Level.INFO,"Deleting resource in process...");
+            LOGGER.log(Level.INFO, "Deleting resource in process...");
             st.execute();
 
         } catch (SQLException e1) {

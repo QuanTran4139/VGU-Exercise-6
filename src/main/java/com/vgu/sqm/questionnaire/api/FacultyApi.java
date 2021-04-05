@@ -1,9 +1,9 @@
 package com.vgu.sqm.questionnaire.api;
 
 import com.vgu.sqm.questionnaire.database.Database;
+import com.vgu.sqm.questionnaire.database.SQLCustomException;
 import com.vgu.sqm.questionnaire.resource.Faculty;
 import com.vgu.sqm.questionnaire.resource.Resource;
-import com.vgu.sqm.questionnaire.exception.SQLCustomException;
 import com.vgu.sqm.questionnaire.utils.JsonUtils;
 import java.io.IOException;
 import java.sql.*;
@@ -87,7 +87,8 @@ public class FacultyApi extends ResourceApi {
     }
 
     @Override
-    protected void addResourceToDatabase(Resource resource) {
+    protected void addResourceToDatabase(Resource resource)
+        throws SQLException, SQLCustomException, NamingException {
         // TODO
 
         JsonObject entity = resource.exportResourceJson();
@@ -104,7 +105,7 @@ public class FacultyApi extends ResourceApi {
             st.execute();
 
             int status = st.getInt(3);
-            LOGGER.log(Level.INFO,"Status: " + status);
+            LOGGER.log(Level.INFO, "Status: " + status);
             if (status != 200) {
                 throw new SQLCustomException(status, this.getClass().getName());
             }
