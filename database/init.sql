@@ -1,3 +1,6 @@
+CREATE DATABASE IF NOT EXISTS vgu6;
+USE vgu6;
+
 source schemas/01_tables_def.sql;
 source Tests/Testing_dataset.sql;
 source StoredProcedures/GetTotalClassesSize.sql;
