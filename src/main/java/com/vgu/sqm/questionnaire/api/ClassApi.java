@@ -174,10 +174,46 @@ public class ClassApi extends ResourceApi {
     @Override
     protected void addResourceToDatabase(Resource resource) {
         // TODO
+
+        JsonObject entity = resource.exportResourceJson();
+        String cId = entity.getJsonNumber("AYearID").toString();
+        int size = entity.getJsonNumber("Size").intValue();
+        String sId = entity.getJsonNumber("SemesterId").toString();
+        String mId = entity.getJsonNumber("ModuleId").toString();
+
+        try {
+            Connection db = Database.getAcademiaConnection();
+            PreparedStatement st = db.prepareStatement("INSERT INTO class(ClassID) VALUES (?,?,?,?);");
+            st.setString(1, cId);
+            st.setInt(2, size);
+            st.setString(3, sId);
+            st.setString(4, mId);
+
+            LOGGER.log(Level.INFO,"Adding resource in process...");
+            st.execute();
+
+        } catch (SQLException e1) {
+            LOGGER.log(Level.SEVERE, e1.toString());
+        } catch (NamingException e2) {
+            LOGGER.log(Level.SEVERE, e2.toString());
+        }
     }
 
     private void deleteResourceFromDataBase(String ClassID) {
         // TODO
+        try {
+            Connection db = Database.getAcademiaConnection();
+            PreparedStatement st = db.prepareStatement("DELETE FROM class where ClassId = ?;");
+            st.setString(1, ClassID);
+
+            LOGGER.log(Level.INFO,"Deleting resource in process...");
+            st.execute();
+
+        } catch (SQLException e1) {
+            LOGGER.log(Level.SEVERE, e1.toString());
+        } catch (NamingException e2) {
+            LOGGER.log(Level.SEVERE, e2.toString());
+        }
     }
 }
 

@@ -84,6 +84,69 @@ public class QuestionnaireApi extends ResourceApi {
 
     private JsonObject getCounts(String ClassID, String LecturerID, String question) {
         // TODO @duchai9109 get results from ClassID, LecturerID, question
+        // ===========================Note======================
+        // = QUESTION0 IS CURRENTLY NOT WORKING AT THE MOMENT===
+        // =====================================================
+        try {
+            Connection db = Database.getAcademiaConnection();
+            CallableStatement st;
+            ResultSet rs;
+            int status;
+            HashMap<String, Integer> result = new HashMap<>();
+
+            if (question.equals("gender")) {
+                st = db.prepareCall("CALL GetGenderCountByID(?,?,?)");
+                st.setString(1, ClassID);
+                st.setString(2, LecturerID);
+                st.registerOutParameter(3, Types.INTEGER);
+
+                rs = st.executeQuery();
+
+                status = st.getInt(3);
+                LOGGER.log(Level.INFO, "status (count gender) is " + status);
+                if (status == 200) {
+                    while (rs.next()) {
+                        String gender = rs.getString("Gender");
+                        int count = rs.getInt("Count");
+
+                        result.put(gender, count);
+                    }
+                }
+            } else {
+                st = db.prepareCall("CALL GetResponseByQuestion(?,?,?,?)");
+                st.setString(1, ClassID);
+                st.setString(2, LecturerID);
+                st.setInt(3, Integer.parseInt(question));
+                st.registerOutParameter(4, Types.INTEGER);
+
+                rs = st.executeQuery();
+
+                // get status
+                status = st.getInt(4);
+                LOGGER.log(Level.INFO, "status (get response count for question" + question +") is " + status);
+                if (status == 200) {
+                    while (rs.next()) {
+                        for (int j = 0; j <= 4; j++) {
+                            result.put(Integer.toString(j+1) , rs.getInt(j + 4));
+                        }
+
+                        if (!question.matches("[567]")) {
+                            result.put("N/A", rs.getInt(9));
+                        }
+                    }
+                }
+            }
+
+            if(status != 200) {
+                throw new SQLCustomException(status,this.getClass().getName());
+            }
+
+            LOGGER.log(Level.INFO,result.toString());
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, e.toString());
+        } catch (NamingException e) {
+            LOGGER.log(Level.SEVERE, e.toString());
+        }
 
         // TODO @ChocolateOverflow turn the above results into JSON objects
         JsonObjectBuilder builder = Json.createObjectBuilder();

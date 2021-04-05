@@ -91,6 +91,8 @@ public class AcademicYearApi extends ResourceApi {
             Connection db = Database.getAcademiaConnection();
             PreparedStatement st = db.prepareStatement("INSERT INTO academicyear(AYearId) VALUES (?);");
             st.setInt(1, id);
+
+            LOGGER.log(Level.INFO,"Adding resource in process...");
             st.execute();
 
         } catch (SQLException e1) {
@@ -107,6 +109,8 @@ public class AcademicYearApi extends ResourceApi {
             Connection db = Database.getAcademiaConnection();
             PreparedStatement st = db.prepareStatement("DELETE FROM academicyear where AYearId = ?;");
             st.setInt(1, AYearID);
+
+            LOGGER.log(Level.INFO,"Deleting resource in process...");
             st.execute();
 
         } catch (SQLException e1) {
