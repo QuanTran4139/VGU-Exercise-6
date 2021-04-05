@@ -1,14 +1,16 @@
 package com.vgu.sqm.questionnaire.api;
 
 import com.vgu.sqm.questionnaire.database.Database;
+import com.vgu.sqm.questionnaire.exception.SQLCustomException;
 import com.vgu.sqm.questionnaire.resource.Questionnaire;
 import com.vgu.sqm.questionnaire.resource.Resource;
 import com.vgu.sqm.questionnaire.utils.JsonUtils;
-import com.vgu.sqm.questionnaire.exception.SQLCustomException;
 import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.json.Json;
@@ -33,6 +35,9 @@ public class QuestionnaireApi extends ResourceApi {
     private final static String p_Gender = "gender";
     private final static String p_Answers = "qa";
     private final static String p_Comment = "comment";
+    private final static String p_Question = "q";
+    private final static List<String> questions = Arrays.asList("gender", "0", "1", "2", "3", "4",
+        "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17");
 
     public QuestionnaireApi() {
         super();
@@ -77,79 +82,12 @@ public class QuestionnaireApi extends ResourceApi {
         return resources;
     }
 
-    private JsonObject getCounts(String ClassID, String LecturerID) {
-        try {
-            Connection db = Database.getAcademiaConnection();
-            CallableStatement st = db.prepareCall("CALL GetGenderCountByID(?,?,?)");
-            st.setString(1, ClassID);
-            st.setString(2, LecturerID);
-            st.registerOutParameter(3, Types.INTEGER);
+    private JsonObject getCounts(String ClassID, String LecturerID, String question) {
+        // TODO @duchai9109 get results from ClassID, LecturerID, question
 
-            ResultSet rs = st.executeQuery();
-            HashMap<String, Integer> countsByGender = new HashMap<>();
-
-            // get status
-            int status = st.getInt(3);
-            LOGGER.log(Level.INFO, "status (count gender) is " + status);
-            if (status == 200) {
-                while (rs.next()) {
-                    String gender = rs.getString("Gender");
-                    int count = rs.getInt("Count");
-
-                    countsByGender.put(gender, count);
-                }
-            } else {
-                throw new SQLCustomException(status,this.getClass().getName());
-            }
-
-            int[][] qa = new int[18][6];
-
-            //TODO need to change Question0 after
-            for (int i =0 ; i < 6; i++) {
-                qa[0][i] = 0;
-            }
-            for (int i = 1; i < 18; i++) {
-                st = db.prepareCall("CALL GetResponseByQuestion(?,?,?,?)");
-                st.setString(1, ClassID);
-                st.setString(2, LecturerID);
-                st.setInt(3, i);
-                st.registerOutParameter(4, Types.INTEGER);
-
-                rs = st.executeQuery();
-
-                // get status
-                status = st.getInt(4);
-                LOGGER.log(Level.INFO, "status (get response) is " + status);
-                if (status == 200) {
-                    while (rs.next()) {
-                        for (int j = 0; j <= 5; j++) {
-                            qa[i][j] = rs.getInt(j + 4);
-                        }
-                    }
-                } else {
-                    throw new SQLCustomException(status,this.getClass().getName());
-                }
-            }
-            db.close();
-
-            JsonObjectBuilder objBuilder = Json.createObjectBuilder();
-            JsonObject genderCounts =
-                Json.createObjectBuilder()
-                    .add("M", countsByGender.get("M") == null ? -1 : countsByGender.get("M"))
-                    .add("F", countsByGender.get("F") == null ? -1 : countsByGender.get("F"))
-                    .add("N", countsByGender.get("N") == null ? -1 : countsByGender.get("N"))
-                    .build();
-            JsonArray qaArray = JsonUtils.arrayToJson(qa);
-            objBuilder.add("genders", genderCounts).add("qa", qaArray);
-            JsonObject obj = objBuilder.build();
-
-            return obj;
-        } catch (SQLException e1) {
-            LOGGER.log(Level.SEVERE, e1.toString());
-        } catch (NamingException e2) {
-            LOGGER.log(Level.SEVERE, e2.toString());
-        }
-        return null;
+        // TODO @ChocolateOverflow turn the above results into JSON objects
+        JsonObjectBuilder builder = Json.createObjectBuilder();
+        return builder.build();
     }
 
     private float getReponseRate(String ClassID, String LecturerID) {
@@ -170,7 +108,7 @@ public class QuestionnaireApi extends ResourceApi {
             if (status == 200 && rs.next()) {
                 result = rs.getInt("Response_Rate");
             } else {
-                throw new SQLCustomException(status,this.getClass().getName());
+                throw new SQLCustomException(status, this.getClass().getName());
             }
 
             db.close();
@@ -186,30 +124,39 @@ public class QuestionnaireApi extends ResourceApi {
     protected void doGetCustomAction(HttpServletRequest request, HttpServletResponse response,
         String action) throws ServletException, IOException {
         if (action.equals("getCounts")) { // action = getCounts
-            if (request.getParameterMap().containsKey("cid")
-                && request.getParameterMap().containsKey("lid")) {
-                response.setContentType("application/json");
-                response.setStatus(HttpServletResponse.SC_OK);
-                String cid = request.getParameter("cid");
-                String lid = request.getParameter("lid");
-                response.getWriter().print(getCounts(cid, lid));
+            if (request.getParameterMap().containsKey(p_ClassID)
+                && request.getParameterMap().containsKey(p_LecturerID)
+                && request.getParameterMap().containsKey(p_Question)) {
+                String cid = request.getParameter(p_ClassID);
+                String lid = request.getParameter(p_LecturerID);
+                String question = request.getParameter(p_Question);
+                if (questions.contains(question) && !question.equals("comment")) {
+                    response.setContentType("application/json");
+                    response.setStatus(HttpServletResponse.SC_OK);
+                    response.getWriter().print(getCounts(cid, lid, question));
+                } else { // invalid question for counting
+                    response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                    response.getWriter().print("Question %s is unvailable".format(question));
+                }
             } else { // missing parameters
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 response.getWriter().print(
-                    "The following parameters are required for 'getCounts': cid, lid");
+                    "The following parameters are required for 'getCounts': %s, %s, %s".format(
+                        p_ClassID, p_LecturerID, p_Question));
             }
         } else if (action.equals("getResponseRate")) { // action = getReponseRate
-            if (request.getParameterMap().containsKey("cid")
-                && request.getParameterMap().containsKey("lid")) {
+            if (request.getParameterMap().containsKey(p_ClassID)
+                && request.getParameterMap().containsKey(p_LecturerID)) {
                 response.setContentType("application/json");
                 response.setStatus(HttpServletResponse.SC_OK);
-                String cid = request.getParameter("cid");
-                String lid = request.getParameter("lid");
+                String cid = request.getParameter(p_ClassID);
+                String lid = request.getParameter(p_LecturerID);
                 response.getWriter().print(getReponseRate(cid, lid));
             } else { // missing parameters
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 response.getWriter().print(
-                    "The following parameters are required for 'getReponseRate': cid, lid");
+                    "The following parameters are required for 'getReponseRate': %s, %s".format(
+                        p_ClassID, p_LecturerID));
             }
         } else {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -282,7 +229,7 @@ public class QuestionnaireApi extends ResourceApi {
                 response.setStatus(HttpServletResponse.SC_OK);
             } catch (NumberFormatException e) {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                response.getWriter().print("qid must be int");
+                response.getWriter().print("%s must be int".format(p_QuestionnaireID));
             }
         } else {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
