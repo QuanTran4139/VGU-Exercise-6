@@ -13,6 +13,13 @@ public class Questionnaire implements Resource {
     private int[] answers;
     private String comment;
 
+    public static final String p_LecturerID = "LecturerID";
+    public static final String p_ClassID = "ClassID";
+    public static final String p_QuestionnaireID = "QuestionnaireID";
+    public static final String p_gender = "gender";
+    public static final String p_answers = "answers";
+    public static final String p_comment = "comment";
+
     public Questionnaire(String LecturerID, String ClassID, int QuestionnaireID, char gender,
         int[] answers, String comment) {
         this.LecturerID = LecturerID;
@@ -25,12 +32,12 @@ public class Questionnaire implements Resource {
 
     public JsonObject exportResourceJson() {
         JsonObjectBuilder builder = Json.createObjectBuilder();
-        builder.add("LecturerID", this.LecturerID);
-        builder.add("ClassID", this.ClassID);
-        builder.add("QuestionnaireID", this.QuestionnaireID);
-        builder.add("gender", this.gender);
-        builder.add("answers", JsonUtils.arrayToJson(this.answers));
-        builder.add("comment", this.comment);
+        builder.add(Questionnaire.p_LecturerID, this.LecturerID);
+        builder.add(Questionnaire.p_ClassID, this.ClassID);
+        builder.add(Questionnaire.p_QuestionnaireID, this.QuestionnaireID);
+        builder.add(Questionnaire.p_gender, this.gender);
+        builder.add(Questionnaire.p_answers, JsonUtils.arrayToJson(this.answers));
+        builder.add(Questionnaire.p_LecturerID, this.comment);
         JsonObject obj = builder.build();
         return obj;
     }

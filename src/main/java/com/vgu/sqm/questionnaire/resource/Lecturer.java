@@ -8,6 +8,9 @@ public class Lecturer implements Resource {
     private String LecturerID;
     private String LecturerName;
 
+    public static final String p_LecturerID = "LecturerID";
+    public static final String p_LecturerName = "LecturerName";
+
     public Lecturer(String LecturerID, String LecturerName) {
         this.LecturerID = LecturerID;
         this.LecturerName = LecturerName;
@@ -15,8 +18,8 @@ public class Lecturer implements Resource {
 
     public JsonObject exportResourceJson() {
         JsonObjectBuilder builder = Json.createObjectBuilder();
-        builder.add("LecturerID", this.LecturerID);
-        builder.add("LecturerName", this.LecturerName);
+        builder.add(Lecturer.p_LecturerID, this.LecturerID);
+        builder.add(Lecturer.p_LecturerName, this.LecturerName);
         JsonObject obj = builder.build();
         return obj;
     }

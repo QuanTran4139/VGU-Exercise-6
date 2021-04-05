@@ -174,13 +174,12 @@ public class ClassApi extends ResourceApi {
     @Override
     protected void addResourceToDatabase(Resource resource)
         throws SQLCustomException, SQLException, NamingException {
-        // TODO
 
         JsonObject entity = resource.exportResourceJson();
-        String cId = entity.getJsonNumber("AYearID").toString();
-        int size = entity.getJsonNumber("Size").intValue();
-        String sId = entity.getJsonNumber("SemesterId").toString();
-        String mId = entity.getJsonNumber("ModuleId").toString();
+        String cId = entity.getJsonNumber(Class.p_ClassID).toString();
+        int size = entity.getJsonNumber(Class.p_Size).intValue();
+        String sId = entity.getJsonNumber(Class.p_SemesterID).toString();
+        String mId = entity.getJsonNumber(Class.p_ModuleID).toString();
 
         try {
             Connection db = Database.getAcademiaConnection();
