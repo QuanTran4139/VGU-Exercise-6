@@ -1,6 +1,7 @@
 package com.vgu.sqm.questionnaire.api;
 
 import com.vgu.sqm.questionnaire.database.Database;
+import com.vgu.sqm.questionnaire.database.SQLCustomException;
 import com.vgu.sqm.questionnaire.resource.ProgramInFacultyInAcademicYear;
 import com.vgu.sqm.questionnaire.resource.Resource;
 import com.vgu.sqm.questionnaire.utils.JsonUtils;
@@ -60,9 +61,12 @@ public class ProgramInFacultyInAcademicYearApi extends ResourceApi {
         throws ServletException, IOException {
         try {
             JsonObject json = JsonUtils.extractJsonRequestBody(request);
-            String ProgramID = json.getJsonString(p_ProgramID).getString();
-            String FacultyID = json.getJsonString(p_FacultyID).getString();
-            int AYearID = json.getJsonNumber(p_AYearID).intValue();
+            String ProgramID =
+                json.getJsonString(ProgramInFacultyInAcademicYearApi.p_ProgramID).getString();
+            String FacultyID =
+                json.getJsonString(ProgramInFacultyInAcademicYearApi.p_FacultyID).getString();
+            int AYearID =
+                json.getJsonNumber(ProgramInFacultyInAcademicYearApi.p_AYearID).intValue();
             if (ProgramInFacultyInAcademicYear.checkParametersAreValid(
                     ProgramID, FacultyID, AYearID)) {
                 addResourceToDatabase(
@@ -70,8 +74,10 @@ public class ProgramInFacultyInAcademicYearApi extends ResourceApi {
                 response.setStatus(HttpServletResponse.SC_OK);
             } else {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                response.getWriter().print(
-                    "One or more parameters is invalid: %s, %s, %s".format(p_ProgramID, p_FacultyID, p_AYearID));
+                response.getWriter().print("One or more parameters is invalid: %s, %s, %s".format(
+                    ProgramInFacultyInAcademicYearApi.p_ProgramID,
+                    ProgramInFacultyInAcademicYearApi.p_FacultyID,
+                    ProgramInFacultyInAcademicYearApi.p_AYearID));
             }
         } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -82,28 +88,35 @@ public class ProgramInFacultyInAcademicYearApi extends ResourceApi {
     @Override
     protected void doDelete(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
-        if (request.getParameterMap().containsKey(p_ProgramID)
-            && request.getParameterMap().containsKey(p_FacultyID)
-            && request.getParameterMap().containsKey(p_AYearID)) {
+        if (request.getParameterMap().containsKey(ProgramInFacultyInAcademicYearApi.p_ProgramID)
+            && request.getParameterMap().containsKey(ProgramInFacultyInAcademicYearApi.p_FacultyID)
+            && request.getParameterMap().containsKey(ProgramInFacultyInAcademicYearApi.p_AYearID)) {
             try {
-                String program = request.getParameter(p_ProgramID);
-                String faculty = request.getParameter(p_FacultyID);
-                int year = Integer.parseInt(request.getParameter(p_AYearID));
+                String program =
+                    request.getParameter(ProgramInFacultyInAcademicYearApi.p_ProgramID);
+                String faculty =
+                    request.getParameter(ProgramInFacultyInAcademicYearApi.p_FacultyID);
+                int year = Integer.parseInt(
+                    request.getParameter(ProgramInFacultyInAcademicYearApi.p_AYearID));
                 deleteResourceFromDataBase(program, faculty, year);
                 response.setStatus(HttpServletResponse.SC_OK);
             } catch (NumberFormatException e) {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                response.getWriter().print("%s must be int".format(p_AYearID));
+                response.getWriter().print(
+                    "%s must be int".format(ProgramInFacultyInAcademicYearApi.p_AYearID));
             }
         } else {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            response.getWriter().print(
-                "Missing parameters: %s, %s, %s".format(p_ProgramID, p_FacultyID, p_AYearID));
+            response.getWriter().print("Missing parameters: %s, %s, %s".format(
+                ProgramInFacultyInAcademicYearApi.p_ProgramID,
+                ProgramInFacultyInAcademicYearApi.p_FacultyID,
+                ProgramInFacultyInAcademicYearApi.p_AYearID));
         }
     }
 
     @Override
-    protected void addResourceToDatabase(Resource resource) {
+    protected void addResourceToDatabase(Resource resource)
+        throws SQLCustomException, SQLException, NamingException {
         // TODO
     }
 

@@ -1,23 +1,45 @@
 $(document).ready(function()
 {
-	$.get("/Questionnaire/api/academicYear?action=dump", function(data, status)
+	$.ajax(
 	{
-		//console.log(JSON.stringify(data));
-		/*for (var i = 0; i < data.length; i++)
+		url: "/Questionnaire/api/academicYear?action=dump",
+        type: 'GET',
+        dataType: 'json',
+        success: function(data)
 		{
-			document.getElementById("AYearID").innerHTML = data[i];
-		}*/
-		
-		console.log(JSON.stringify(data));
-		var txt = "", x;
-		var a=0;
-		txt += "<table border='1' stripe='1'>"
-		for (x in data)
-		{
-			txt += "<tr><td>" + JSON.stringify(data[x].AYearID) + "</td>";
-		}
-		txt += "</table>"
-		document.getElementById("AYearID_2").innerHTML = txt;
+            console.log(JSON.stringify(data));
+			var txt = "", x;
+			txt += "<table border='1' stripe='1' id='AY'>"
+			for (x in data)
+			{
+				txt += "<tr><td>" + data[x].AYearID + "</td>";
+				txt += "<td>" + "<button id='delAYButton'>Delete</button></td>"
+			}
+			txt += "<tr><td><input id='AY' name='AY' type='text'>" + "</td>";
+			txt += "<td>" + "<button id='addAYButton'>Add</button></td></tr>";
+			txt += "</table>";
+			document.getElementById("AYearID_2").innerHTML = txt;
+			
+			$("#addAYButton").on("click", function(event)
+			{
+				var value = $('input[name="AY"]').val();
+				var valueInt = parseInt(value);
+				var sendData = {"yid": valueInt};
+				console.log("sendData: " + JSON.stringify(sendData));
+				console.log(typeof value + value);
+				console.log(typeof valueInt + valueInt);
+				$.ajax(
+				{
+					url: '/Questionnaire/api/academicYear',
+					type: 'PUT',
+					processData: false,
+					data: JSON.stringify(sendData),
+					success: function(data)
+					{
+						console.log("Sent");
+					}
+				});
+			});
+        }
 	});
-	
 });

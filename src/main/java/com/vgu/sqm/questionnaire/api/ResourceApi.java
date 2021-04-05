@@ -1,8 +1,10 @@
 package com.vgu.sqm.questionnaire.api;
 
+import com.vgu.sqm.questionnaire.database.SQLCustomException;
 import com.vgu.sqm.questionnaire.resource.Resource;
 import com.vgu.sqm.questionnaire.utils.JsonUtils;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -10,6 +12,7 @@ import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
+import javax.naming.NamingException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -20,7 +23,8 @@ public abstract class ResourceApi extends HttpServlet {
         throws ServletException, IOException;
     abstract protected void doDelete(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException;
-    abstract protected void addResourceToDatabase(Resource resource);
+    abstract protected void addResourceToDatabase(Resource resource)
+        throws SQLCustomException, SQLException, NamingException;
     abstract ArrayList<Resource> dumpResource();
 
     protected JsonArray ResourceToJson(ArrayList<Resource> resources) {

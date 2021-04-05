@@ -8,6 +8,9 @@ public class Program implements Resource {
     private String ProgramID;
     private String ProgramName;
 
+    public static final String p_ProgramID = "ProgramID";
+    public static final String p_ProgramName = "ProgramName";
+
     public Program(String ProgramID, String ProgramName) {
         this.ProgramID = ProgramID;
         this.ProgramName = ProgramName;
@@ -15,8 +18,8 @@ public class Program implements Resource {
 
     public JsonObject exportResourceJson() {
         JsonObjectBuilder builder = Json.createObjectBuilder();
-        builder.add("ProgramID", this.ProgramID);
-        builder.add("ProgramName", this.ProgramName);
+        builder.add(Program.p_ProgramID, this.ProgramID);
+        builder.add(Program.p_ProgramName, this.ProgramName);
         JsonObject obj = builder.build();
         return obj;
     }

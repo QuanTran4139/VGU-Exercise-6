@@ -1,11 +1,8 @@
-package com.vgu.sqm.questionnaire.exception;
+package com.vgu.sqm.questionnaire.database;
 
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class SQLCustomException extends SQLException {
-    private final static Logger LOGGER = Logger.getLogger(SQLCustomException.class.getName());
 
     public SQLCustomException(int status, String className) {
         super(constructMessage(status, className));

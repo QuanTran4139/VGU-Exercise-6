@@ -1,6 +1,7 @@
 package com.vgu.sqm.questionnaire.api;
 
 import com.vgu.sqm.questionnaire.database.Database;
+import com.vgu.sqm.questionnaire.database.SQLCustomException;
 import com.vgu.sqm.questionnaire.resource.Program;
 import com.vgu.sqm.questionnaire.resource.Resource;
 import com.vgu.sqm.questionnaire.utils.JsonUtils;
@@ -57,15 +58,15 @@ public class ProgramApi extends ResourceApi {
         throws ServletException, IOException {
         try {
             JsonObject json = JsonUtils.extractJsonRequestBody(request);
-            String id = json.getJsonString(p_ProgramID).getString();
-            String name = json.getJsonString(p_ProgramName).getString();
+            String id = json.getJsonString(ProgramApi.p_ProgramID).getString();
+            String name = json.getJsonString(ProgramApi.p_ProgramName).getString();
             if (Program.checkParametersAreValid(id, name)) {
                 addResourceToDatabase(new Program(id, name));
                 response.setStatus(HttpServletResponse.SC_OK);
             } else {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                response.getWriter().print(
-                    "One or more parameters is invalid: %s, %s".format(p_ProgramID, p_ProgramName));
+                response.getWriter().print("One or more parameters is invalid: %s, %s".format(
+                    ProgramApi.p_ProgramID, ProgramApi.p_ProgramName));
             }
         } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -76,8 +77,8 @@ public class ProgramApi extends ResourceApi {
     @Override
     protected void doDelete(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
-        if (request.getParameterMap().containsKey(p_ProgramID)) {
-            deleteResourceFromDataBase(request.getParameter(p_ProgramID));
+        if (request.getParameterMap().containsKey(ProgramApi.p_ProgramID)) {
+            deleteResourceFromDataBase(request.getParameter(ProgramApi.p_ProgramID));
             response.setStatus(HttpServletResponse.SC_OK);
         } else {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -86,7 +87,8 @@ public class ProgramApi extends ResourceApi {
     }
 
     @Override
-    protected void addResourceToDatabase(Resource resource) {
+    protected void addResourceToDatabase(Resource resource)
+        throws SQLCustomException, SQLException, NamingException {
         // TODO
     }
 

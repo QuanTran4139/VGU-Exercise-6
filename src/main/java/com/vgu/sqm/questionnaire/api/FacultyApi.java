@@ -1,6 +1,7 @@
 package com.vgu.sqm.questionnaire.api;
 
 import com.vgu.sqm.questionnaire.database.Database;
+import com.vgu.sqm.questionnaire.database.SQLCustomException;
 import com.vgu.sqm.questionnaire.resource.Faculty;
 import com.vgu.sqm.questionnaire.resource.Resource;
 import com.vgu.sqm.questionnaire.utils.JsonUtils;
@@ -57,15 +58,15 @@ public class FacultyApi extends ResourceApi {
         throws ServletException, IOException {
         try {
             JsonObject json = JsonUtils.extractJsonRequestBody(request);
-            String id = json.getJsonString(p_FacultyID).getString();
-            String name = json.getJsonString(p_FacultyName).getString();
+            String id = json.getJsonString(FacultyApi.p_FacultyID).getString();
+            String name = json.getJsonString(FacultyApi.p_FacultyName).getString();
             if (Faculty.checkParametersAreValid(id, name)) {
                 addResourceToDatabase(new Faculty(id, name));
                 response.setStatus(HttpServletResponse.SC_OK);
             } else {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 response.getWriter().print(
-                    "One or more parameters is invalid: %s, %s".format(p_FacultyID, p_FacultyName));
+                    "One or more parameters is invalid: %s, %s".format(FacultyApi.p_FacultyID, FacultyApi.p_FacultyName));
             }
         } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -76,8 +77,8 @@ public class FacultyApi extends ResourceApi {
     @Override
     protected void doDelete(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
-        if (request.getParameterMap().containsKey(p_FacultyID)) {
-            deleteResourceFromDataBase(request.getParameter(p_FacultyID));
+        if (request.getParameterMap().containsKey(FacultyApi.p_FacultyID)) {
+            deleteResourceFromDataBase(request.getParameter(FacultyApi.p_FacultyID));
             response.setStatus(HttpServletResponse.SC_OK);
         } else {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -86,8 +87,34 @@ public class FacultyApi extends ResourceApi {
     }
 
     @Override
-    protected void addResourceToDatabase(Resource resource) {
+    protected void addResourceToDatabase(Resource resource)
+        throws SQLException, SQLCustomException, NamingException {
         // TODO
+
+        JsonObject entity = resource.exportResourceJson();
+        String fId = entity.getJsonString(Faculty.p_FacultyID).toString();
+        String fName = entity.getJsonString(Faculty.p_FacultyName).toString();
+
+        try {
+            Connection db = Database.getAcademiaConnection();
+            CallableStatement st = db.prepareCall("CALL AddFaculty(?,?,?);");
+            st.setString(1, fId);
+            st.setString(2, fName);
+            st.registerOutParameter(3, Types.INTEGER);
+
+            st.execute();
+
+            int status = st.getInt(3);
+            LOGGER.log(Level.INFO, "Status: " + status);
+            if (status != 200) {
+                throw new SQLCustomException(status, this.getClass().getName());
+            }
+
+        } catch (SQLException e1) {
+            LOGGER.log(Level.SEVERE, e1.toString());
+        } catch (NamingException e2) {
+            LOGGER.log(Level.SEVERE, e2.toString());
+        }
     }
 
     private void deleteResourceFromDataBase(String FacultyID) {

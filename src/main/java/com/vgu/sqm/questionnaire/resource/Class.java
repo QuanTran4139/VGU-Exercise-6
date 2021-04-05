@@ -10,6 +10,11 @@ public class Class implements Resource {
     private String SemesterID;
     private String ModuleID;
 
+    public static final String p_ClassID = "ClassID";
+    public static final String p_SemesterID = "SemesterID";
+    public static final String p_ModuleID = "ModuleID";
+    public static final String p_Size = "Size";
+
     public Class(String ClassID, int Size, String SemesterID, String ModuleID) {
         this.ClassID = ClassID;
         this.Size = Size;
@@ -19,10 +24,10 @@ public class Class implements Resource {
 
     public JsonObject exportResourceJson() {
         JsonObjectBuilder builder = Json.createObjectBuilder();
-        builder.add("ClassID", this.ClassID);
-        builder.add("Size", this.Size);
-        builder.add("SemesterID", this.SemesterID);
-        builder.add("ModuleID", this.ModuleID);
+        builder.add(Class.p_ClassID, this.ClassID);
+        builder.add(Class.p_Size, this.Size);
+        builder.add(Class.p_SemesterID, this.SemesterID);
+        builder.add(Class.p_ModuleID, this.ModuleID);
         JsonObject obj = builder.build();
         return obj;
     }

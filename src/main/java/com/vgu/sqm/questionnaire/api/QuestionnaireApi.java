@@ -1,14 +1,17 @@
 package com.vgu.sqm.questionnaire.api;
 
 import com.vgu.sqm.questionnaire.database.Database;
+import com.vgu.sqm.questionnaire.database.SQLCustomException;
 import com.vgu.sqm.questionnaire.resource.Questionnaire;
 import com.vgu.sqm.questionnaire.resource.Resource;
 import com.vgu.sqm.questionnaire.utils.JsonUtils;
-import com.vgu.sqm.questionnaire.exception.SQLCustomException;
 import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.json.Json;
@@ -33,6 +36,9 @@ public class QuestionnaireApi extends ResourceApi {
     private final static String p_Gender = "gender";
     private final static String p_Answers = "qa";
     private final static String p_Comment = "comment";
+    private final static String p_Question = "q";
+    private final static List<String> questions = Arrays.asList("gender", "0", "1", "2", "3", "4",
+        "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17");
 
     public QuestionnaireApi() {
         super();
@@ -77,79 +83,78 @@ public class QuestionnaireApi extends ResourceApi {
         return resources;
     }
 
-    private JsonObject getCounts(String ClassID, String LecturerID) {
+    private JsonObject getCounts(String ClassID, String LecturerID, String question) {
+        // ===========================Note======================
+        // = QUESTION0 IS CURRENTLY NOT WORKING AT THE MOMENT===
+        // =====================================================
+        HashMap<String, Integer> result = new HashMap<>();
         try {
             Connection db = Database.getAcademiaConnection();
-            CallableStatement st = db.prepareCall("CALL GetGenderCountByID(?,?,?)");
-            st.setString(1, ClassID);
-            st.setString(2, LecturerID);
-            st.registerOutParameter(3, Types.INTEGER);
+            CallableStatement st;
+            ResultSet rs;
+            int status;
 
-            ResultSet rs = st.executeQuery();
-            HashMap<String, Integer> countsByGender = new HashMap<>();
+            if (question.equals("gender")) {
+                st = db.prepareCall("CALL GetGenderCountByID(?,?,?)");
+                st.setString(1, ClassID);
+                st.setString(2, LecturerID);
+                st.registerOutParameter(3, Types.INTEGER);
 
-            // get status
-            int status = st.getInt(3);
-            LOGGER.log(Level.INFO, "status (count gender) is " + status);
-            if (status == 200) {
-                while (rs.next()) {
-                    String gender = rs.getString("Gender");
-                    int count = rs.getInt("Count");
+                rs = st.executeQuery();
 
-                    countsByGender.put(gender, count);
+                status = st.getInt(3);
+                LOGGER.log(Level.INFO, "status (count gender) is " + status);
+                if (status == 200) {
+                    while (rs.next()) {
+                        String gender = rs.getString("Gender");
+                        int count = rs.getInt("Count");
+
+                        result.put(gender, count);
+                    }
                 }
             } else {
-                throw new SQLCustomException(status,this.getClass().getName());
-            }
-
-            int[][] qa = new int[18][6];
-
-            //TODO need to change Question0 after
-            for (int i =0 ; i < 6; i++) {
-                qa[0][i] = 0;
-            }
-            for (int i = 1; i < 18; i++) {
                 st = db.prepareCall("CALL GetResponseByQuestion(?,?,?,?)");
                 st.setString(1, ClassID);
                 st.setString(2, LecturerID);
-                st.setInt(3, i);
+                st.setInt(3, Integer.parseInt(question));
                 st.registerOutParameter(4, Types.INTEGER);
 
                 rs = st.executeQuery();
 
                 // get status
                 status = st.getInt(4);
-                LOGGER.log(Level.INFO, "status (get response) is " + status);
+                LOGGER.log(Level.INFO,
+                    "status (get response count for question" + question + ") is " + status);
                 if (status == 200) {
                     while (rs.next()) {
-                        for (int j = 0; j <= 5; j++) {
-                            qa[i][j] = rs.getInt(j + 4);
+                        for (int j = 0; j <= 4; j++) {
+                            result.put(Integer.toString(j + 1), rs.getInt(j + 4));
+                        }
+
+                        if (!question.matches("[567]")) {
+                            result.put("N/A", rs.getInt(9));
                         }
                     }
-                } else {
-                    throw new SQLCustomException(status,this.getClass().getName());
                 }
             }
-            db.close();
 
-            JsonObjectBuilder objBuilder = Json.createObjectBuilder();
-            JsonObject genderCounts =
-                Json.createObjectBuilder()
-                    .add("M", countsByGender.get("M") == null ? -1 : countsByGender.get("M"))
-                    .add("F", countsByGender.get("F") == null ? -1 : countsByGender.get("F"))
-                    .add("N", countsByGender.get("N") == null ? -1 : countsByGender.get("N"))
-                    .build();
-            JsonArray qaArray = JsonUtils.arrayToJson(qa);
-            objBuilder.add("genders", genderCounts).add("qa", qaArray);
-            JsonObject obj = objBuilder.build();
+            if (status != 200) {
+                throw new SQLCustomException(status, this.getClass().getName());
+            }
 
-            return obj;
-        } catch (SQLException e1) {
-            LOGGER.log(Level.SEVERE, e1.toString());
-        } catch (NamingException e2) {
-            LOGGER.log(Level.SEVERE, e2.toString());
+            LOGGER.log(Level.INFO, result.toString());
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, e.toString());
+        } catch (NamingException e) {
+            LOGGER.log(Level.SEVERE, e.toString());
         }
-        return null;
+
+        // turn the above results into JSON objects
+        JsonObjectBuilder builder = Json.createObjectBuilder();
+        for (Map.Entry<String, Integer> entry : result.entrySet()) {
+            builder.add(entry.getKey(), entry.getValue());
+        }
+        return builder.build();
     }
 
     private float getReponseRate(String ClassID, String LecturerID) {
@@ -170,7 +175,7 @@ public class QuestionnaireApi extends ResourceApi {
             if (status == 200 && rs.next()) {
                 result = rs.getInt("Response_Rate");
             } else {
-                throw new SQLCustomException(status,this.getClass().getName());
+                throw new SQLCustomException(status, this.getClass().getName());
             }
 
             db.close();
@@ -186,30 +191,40 @@ public class QuestionnaireApi extends ResourceApi {
     protected void doGetCustomAction(HttpServletRequest request, HttpServletResponse response,
         String action) throws ServletException, IOException {
         if (action.equals("getCounts")) { // action = getCounts
-            if (request.getParameterMap().containsKey("cid")
-                && request.getParameterMap().containsKey("lid")) {
-                response.setContentType("application/json");
-                response.setStatus(HttpServletResponse.SC_OK);
-                String cid = request.getParameter("cid");
-                String lid = request.getParameter("lid");
-                response.getWriter().print(getCounts(cid, lid));
+            if (request.getParameterMap().containsKey(QuestionnaireApi.p_ClassID)
+                && request.getParameterMap().containsKey(QuestionnaireApi.p_LecturerID)
+                && request.getParameterMap().containsKey(QuestionnaireApi.p_Question)) {
+                String cid = request.getParameter(QuestionnaireApi.p_ClassID);
+                String lid = request.getParameter(QuestionnaireApi.p_LecturerID);
+                String question = request.getParameter(QuestionnaireApi.p_Question);
+                if (questions.contains(question) && !question.equals("comment")) {
+                    response.setContentType("application/json");
+                    response.setStatus(HttpServletResponse.SC_OK);
+                    response.getWriter().print(getCounts(cid, lid, question));
+                } else { // invalid question for counting
+                    response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                    response.getWriter().print("Question %s is unvailable".format(question));
+                }
             } else { // missing parameters
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 response.getWriter().print(
-                    "The following parameters are required for 'getCounts': cid, lid");
+                    "The following parameters are required for 'getCounts': %s, %s, %s".format(
+                        QuestionnaireApi.p_ClassID, QuestionnaireApi.p_LecturerID,
+                        QuestionnaireApi.p_Question));
             }
         } else if (action.equals("getResponseRate")) { // action = getReponseRate
-            if (request.getParameterMap().containsKey("cid")
-                && request.getParameterMap().containsKey("lid")) {
+            if (request.getParameterMap().containsKey(QuestionnaireApi.p_ClassID)
+                && request.getParameterMap().containsKey(QuestionnaireApi.p_LecturerID)) {
                 response.setContentType("application/json");
                 response.setStatus(HttpServletResponse.SC_OK);
-                String cid = request.getParameter("cid");
-                String lid = request.getParameter("lid");
+                String cid = request.getParameter(QuestionnaireApi.p_ClassID);
+                String lid = request.getParameter(QuestionnaireApi.p_LecturerID);
                 response.getWriter().print(getReponseRate(cid, lid));
             } else { // missing parameters
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 response.getWriter().print(
-                    "The following parameters are required for 'getReponseRate': cid, lid");
+                    "The following parameters are required for 'getReponseRate': %s, %s".format(
+                        QuestionnaireApi.p_ClassID, QuestionnaireApi.p_LecturerID));
             }
         } else {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -223,15 +238,15 @@ public class QuestionnaireApi extends ResourceApi {
         throws ServletException, IOException {
         JsonObject json = JsonUtils.extractJsonRequestBody(request);
         try {
-            String LecturerID = json.getJsonString(p_LecturerID).getString();
-            String ClassID = json.getJsonString(p_ClassID).getString();
+            String LecturerID = json.getJsonString(QuestionnaireApi.p_LecturerID).getString();
+            String ClassID = json.getJsonString(QuestionnaireApi.p_ClassID).getString();
             // Placeholder QID, to be auto-incremented
             int QuestionnaireID = 0;
             // Gender should be a single character
-            char gender = json.getJsonString(p_Gender).getChars().charAt(0);
-            String comment = json.getJsonString(p_Comment).getString();
+            char gender = json.getJsonString(QuestionnaireApi.p_Gender).getChars().charAt(0);
+            String comment = json.getJsonString(QuestionnaireApi.p_Comment).getString();
             // Get the answers
-            JsonArray jsonAnswers = json.getJsonArray(p_Answers);
+            JsonArray jsonAnswers = json.getJsonArray(QuestionnaireApi.p_Answers);
             int[] answers = {
                 jsonAnswers.getInt(0),
                 jsonAnswers.getInt(1),
@@ -260,7 +275,8 @@ public class QuestionnaireApi extends ResourceApi {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 response.getWriter().print(
                     "One or more parameters is invalid: %s, %s, %s, %s".format(
-                        p_LecturerID, p_ClassID, p_Gender, p_Answers));
+                        QuestionnaireApi.p_LecturerID, QuestionnaireApi.p_ClassID,
+                        QuestionnaireApi.p_Gender, QuestionnaireApi.p_Answers));
             }
         } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -271,28 +287,32 @@ public class QuestionnaireApi extends ResourceApi {
     @Override
     protected void doDelete(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
-        if (request.getParameterMap().containsKey(p_LecturerID)
-            && request.getParameterMap().containsKey(p_ClassID)
-            && request.getParameterMap().containsKey(p_QuestionnaireID)) {
+        if (request.getParameterMap().containsKey(QuestionnaireApi.p_LecturerID)
+            && request.getParameterMap().containsKey(QuestionnaireApi.p_ClassID)
+            && request.getParameterMap().containsKey(QuestionnaireApi.p_QuestionnaireID)) {
             try {
-                String LecturerID = request.getParameter(p_LecturerID);
-                String ClassID = request.getParameter(p_ClassID);
-                int QuestionnaireID = Integer.parseInt(request.getParameter(p_QuestionnaireID));
+                String LecturerID = request.getParameter(QuestionnaireApi.p_LecturerID);
+                String ClassID = request.getParameter(QuestionnaireApi.p_ClassID);
+                int QuestionnaireID =
+                    Integer.parseInt(request.getParameter(QuestionnaireApi.p_QuestionnaireID));
                 deleteResourceFromDataBase(LecturerID, ClassID, QuestionnaireID);
                 response.setStatus(HttpServletResponse.SC_OK);
             } catch (NumberFormatException e) {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                response.getWriter().print("qid must be int");
+                response.getWriter().print(
+                    "%s must be int".format(QuestionnaireApi.p_QuestionnaireID));
             }
         } else {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            response.getWriter().print("Missing parameters: %s, %s, %s".format(
-                p_LecturerID, p_ClassID, p_QuestionnaireID));
+            response.getWriter().print(
+                "Missing parameters: %s, %s, %s".format(QuestionnaireApi.p_LecturerID,
+                    QuestionnaireApi.p_ClassID, QuestionnaireApi.p_QuestionnaireID));
         }
     }
 
     @Override
-    protected void addResourceToDatabase(Resource resource) {
+    protected void addResourceToDatabase(Resource resource)
+        throws SQLCustomException, SQLException, NamingException {
         // TODO
     }
 

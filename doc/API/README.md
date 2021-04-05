@@ -48,26 +48,46 @@ This dumps the entire table for each resource/endpoint. The response is formatte
 
 ##### `getCounts`
 
-Calling `questionnaire?action=getCounts?cid=_ClassID_&lid=_LecturerID_` will return the counts of the answers to all questions in the corresponding Questionnaire.
+Calling `questionnaire?action=getCounts?cid=_ClassID_&lid=_LecturerID_&q=_Question_` (Question can be `gender` or an `int` in the range 0-17) will return the counts of the answers to all questions in the corresponding Questionnaire.
 
 The response is formatted as follows:
 
+- `question=gender`
+
 ```json
 {
-    "gender": {
-        "M": count(gender == "M"),
-        "F": count(gender == "F"),
-        "N": count(gender == "N"),
-    },
-    "qa": [
-        [a0, a1, a2, a3],
-        [a0, a1, a2, a3],
-        [a0, a1, a2, a3],
-    ]
+    "M": 0,
+    "F": 0,
+    "N": 0,
 }
 ```
 
-Where `"qa"` (questions-answers) is an array of questions, and each question is an array of answers, where `a0 = count(answer == "N/A")`, `a1 = count(answer == 1)`, and so on, with the length of each answer being the number of possible answers (including "N/A").
+- questions 0-4,8-17
+
+```json
+{
+    "1": 0,
+    "2": 0,
+    "3": 0,
+    "4": 0,
+    "5": 0,
+}
+```
+
+- questions 5-7
+
+```json
+{
+    "1": 0,
+    "2": 0,
+    "3": 0,
+    "4": 0,
+    "5": 0,
+    "N/A": 0,
+}
+```
+
+Replace the `0`s with real counts.
 
 ##### `getResponseRate`
 

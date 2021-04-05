@@ -1,3 +1,6 @@
+CREATE DATABASE IF NOT EXISTS vgu6;
+USE vgu6;
+
 source schemas/01_tables_def.sql;
 source Tests/Testing_dataset.sql;
 source StoredProcedures/GetTotalClassesSize.sql;
@@ -17,3 +20,4 @@ source StoredProcedures/DumpTeaching.sql;
 source StoredProcedures/DumpFacultyInAcademicYear.sql;
 source StoredProcedures/DumpProgramInFacultyInAcademicYear.sql;
 source StoredProcedures/DumpModuleInProgramInAcademicYear.sql;
+source StoredProcedures/AllAddingProcedure.sql;

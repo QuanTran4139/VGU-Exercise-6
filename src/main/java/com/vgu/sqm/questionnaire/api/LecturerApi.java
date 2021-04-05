@@ -1,6 +1,7 @@
 package com.vgu.sqm.questionnaire.api;
 
 import com.vgu.sqm.questionnaire.database.Database;
+import com.vgu.sqm.questionnaire.database.SQLCustomException;
 import com.vgu.sqm.questionnaire.resource.Lecturer;
 import com.vgu.sqm.questionnaire.resource.Resource;
 import com.vgu.sqm.questionnaire.utils.JsonUtils;
@@ -57,15 +58,15 @@ public class LecturerApi extends ResourceApi {
         throws ServletException, IOException {
         try {
             JsonObject json = JsonUtils.extractJsonRequestBody(request);
-            String id = json.getJsonString(p_LecturerID).getString();
-            String name = json.getJsonString(p_LecturerName).getString();
+            String id = json.getJsonString(LecturerApi.p_LecturerID).getString();
+            String name = json.getJsonString(LecturerApi.p_LecturerName).getString();
             if (Lecturer.checkParametersAreValid(id, name)) {
                 addResourceToDatabase(new Lecturer(id, name));
                 response.setStatus(HttpServletResponse.SC_OK);
             } else {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                response.getWriter().print(
-                    "One or more parameters is invalid: %s, %s".format(p_LecturerID, p_LecturerName));
+                response.getWriter().print("One or more parameters is invalid: %s, %s".format(
+                    LecturerApi.p_LecturerID, LecturerApi.p_LecturerName));
             }
         } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -76,8 +77,8 @@ public class LecturerApi extends ResourceApi {
     @Override
     protected void doDelete(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
-        if (request.getParameterMap().containsKey(p_LecturerID)) {
-            deleteResourceFromDataBase(request.getParameter(p_LecturerID));
+        if (request.getParameterMap().containsKey(LecturerApi.p_LecturerID)) {
+            deleteResourceFromDataBase(request.getParameter(LecturerApi.p_LecturerID));
             response.setStatus(HttpServletResponse.SC_OK);
         } else {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -86,7 +87,8 @@ public class LecturerApi extends ResourceApi {
     }
 
     @Override
-    protected void addResourceToDatabase(Resource resource) {
+    protected void addResourceToDatabase(Resource resource)
+        throws SQLCustomException, SQLException, NamingException {
         // TODO
     }
 

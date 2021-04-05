@@ -1,6 +1,7 @@
 package com.vgu.sqm.questionnaire.api;
 
 import com.vgu.sqm.questionnaire.database.Database;
+import com.vgu.sqm.questionnaire.database.SQLCustomException;
 import com.vgu.sqm.questionnaire.resource.AcademicYear;
 import com.vgu.sqm.questionnaire.resource.Resource;
 import com.vgu.sqm.questionnaire.utils.JsonUtils;
@@ -55,7 +56,7 @@ public class AcademicYearApi extends ResourceApi {
         throws ServletException, IOException {
         try {
             JsonObject json = JsonUtils.extractJsonRequestBody(request);
-            int id = json.getJsonNumber(p_AYearID).intValue();
+            int id = json.getJsonNumber(AcademicYearApi.p_AYearID).intValue();
             addResourceToDatabase(new AcademicYear(id));
             response.setStatus(HttpServletResponse.SC_OK);
         } catch (Exception e) {
@@ -67,46 +68,56 @@ public class AcademicYearApi extends ResourceApi {
     @Override
     protected void doDelete(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
-        if (request.getParameterMap().containsKey(p_AYearID)) {
+        if (request.getParameterMap().containsKey(AcademicYearApi.p_AYearID)) {
             try {
-                int id = Integer.parseInt(request.getParameter(p_AYearID));
+                int id = Integer.parseInt(request.getParameter(AcademicYearApi.p_AYearID));
                 deleteResourceFromDataBase(id);
                 response.setStatus(HttpServletResponse.SC_OK);
             } catch (NumberFormatException e) {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                response.getWriter().print("%s must be an int".format(p_AYearID));
+                response.getWriter().print("%s must be an int".format(AcademicYearApi.p_AYearID));
             }
         } else {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            response.getWriter().print("Missing parameter: %s".format(p_AYearID));
+            response.getWriter().print("Missing parameter: %s".format(AcademicYearApi.p_AYearID));
         }
     }
 
     @Override
-    protected void addResourceToDatabase(Resource resource) {
+    protected void addResourceToDatabase(Resource resource)
+        throws SQLCustomException, SQLException, NamingException {
         JsonObject entity = resource.exportResourceJson();
-        int id = entity.getJsonNumber("AYearID").intValue();
+        int id = entity.getJsonNumber(AcademicYear.p_id).intValue();
 
         try {
             Connection db = Database.getAcademiaConnection();
-            PreparedStatement st = db.prepareStatement("INSERT INTO academicyear(AYearId) VALUES (?);");
+            CallableStatement st = db.prepareCall("CALL AddAcademicYear(?,?);");
             st.setInt(1, id);
+            st.registerOutParameter(2, Types.INTEGER);
+
             st.execute();
+
+            int status = st.getInt(2);
+            LOGGER.log(Level.INFO, "Status: " + status);
+            if (status != 200) {
+                throw new SQLCustomException(status, this.getClass().getName());
+            }
 
         } catch (SQLException e1) {
             LOGGER.log(Level.SEVERE, e1.toString());
         } catch (NamingException e2) {
             LOGGER.log(Level.SEVERE, e2.toString());
         }
-
-        // TODO
     }
 
     private void deleteResourceFromDataBase(int AYearID) {
         try {
             Connection db = Database.getAcademiaConnection();
-            PreparedStatement st = db.prepareStatement("DELETE FROM academicyear where AYearId = ?;");
+            PreparedStatement st =
+                db.prepareStatement("DELETE FROM academicyear where AYearId = ?;");
             st.setInt(1, AYearID);
+
+            LOGGER.log(Level.INFO, "Deleting resource in process...");
             st.execute();
 
         } catch (SQLException e1) {

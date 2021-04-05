@@ -1,6 +1,7 @@
 package com.vgu.sqm.questionnaire.api;
 
 import com.vgu.sqm.questionnaire.database.Database;
+import com.vgu.sqm.questionnaire.database.SQLCustomException;
 import com.vgu.sqm.questionnaire.resource.Resource;
 import com.vgu.sqm.questionnaire.resource.Semester;
 import com.vgu.sqm.questionnaire.utils.JsonUtils;
@@ -57,19 +58,19 @@ public class SemesterApi extends ResourceApi {
         throws ServletException, IOException {
         try {
             JsonObject json = JsonUtils.extractJsonRequestBody(request);
-            String SemesterID = json.getJsonString(p_SemesterID).getString();
-            int AYearID = json.getJsonNumber(p_AYearID).intValue();
+            String SemesterID = json.getJsonString(SemesterApi.p_SemesterID).getString();
+            int AYearID = json.getJsonNumber(SemesterApi.p_AYearID).intValue();
             if (Semester.checkParametersAreValid(SemesterID, AYearID)) {
                 addResourceToDatabase(new Semester(SemesterID, AYearID));
                 response.setStatus(HttpServletResponse.SC_OK);
             } else {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                response.getWriter().print(
-                    "One or more parameters is invalid: %s, %s".format(p_SemesterID, p_AYearID));
+                response.getWriter().print("One or more parameters is invalid: %s, %s".format(
+                    SemesterApi.p_SemesterID, SemesterApi.p_AYearID));
             }
         } catch (NumberFormatException e) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            response.getWriter().print("%s must be int".format(p_AYearID));
+            response.getWriter().print("%s must be int".format(SemesterApi.p_AYearID));
         } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             response.getWriter().print("Malformed JSON request body");
@@ -79,17 +80,18 @@ public class SemesterApi extends ResourceApi {
     @Override
     protected void doDelete(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
-        if (request.getParameterMap().containsKey(p_SemesterID)) {
-            deleteResourceFromDataBase(request.getParameter(p_SemesterID));
+        if (request.getParameterMap().containsKey(SemesterApi.p_SemesterID)) {
+            deleteResourceFromDataBase(request.getParameter(SemesterApi.p_SemesterID));
             response.setStatus(HttpServletResponse.SC_OK);
         } else {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            response.getWriter().print("Missing parameter: %s".format(p_SemesterID));
+            response.getWriter().print("Missing parameter: %s".format(SemesterApi.p_SemesterID));
         }
     }
 
     @Override
-    protected void addResourceToDatabase(Resource resource) {
+    protected void addResourceToDatabase(Resource resource)
+        throws SQLException, SQLCustomException, NamingException {
         // TODO
     }
 
