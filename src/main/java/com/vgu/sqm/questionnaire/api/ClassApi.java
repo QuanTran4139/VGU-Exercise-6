@@ -4,6 +4,10 @@ import com.vgu.sqm.questionnaire.database.Database;
 import com.vgu.sqm.questionnaire.database.SQLCustomException;
 import com.vgu.sqm.questionnaire.resource.Class;
 import com.vgu.sqm.questionnaire.resource.Resource;
+import com.vgu.sqm.questionnaire.resource.Semester;
+import com.vgu.sqm.questionnaire.resource.Faculty;
+import com.vgu.sqm.questionnaire.resource.Program;
+import com.vgu.sqm.questionnaire.resource.Lecturer;
 import com.vgu.sqm.questionnaire.utils.JsonUtils;
 import java.io.IOException;
 import java.sql.*;
@@ -60,7 +64,6 @@ public class ClassApi extends ResourceApi {
     private JsonObject getClassOptions(String ClassID) {
         // TODO replace the following sample data with real data from the DB
 
-        ArrayList<Resource> classInfos = new ArrayList<>();
 
         try {
             Connection db = Database.getAcademiaConnection();
@@ -70,28 +73,21 @@ public class ClassApi extends ResourceApi {
 
             ResultSet rs = st.executeQuery();
 
-            ArrayList<String> sId = new ArrayList<>();
-            ArrayList<String> fName = new ArrayList<>();
-            ArrayList<String> pName = new ArrayList<>();
-            ArrayList<String> lId = new ArrayList<>();
-            ArrayList<String> lName = new ArrayList<>();
+            ArrayList<Resource> semesters = new ArrayList<>();
+            ArrayList<Resource> faculties = new ArrayList<>();
+            ArrayList<Resource> programs = new ArrayList<>();
+            ArrayList<Resource> lecturers = new ArrayList<>();
 
             // get status
             int status = st.getInt(2);
             LOGGER.log(Level.INFO, "status is " + status);
             if (status == 200) {
                 while (rs.next()) {
-                    sId.add(rs.getString("semesterId")); // Attribute name: semesterId
-                    fName.add(rs.getString("facultyName")); // Attribute name: facultyName
-                    pName.add(rs.getString("programName")); // Attribute name: programName
-                    lId.add(rs.getString("LecturerId")); // Attribute name: LecturerId
-                    lName.add(rs.getString("lecturerName")); // Attribute name: lecturerName
+                    semesters.add(new Semester(rs.getString("semesterId"), rs.getInt("AYearId")));
+                    faculties.add(new Faculty(rs.getString("FacultyId"), rs.getString("facultyName")));
+                    programs.add(new Program(rs.getString("ProgramId"), rs.getString("programName")));
+                    lecturers.add(new Lecturer(rs.getString("LecturerId"), rs.getString("lecturerName")));
                 }
-                LOGGER.log(Level.INFO, "sId = " + sId);
-                LOGGER.log(Level.INFO, "fName = " + fName);
-                LOGGER.log(Level.INFO, "pName = " + pName);
-                LOGGER.log(Level.INFO, "lID = " + lId);
-                LOGGER.log(Level.INFO, "lName = " + lName);
             } else {
                 throw new SQLCustomException(status);
             }
@@ -211,14 +207,21 @@ public class ClassApi extends ResourceApi {
     }
 
     private void deleteResourceFromDataBase(String ClassID) {
-        // TODO
         try {
             Connection db = Database.getAcademiaConnection();
-            PreparedStatement st = db.prepareStatement("DELETE FROM class where ClassId = ?;");
+            CallableStatement st =
+                    db.prepareCall("CALL DeleteClass(?,?)");
             st.setString(1, ClassID);
+            st.registerOutParameter(2,Types.INTEGER);
 
-            LOGGER.log(Level.INFO, "Deleting resource in process...");
             st.execute();
+
+            int status = st.getInt(2);
+            LOGGER.log(Level.INFO, "Status: " + status);
+
+            if (status != 200) {
+                throw new SQLCustomException(status);
+            }
 
         } catch (SQLException e1) {
             LOGGER.log(Level.SEVERE, e1.toString());

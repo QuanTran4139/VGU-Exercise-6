@@ -123,6 +123,27 @@ public class TeachingApi extends ResourceApi {
     }
 
     private void deleteResourceFromDataBase(String LectureID, String ClassID) {
-        // TODO
+        try {
+            Connection db = Database.getAcademiaConnection();
+            CallableStatement st =
+                    db.prepareCall("CALL DeleteTeaching(?,?,?)");
+            st.setString(1, LectureID);
+            st.setString(2, ClassID);
+            st.registerOutParameter(3,Types.INTEGER);
+
+            st.execute();
+
+            int status = st.getInt(3);
+            LOGGER.log(Level.INFO, "Status: " + status);
+
+            if (status != 200) {
+                throw new SQLCustomException(status);
+            }
+
+        } catch (SQLException e1) {
+            LOGGER.log(Level.SEVERE, e1.toString());
+        } catch (NamingException e2) {
+            LOGGER.log(Level.SEVERE, e2.toString());
+        }
     }
 }

@@ -120,6 +120,26 @@ public class LecturerApi extends ResourceApi {
     }
 
     private void deleteResourceFromDataBase(String LectureID) {
-        // TODO
+        try {
+            Connection db = Database.getAcademiaConnection();
+            CallableStatement st =
+                    db.prepareCall("CALL DeleteLecturer(?,?)");
+            st.setString(1, LectureID);
+            st.registerOutParameter(2,Types.INTEGER);
+
+            st.execute();
+
+            int status = st.getInt(2);
+            LOGGER.log(Level.INFO, "Status: " + status);
+
+            if (status != 200) {
+                throw new SQLCustomException(status);
+            }
+
+        } catch (SQLException e1) {
+            LOGGER.log(Level.SEVERE, e1.toString());
+        } catch (NamingException e2) {
+            LOGGER.log(Level.SEVERE, e2.toString());
+        }
     }
 }

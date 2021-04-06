@@ -151,6 +151,27 @@ public class ProgramInFacultyInAcademicYearApi extends ResourceApi {
     }
 
     private void deleteResourceFromDataBase(String ProgramID, String FacultyID, int AYearID) {
-        // TODO
+        try {
+            Connection db = Database.getAcademiaConnection();
+            CallableStatement st =
+                    db.prepareCall("CALL DeleteProgramInFacultyInAcademicYear(?,?,?)");
+            st.setString(1, ProgramID);
+            st.setInt(2, AYearID);
+            st.registerOutParameter(3,Types.INTEGER);
+
+            st.execute();
+
+            int status = st.getInt(3);
+            LOGGER.log(Level.INFO, "Status: " + status);
+
+            if (status != 200) {
+                throw new SQLCustomException(status);
+            }
+
+        } catch (SQLException e1) {
+            LOGGER.log(Level.SEVERE, e1.toString());
+        } catch (NamingException e2) {
+            LOGGER.log(Level.SEVERE, e2.toString());
+        }
     }
 }

@@ -333,6 +333,28 @@ public class QuestionnaireApi extends ResourceApi {
 
     private void deleteResourceFromDataBase(
         String LecturerID, String ClassID, int QuestionnaireID) {
-        // TODO
+        try {
+            Connection db = Database.getAcademiaConnection();
+            CallableStatement st =
+                    db.prepareCall("CALL DeleteQuestionnaire(?,?,?,?)");
+            st.setString(1, LecturerID);
+            st.setString(2, ClassID);
+            st.setInt(3, QuestionnaireID);
+            st.registerOutParameter(4,Types.INTEGER);
+
+            st.execute();
+
+            int status = st.getInt(4);
+            LOGGER.log(Level.INFO, "Status: " + status);
+
+            if (status != 200) {
+                throw new SQLCustomException(status);
+            }
+
+        } catch (SQLException e1) {
+            LOGGER.log(Level.SEVERE, e1.toString());
+        } catch (NamingException e2) {
+            LOGGER.log(Level.SEVERE, e2.toString());
+        }
     }
 }
