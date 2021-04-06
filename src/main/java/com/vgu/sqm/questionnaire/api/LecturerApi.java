@@ -69,6 +69,9 @@ public class LecturerApi extends ResourceApi {
                     String.format("One or more parameters is invalid: %s, %s",
                         LecturerApi.p_LecturerID, LecturerApi.p_LecturerName));
             }
+        } catch (SQLCustomException e) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.getWriter().print(e);
         } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             response.getWriter().print("Malformed JSON request body");
@@ -89,7 +92,7 @@ public class LecturerApi extends ResourceApi {
 
     @Override
     protected void addResourceToDatabase(Resource resource)
-        throws SQLException, NamingException {
+        throws SQLCustomException, NamingException {
         JsonObject entity = resource.exportResourceJson();
         String lId = entity.getJsonString(Lecturer.p_LecturerID).toString();
         String lName = entity.getJsonString(Lecturer.p_LecturerName).toString();

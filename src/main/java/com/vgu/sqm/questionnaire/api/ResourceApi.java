@@ -24,7 +24,7 @@ public abstract class ResourceApi extends HttpServlet {
     abstract protected void doDelete(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException;
     abstract protected void addResourceToDatabase(Resource resource)
-        throws SQLCustomException, SQLException, NamingException;
+        throws SQLCustomException, NamingException;
     abstract ArrayList<Resource> dumpResource();
 
     protected JsonArray ResourceToJson(ArrayList<Resource> resources) {

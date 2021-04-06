@@ -80,6 +80,9 @@ public class ProgramInFacultyInAcademicYearApi extends ResourceApi {
                         ProgramInFacultyInAcademicYearApi.p_FacultyID,
                         ProgramInFacultyInAcademicYearApi.p_AYearID));
             }
+        } catch (SQLCustomException e) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.getWriter().print(e);
         } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             response.getWriter().print("Malformed JSON request body");
@@ -117,7 +120,7 @@ public class ProgramInFacultyInAcademicYearApi extends ResourceApi {
 
     @Override
     protected void addResourceToDatabase(Resource resource)
-        throws SQLException, NamingException {
+        throws SQLCustomException, NamingException {
         JsonObject entity = resource.exportResourceJson();
         String pId = entity.getJsonString(ProgramInFacultyInAcademicYear.p_ProgramID).toString();
         String fId = entity.getJsonString(ProgramInFacultyInAcademicYear.p_FacultyID).toString();

@@ -79,6 +79,9 @@ public class ModuleInProgramInAcademicYearApi extends ResourceApi {
                         ModuleInProgramInAcademicYearApi.p_ProgramID,
                         ModuleInProgramInAcademicYearApi.p_AYearID));
             }
+        } catch (SQLCustomException e) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.getWriter().print(e);
         } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             response.getWriter().print("Malformed JSON request body");
@@ -114,7 +117,7 @@ public class ModuleInProgramInAcademicYearApi extends ResourceApi {
 
     @Override
     protected void addResourceToDatabase(Resource resource)
-        throws SQLException, NamingException {
+        throws SQLCustomException, NamingException {
         JsonObject entity = resource.exportResourceJson();
         String pId = entity.getJsonString(ModuleInProgramInAcademicYear.p_ProgramID).toString();
         String mId = entity.getJsonString(ModuleInProgramInAcademicYear.p_ModuleID).toString();
@@ -122,7 +125,8 @@ public class ModuleInProgramInAcademicYearApi extends ResourceApi {
 
         try {
             Connection db = Database.getAcademiaConnection();
-            CallableStatement st = db.prepareCall("CALL AddModuleInProgramInAcademicYear(?,?,?,?);");
+            CallableStatement st =
+                db.prepareCall("CALL AddModuleInProgramInAcademicYear(?,?,?,?);");
             st.setString(1, pId);
             st.setString(2, mId);
             st.setInt(3, aYearId);
@@ -137,9 +141,9 @@ public class ModuleInProgramInAcademicYearApi extends ResourceApi {
             }
             db.close();
         } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE,e.toString());
+            LOGGER.log(Level.SEVERE, e.toString());
         } catch (NamingException e) {
-            LOGGER.log(Level.SEVERE,e.toString());
+            LOGGER.log(Level.SEVERE, e.toString());
         }
     }
 

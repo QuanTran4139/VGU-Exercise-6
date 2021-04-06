@@ -59,6 +59,12 @@ public class AcademicYearApi extends ResourceApi {
             int id = json.getJsonNumber(AcademicYearApi.p_AYearID).intValue();
             addResourceToDatabase(new AcademicYear(id));
             response.setStatus(HttpServletResponse.SC_OK);
+        } catch (NumberFormatException e) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.getWriter().print(String.format("%s must be int", AcademicYearApi.p_AYearID));
+        } catch (SQLCustomException e) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.getWriter().print(e);
         } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             response.getWriter().print("Malformed JSON request body");
@@ -75,17 +81,19 @@ public class AcademicYearApi extends ResourceApi {
                 response.setStatus(HttpServletResponse.SC_OK);
             } catch (NumberFormatException e) {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                response.getWriter().print(String.format("%s must be an int", AcademicYearApi.p_AYearID));
+                response.getWriter().print(
+                    String.format("%s must be an int", AcademicYearApi.p_AYearID));
             }
         } else {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            response.getWriter().print(String.format("Missing parameter: %s", AcademicYearApi.p_AYearID));
+            response.getWriter().print(
+                String.format("Missing parameter: %s", AcademicYearApi.p_AYearID));
         }
     }
 
     @Override
     protected void addResourceToDatabase(Resource resource)
-        throws SQLException, NamingException {
+        throws SQLCustomException, NamingException {
         JsonObject entity = resource.exportResourceJson();
         int id = entity.getJsonNumber(AcademicYear.p_id).intValue();
 

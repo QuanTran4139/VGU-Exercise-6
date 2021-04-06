@@ -296,6 +296,9 @@ public class QuestionnaireApi extends ResourceApi {
                         QuestionnaireApi.p_LecturerID, QuestionnaireApi.p_ClassID,
                         QuestionnaireApi.p_Gender, QuestionnaireApi.p_Answers));
             }
+        } catch (SQLCustomException e) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.getWriter().print(e);
         } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             response.getWriter().print("Malformed JSON request body");
@@ -330,7 +333,7 @@ public class QuestionnaireApi extends ResourceApi {
 
     @Override
     protected void addResourceToDatabase(Resource resource)
-        throws SQLCustomException, SQLException, NamingException {
+        throws SQLCustomException, NamingException {
         // TODO
     }
 

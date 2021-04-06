@@ -69,6 +69,9 @@ public class SemesterApi extends ResourceApi {
                     String.format("One or more parameters is invalid: %s, %s",
                         SemesterApi.p_SemesterID, SemesterApi.p_AYearID));
             }
+        } catch (SQLCustomException e) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.getWriter().print(e);
         } catch (NumberFormatException e) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             response.getWriter().print(String.format("%s must be int", SemesterApi.p_AYearID));
@@ -93,7 +96,7 @@ public class SemesterApi extends ResourceApi {
 
     @Override
     protected void addResourceToDatabase(Resource resource)
-        throws SQLException, NamingException {
+        throws SQLCustomException, NamingException {
         JsonObject entity = resource.exportResourceJson();
         int aYearId = entity.getJsonNumber(Semester.p_AYearID).intValue();
         String sId = entity.getJsonString(Semester.p_SemesterID).toString();

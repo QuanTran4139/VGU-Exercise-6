@@ -69,6 +69,9 @@ public class ModuleApi extends ResourceApi {
                     String.format("One or more parameters is invalid: %s, %s", ModuleApi.p_ModuleID,
                         ModuleApi.p_ModuleName));
             }
+        } catch (SQLCustomException e) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.getWriter().print(e);
         } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             response.getWriter().print("Malformed JSON request body");
@@ -89,7 +92,7 @@ public class ModuleApi extends ResourceApi {
 
     @Override
     protected void addResourceToDatabase(Resource resource)
-        throws SQLException, NamingException {
+        throws SQLCustomException, NamingException {
         JsonObject entity = resource.exportResourceJson();
         String mId = entity.getJsonString(Module.p_ModuleID).toString();
         String mName = entity.getJsonString(Module.p_ModuleName).toString();
@@ -110,9 +113,9 @@ public class ModuleApi extends ResourceApi {
             }
             db.close();
         } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE,e.toString());
+            LOGGER.log(Level.SEVERE, e.toString());
         } catch (NamingException e) {
-            LOGGER.log(Level.SEVERE,e.toString());
+            LOGGER.log(Level.SEVERE, e.toString());
         }
     }
 
