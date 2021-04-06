@@ -25,7 +25,7 @@ public class FacultyInAcademicYear implements Resource {
     }
 
     public static boolean checkParametersAreValid(String FacultyID, int AYearID) {
-        return FacultyID.length() > 0 && FacultyID.length() <= 1 && !FacultyID.isBlank()
+        return FacultyID.length() > 0 && FacultyID.length() <= 10 && !FacultyID.isBlank()
             && AYearID > 0;
     }
 }
