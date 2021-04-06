@@ -16,7 +16,5 @@
 - 415: invalid module id
 - 416: invalid lecturer id
 
-- 460: invalid input academic year id
-
 - 490: duplication error
 
