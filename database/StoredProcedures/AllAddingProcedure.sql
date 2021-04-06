@@ -93,8 +93,8 @@ OUT statusCode INT
 )
 BEGIN
 	CASE
-		WHEN inAYearId NOT IN (SELECT AYearId FROM AcademicYear) THEN SET statusCode = 401;
-        WHEN inFacultyId NOT IN (SELECT FacultyId FROM Faculty) THEN SET statusCode = 413;
+		WHEN inAYearId NOT IN (SELECT AYearId FROM FacultyInAcademicYear) THEN SET statusCode = 401;
+        WHEN inFacultyId NOT IN (SELECT FacultyId FROM FacultyInAcademicYear) THEN SET statusCode = 413;
         WHEN inProgramId NOT IN (SELECT ProgramId FROM Program) THEN SET statusCode = 414;
         WHEN inAYearId IN (SELECT AYearId FROM ProgramInFacultyInAcademicYear)
         AND  inFacultyId IN (SELECT FacultyId FROM ProgramInFacultyInAcademicYear)
@@ -148,9 +148,9 @@ OUT statusCode INT
 )
 BEGIN
 	CASE
-		WHEN inAYearId NOT IN (SELECT AYearId FROM AcademicYear) THEN SET statusCode = 401;
+		WHEN inAYearId NOT IN (SELECT AYearId FROM ProgramInFacultyInAcademicYear) THEN SET statusCode = 401;
         WHEN inModuleId NOT IN (SELECT ModuleId FROM Module) THEN SET statusCode = 415;
-        WHEN inProgramId NOT IN (SELECT ProgramId FROM Program) THEN SET statusCode = 414;
+        WHEN inProgramId NOT IN (SELECT ProgramId FROM ProgramInFacultyInAcademicYear) THEN SET statusCode = 414;
         WHEN inAYearId IN (SELECT AYearId FROM ModuleInProgramInAcademicYear)
         AND  inModuleId IN (SELECT ModuleId FROM ModuleInProgramInAcademicYear)
         AND  inProgramId IN (SELECT ProgramId FROM ModuleInProgramInAcademicYear) THEN SET statusCode = 490;
