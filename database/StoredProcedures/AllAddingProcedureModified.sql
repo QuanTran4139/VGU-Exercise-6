@@ -171,7 +171,7 @@ OUT statusCode INT
 BEGIN
 	CASE
 		WHEN ClassId REGEXP '[^A-Za-z0-9]+' THEN SET statusCode = 416;
-		WHEN inModuleId NOT IN (SELECT ModuleId FROM Module) THEN SET statusCode = 415;
+		WHEN inModuleId NOT IN (SELECT ModuleId FROM ModuleInProgramInAcademicYear) THEN SET statusCode = 415;
         WHEN inSemesterId NOT IN (SELECT SemesterId FROM Semester) THEN SET statusCode = 402;
         WHEN inClassId IN (SELECT ClassId FROM Class) THEN SET statusCode = 490;
         ELSE SET statusCode = 200;
