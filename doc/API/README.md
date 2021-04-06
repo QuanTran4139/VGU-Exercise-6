@@ -124,7 +124,7 @@ The response is formatted as follows:
 
 ## `PUT`
 
-To add an object to the database, make a `PUT` request to the corresponding resource with a JSON request body formatted as listed. (All parameters are `String`s unless specified otherwise.)
+To add an object to the database, make a `PUT` request to the corresponding resource with a JSON request body formatted as listed. (All parameters are `String`s unless specified otherwise; `id` values have a max length of 10, `name` values have a max length of 100)
 
 ### `academicYear`
 
