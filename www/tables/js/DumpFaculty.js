@@ -34,11 +34,13 @@ $(document).ready(function()
             console.log(JSON.stringify(data));
 			var txt = "", x;
 			txt += "<table border='1' stripe='1' id='F'>"
+			txt += "<th>" +'FacultyID' + "</th>"
+			txt += "<th>" +'FacultyName' + "</th>"
 			for (x in data)
 			{
 				txt += "<tr><td>" + data[x].FacultyID + "</td>";
 				txt += "<td>" + data[x].FacultyName + "</td>";
-				txt += "<td>" + "<button id='delFButton'>Delete</button></td></tr>";
+				txt += "<td><button class='delFButton' id='delFButton'onclick='deleteFRow(this)'>Delete</button></td></tr>";
 			}
 			txt += "<tr><td><input id='facultyID' name='facultyID' type='text'>" + "</td>";
 			txt += "<td><input id='facultyName' name='facultyName' type='text'>" + "</td>";

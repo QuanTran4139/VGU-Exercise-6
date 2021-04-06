@@ -13,14 +13,15 @@ $(document).ready(function()
 			{
 				arrayData.push(value.AYearID);
 			});
-			console.log(arrayData + "fuckkkkkkkkkkkkk");
+			console.log(arrayData);
             console.log(JSON.stringify(data));
 			var txt = "", x;
 			txt += "<table border='1' stripe='1' id='AY'>"
+			txt += "<th>" +' AcademicYearID' + "</th>"
 			for (x in data)
 			{
-				txt += "<tr onclick='deleteRow(this)'><td>" + data[x].AYearID + "</td>";
-				txt += "<td>" + "<button class='delAYButton' id='delAYButton'>Delete</button></td>"
+				txt += "<tr id ='AYear'><td>" + data[x].AYearID + "</td>";
+				txt += "<td>" + "<button class='delAYButton' id='data[x].AYearID'onclick='deleteRow(this)'>Delete</button></td>"
 			}
 			txt += "<tr><td><input id='AY' name='AY' type='text'>" + "</td>";
 			txt += "<td>" + "<button id='addAYButton'>Add</button></td></tr>";
@@ -48,32 +49,34 @@ $(document).ready(function()
 					}
 				});
 			});
+
         }
 	});
 });
-
 function deleteRow(r)
 {
-	var rIndex = r.rowIndex;
+	var rIndex = r.parentNode.parentNode.rowIndex;
 	console.log("row index: " + rIndex);
-	document.getElementById("AY").deleteRow(rIndex);
-	
-	var valueToDelete = arrayData[rIndex];
+	var valueToDelete = arrayData[rIndex-1];
 	console.log(valueToDelete);
-	var value2 = parseInt(arrayData.splice(rIndex, 1));
+	document.getElementById("AY").deleteRow(rIndex);
+	var value2 = parseInt(arrayData.splice(rIndex-1, 1));
 	console.log(typeof value2 + value2);
 	var dataToDelete = {"yid":value2};
 	console.log(dataToDelete);
-	$.ajax(
-	{
-		type: 'DELETE',
-		url: "/Questionnaire/api/academicYear&yid=" + value2,
-		//contentType: "application/json",
-		//dataType: "text",
-		//data: dataToDelete,
-		success: function(data)
-		{
-			console.log(data);
-		}
-	});
-}
+	sendDelete(value2);
+};
+function sendDelete(id){
+		$.ajax
+		({
+			type: 'Delete',
+			url: "/Questionnaire/api/academicYear?yid=" + id,
+			//contentType: "application/json",
+			//dataType: "text",
+			success: function(data,textStatus,jqXHR)
+			{
+				alert(textStatus);
+				console.log(data);
+			}
+		});
+};
