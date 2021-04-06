@@ -3,6 +3,7 @@ package com.vgu.sqm.questionnaire.api;
 import com.vgu.sqm.questionnaire.database.Database;
 import com.vgu.sqm.questionnaire.database.SQLCustomException;
 import com.vgu.sqm.questionnaire.resource.Class;
+import com.vgu.sqm.questionnaire.resource.ClassInfo;
 import com.vgu.sqm.questionnaire.resource.Faculty;
 import com.vgu.sqm.questionnaire.resource.Lecturer;
 import com.vgu.sqm.questionnaire.resource.Program;
@@ -64,9 +65,8 @@ public class ClassApi extends ResourceApi {
 
     private JsonObject getClassOptions(String ClassID) {
         // TODO replace the following sample data with real data from the DB
-        // DONE: get semesterId, facultyName, programName, lecturerName
 
-        ArrayList<ClassInfo> classInfos = new ArrayList<>();
+        ArrayList<Resource> classInfos = new ArrayList<>();
 
         try {
             Connection db = Database.getAcademiaConnection();
@@ -80,21 +80,20 @@ public class ClassApi extends ResourceApi {
                 String sId = rs.getString("semesterId"); // Attribute name: semesterId
                 String fName = rs.getString("facultyName"); // Attribute name: facultyName
                 String pName = rs.getString("programName"); // Attribute name: programName
-                String lName = rs.getString("lecturerName"); // Attribute name: lecturerName
                 String lId = rs.getString("LecturerId"); // Attribute name: LecturerId
+                String lName = rs.getString("lecturerName"); // Attribute name: lecturerName
                 LOGGER.log(Level.INFO, "sId = " + sId);
                 LOGGER.log(Level.INFO, "fName = " + fName);
                 LOGGER.log(Level.INFO, "pName = " + pName);
+                LOGGER.log(Level.INFO,"lID = " + lId);
                 LOGGER.log(Level.INFO, "lName = " + lName);
 
                 // TODO ouput using ArrayList<Resource>
-                classInfos.add(new ClassInfo(sId, fName, pName, lName));
+                classInfos.add(new ClassInfo(sId, fName, pName, lId, lName));
             }
             // get status
             int status = st.getInt(2);
             LOGGER.log(Level.INFO, "status is " + status);
-
-            LOGGER.log(Level.INFO, "Getting info from database successfully.");
             db.close();
         } catch (SQLException e1) {
             LOGGER.log(Level.SEVERE, e1.toString());
@@ -102,17 +101,19 @@ public class ClassApi extends ResourceApi {
             LOGGER.log(Level.SEVERE, e2.toString());
         }
 
-        Semester[] semesters = {new Semester("WS2020", 2020), new Semester("SS2021", 2021)};
-        Faculty[] faculties = {new Faculty("A", "41414141"), new Faculty("B", "42424242")};
-        Program[] programs = {new Program("A", "41414141"), new Program("B", "42424242")};
-        Lecturer[] lecturers = {new Lecturer("1", "Bob"), new Lecturer("2", "Alice")};
+//        Semester[] semesters = {new Semester("WS2020", 2020), new Semester("SS2021", 2021)};
+//        Faculty[] faculties = {new Faculty("A", "41414141"), new Faculty("B", "42424242")};
+//        Program[] programs = {new Program("A", "41414141"), new Program("B", "42424242")};
+//        Lecturer[] lecturers = {new Lecturer("1", "Bob"), new Lecturer("2", "Alice")};
 
-        return Json.createObjectBuilder()
-            .add("Semesters", JsonUtils.arrayToJson(semesters))
-            .add("Faculties", JsonUtils.arrayToJson(faculties))
-            .add("Programs", JsonUtils.arrayToJson(programs))
-            .add("Lecturers", JsonUtils.arrayToJson(lecturers))
-            .build();
+//        return Json.createObjectBuilder()
+//            .add("Semesters", JsonUtils.arrayToJson(semesters))
+//            .add("Faculties", JsonUtils.arrayToJson(faculties))
+//            .add("Programs", JsonUtils.arrayToJson(programs))
+//            .add("Lecturers", JsonUtils.arrayToJson(lecturers))
+//            .build();
+        //TODO return as ArrayList<Resource>, result is in "classinfos" variable
+        return null;
     }
 
     @Override
@@ -223,36 +224,5 @@ public class ClassApi extends ResourceApi {
         } catch (NamingException e2) {
             LOGGER.log(Level.SEVERE, e2.toString());
         }
-    }
-}
-
-class ClassInfo {
-    private String semesterId;
-    private String facultyName;
-    private String programName;
-    private String lecturerName;
-
-    public ClassInfo(
-        String semesterId, String facultyName, String programName, String lecturerName) {
-        this.semesterId = semesterId;
-        this.facultyName = facultyName;
-        this.programName = programName;
-        this.lecturerName = lecturerName;
-    }
-
-    public String getSemesterId() {
-        return semesterId;
-    }
-
-    public String getFacultyName() {
-        return facultyName;
-    }
-
-    public String getProgramName() {
-        return programName;
-    }
-
-    public String getLecturerName() {
-        return lecturerName;
     }
 }

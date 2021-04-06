@@ -109,32 +109,8 @@ public class QuestionnaireApi extends ResourceApi {
                         result.put(gender, count);
                     }
                 }
-            } else if (!question.equals("0")){
-                st = db.prepareCall("CALL GetResponseByQuestion(?,?,?,?)");
-                st.setString(1, ClassID);
-                st.setString(2, LecturerID);
-                st.setInt(3, Integer.parseInt(question));
-                st.registerOutParameter(4, Types.INTEGER);
-
-                rs = st.executeQuery();
-
-                // get status
-                status = st.getInt(4);
-                LOGGER.log(Level.INFO,
-                    "status (get response count for question" + question + ") is " + status);
-                if (status == 200) {
-                    while (rs.next()) {
-                        for (int j = 0; j <= 4; j++) {
-                            result.put(Integer.toString(j + 1), rs.getInt(j + 4));
-                        }
-
-                        if (!question.matches("[567]")) {
-                            result.put("N/A", rs.getInt(9));
-                        }
-                    }
-                }
             } else {
-                st = db.prepareCall("CALL GetCountByQuestion0(?,?,?)");
+                st = db.prepareCall("CALL GetCountByQuestion"+ question + "(?,?,?)");
                 st.setString(1, ClassID);
                 st.setString(2, LecturerID);
                 st.registerOutParameter(3, Types.INTEGER);
@@ -150,7 +126,11 @@ public class QuestionnaireApi extends ResourceApi {
                         for (int j = 0; j <= 4; j++) {
                             result.put(Integer.toString(j + 1), rs.getInt(j + 3));
                         }
-                        result.put("N/A", rs.getInt(8));
+
+                        if (!question.matches("[567]")) {
+                            result.put("N/A", rs.getInt(8));
+                        }
+
                     }
                 }
             }
