@@ -103,21 +103,12 @@ The response is formatted as follows:
 
 ```json
 {
-    "semesters": [
-        {"SemesterID": "WS2020", "AYearID": 2020},
-        {"SemesterID": "SS2021", "AYearID": 2021},
-    ],
-    "faculties": [
-        {"FacultyID": "A", "FacultyName": "AAAA"},
-        {"FacultyID": "B", "FacultyName": "bruh"},
-    ],
-    "programs": [
-        {"ProgramID": "A1", "ProgramName": "hello"},
-        {"ProgramID": "B2", "ProgramName": "world"},
-    ],
-    "lecturers": [
-        {"LecturerID": "1", "LecturerName": "Bob"},
-        {"LecturerID": "2", "LecturerName": "Alice"},
+    SemesterIDs: ["123", "456"],
+    FacultyNames: ["qwe", "rty"],
+    ProgramNames: ["asd", "fgh"],
+    Lecturers: [
+        {"id": "1a", "name": "John Doe"},
+        {"id": "2b", "name": "Joe Smith"}
     ]
 }
 ```
