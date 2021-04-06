@@ -139,7 +139,7 @@ public class QuestionnaireApi extends ResourceApi {
             }
 
             if (status != 200) {
-                throw new SQLCustomException(status, this.getClass().getName());
+                throw new SQLCustomException(status);
             }
 
             LOGGER.log(Level.INFO, result.toString());
@@ -175,7 +175,7 @@ public class QuestionnaireApi extends ResourceApi {
             if (status == 200 && rs.next()) {
                 result = rs.getInt("Response_Rate");
             } else {
-                throw new SQLCustomException(status, this.getClass().getName());
+                throw new SQLCustomException(status);
             }
 
             db.close();

@@ -1,66 +1,38 @@
 package com.vgu.sqm.questionnaire.database;
 
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class SQLCustomException extends SQLException {
+    public static final Map<Integer, String> errors = new HashMap<Integer, String>();
 
-    public SQLCustomException(int status, String className) {
-        super(constructMessage(status, className));
+    static {
+        // Declare all the errors here
+        errors.put(401, "Wrong Academic Year ID");
+        errors.put(402, "Wrong Semester ID");
+        errors.put(403, "Wrong Faculty name");
+        errors.put(404, "Wrong Program name");
+        errors.put(405, "Wrong Module name");
+        errors.put(406, "Wrong Lecturer name");
+        errors.put(407, "Wrong Class ID");
+        errors.put(408, "Wrong Questionnaire ID");
+        errors.put(413, "Wrong Faculty ID");
+        errors.put(414, "Wrong Program ID");
+        errors.put(415, "Wrong Module ID");
+        errors.put(416, "Wrong Lecturer ID");
+        errors.put(490, "Duplication Error");
     }
 
-    private static String constructMessage(int status, String className) {
-        StringBuffer sb = new StringBuffer();
-        sb.append("Error ");
+    public SQLCustomException(int code) {
+        super(constructMessage(code));
+    }
 
-        switch (status) {
-            case 401:
-                sb.append(401).append(": Wrong academic year id");
-                break;
-            case 402:
-                sb.append(402).append(": Wrong semester id");
-                break;
-            case 403:
-                sb.append(403).append(": Wrong faculty name");
-                break;
-            case 404:
-                sb.append(404).append(": Wrong program name");
-                break;
-            case 405:
-                sb.append(405).append(": Wrong module name");
-                break;
-            case 406:
-                sb.append(406).append(": Wrong lecturer name");
-                break;
-            case 407:
-                sb.append(407).append(": Wrong ClassID");
-                break;
-            case 408:
-                sb.append(408).append(": Wrong Questionnaire id");
-                break;
-            case 413:
-                sb.append(413).append(": Wrong faculty id");
-                break;
-            case 414:
-                sb.append(414).append(": Wrong faculty id");
-                break;
-            case 415:
-                sb.append(415).append(": Wrong module id");
-                break;
-            case 416:
-                sb.append(416).append(": Wrong Lecturer id");
-                break;
-            case 460:
-                sb.append(416).append(": Wrong input academic year id");
-                break;
-            case 490:
-                sb.append(490).append(": duplication error");
-                break;
-            default:
-                sb.append(status).append(": Unknown error");
-                break;
+    private static String constructMessage(int code) {
+        if (errors.containsKey(code)) {
+            return errors.get(code);
+        } else {
+            return String.format("Unknown error code: %s", code);
         }
-        sb.append(" in ").append(className);
-
-        return sb.toString();
     }
 }

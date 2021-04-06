@@ -109,7 +109,7 @@ public class TeachingApi extends ResourceApi {
             int status = st.getInt(3);
             LOGGER.log(Level.INFO, "Status: " + status);
             if (status != 200) {
-                throw new SQLCustomException(status, this.getClass().getName());
+                throw new SQLCustomException(status);
             }
             db.close();
         } catch (SQLException e) {
