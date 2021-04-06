@@ -84,9 +84,6 @@ public class QuestionnaireApi extends ResourceApi {
     }
 
     private JsonObject getCounts(String ClassID, String LecturerID, String question) {
-        // ===========================Note======================
-        // = QUESTION0 IS CURRENTLY NOT WORKING AT THE MOMENT===
-        // =====================================================
         HashMap<String, Integer> result = new HashMap<>();
         try {
             Connection db = Database.getAcademiaConnection();
@@ -112,7 +109,7 @@ public class QuestionnaireApi extends ResourceApi {
                         result.put(gender, count);
                     }
                 }
-            } else {
+            } else if (!question.equals("0")){
                 st = db.prepareCall("CALL GetResponseByQuestion(?,?,?,?)");
                 st.setString(1, ClassID);
                 st.setString(2, LecturerID);
@@ -134,6 +131,26 @@ public class QuestionnaireApi extends ResourceApi {
                         if (!question.matches("[567]")) {
                             result.put("N/A", rs.getInt(9));
                         }
+                    }
+                }
+            } else {
+                st = db.prepareCall("CALL GetCountByQuestion0(?,?,?)");
+                st.setString(1, ClassID);
+                st.setString(2, LecturerID);
+                st.registerOutParameter(3, Types.INTEGER);
+
+                rs = st.executeQuery();
+
+                // get status
+                status = st.getInt(3);
+                LOGGER.log(Level.INFO,
+                        "status (get response count for question" + question + ") is " + status);
+                if (status == 200) {
+                    while (rs.next()) {
+                        for (int j = 0; j <= 4; j++) {
+                            result.put(Integer.toString(j + 1), rs.getInt(j + 3));
+                        }
+                        result.put("N/A", rs.getInt(8));
                     }
                 }
             }
