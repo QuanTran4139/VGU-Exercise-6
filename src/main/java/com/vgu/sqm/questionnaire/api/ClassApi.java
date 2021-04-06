@@ -3,19 +3,13 @@ package com.vgu.sqm.questionnaire.api;
 import com.vgu.sqm.questionnaire.database.Database;
 import com.vgu.sqm.questionnaire.database.SQLCustomException;
 import com.vgu.sqm.questionnaire.resource.Class;
-import com.vgu.sqm.questionnaire.resource.ClassInfo;
-import com.vgu.sqm.questionnaire.resource.Faculty;
-import com.vgu.sqm.questionnaire.resource.Lecturer;
-import com.vgu.sqm.questionnaire.resource.Program;
 import com.vgu.sqm.questionnaire.resource.Resource;
-import com.vgu.sqm.questionnaire.resource.Semester;
 import com.vgu.sqm.questionnaire.utils.JsonUtils;
 import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.json.Json;
 import javax.json.JsonObject;
 import javax.naming.NamingException;
 import javax.servlet.ServletException;
@@ -76,24 +70,31 @@ public class ClassApi extends ResourceApi {
 
             ResultSet rs = st.executeQuery();
 
-            while (rs.next()) {
-                String sId = rs.getString("semesterId"); // Attribute name: semesterId
-                String fName = rs.getString("facultyName"); // Attribute name: facultyName
-                String pName = rs.getString("programName"); // Attribute name: programName
-                String lId = rs.getString("LecturerId"); // Attribute name: LecturerId
-                String lName = rs.getString("lecturerName"); // Attribute name: lecturerName
-                LOGGER.log(Level.INFO, "sId = " + sId);
-                LOGGER.log(Level.INFO, "fName = " + fName);
-                LOGGER.log(Level.INFO, "pName = " + pName);
-                LOGGER.log(Level.INFO,"lID = " + lId);
-                LOGGER.log(Level.INFO, "lName = " + lName);
+            ArrayList<String> sId = new ArrayList<>();
+            ArrayList<String> fName = new ArrayList<>();
+            ArrayList<String> pName = new ArrayList<>();
+            ArrayList<String> lId = new ArrayList<>();
+            ArrayList<String> lName = new ArrayList<>();
 
-                // TODO ouput using ArrayList<Resource>
-                classInfos.add(new ClassInfo(sId, fName, pName, lId, lName));
-            }
             // get status
             int status = st.getInt(2);
             LOGGER.log(Level.INFO, "status is " + status);
+            if (status == 200) {
+                while (rs.next()) {
+                    sId.add(rs.getString("semesterId")); // Attribute name: semesterId
+                    fName.add(rs.getString("facultyName")); // Attribute name: facultyName
+                    pName.add(rs.getString("programName")); // Attribute name: programName
+                    lId.add(rs.getString("LecturerId")); // Attribute name: LecturerId
+                    lName.add(rs.getString("lecturerName")); // Attribute name: lecturerName
+                }
+                LOGGER.log(Level.INFO, "sId = " + sId);
+                LOGGER.log(Level.INFO, "fName = " + fName);
+                LOGGER.log(Level.INFO, "pName = " + pName);
+                LOGGER.log(Level.INFO, "lID = " + lId);
+                LOGGER.log(Level.INFO, "lName = " + lName);
+            } else {
+                throw new SQLCustomException(status);
+            }
             db.close();
         } catch (SQLException e1) {
             LOGGER.log(Level.SEVERE, e1.toString());
