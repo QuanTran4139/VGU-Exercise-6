@@ -132,7 +132,7 @@ BEGIN
 	CASE
 		WHEN inModuleId REGEXP '[^A-Za-z]+' THEN SET statusCode = 415;
         WHEN ModuleName REGEXP '[^a-zA-Z]+' THEN SET statusCode = 405;
-        WHEN inModuleName IN (SELECT ModuleId FROM Module) THEN SET statusCode = 490;
+        WHEN inModuleName IN (SELECT ModuleName FROM Module) THEN SET statusCode = 490;
 		ELSE SET statusCode = 200;
 		INSERT INTO Module (ModuleId, ModuleName)
 		VALUES (inModuleId, inModuleName);
@@ -170,7 +170,7 @@ OUT statusCode INT
 )
 BEGIN
 	CASE
-		WHEN ClassId REGEXP '[^A-Za-z0-9]+' THEN SET statusCode = 416;
+		WHEN inClassId REGEXP '[^A-Za-z0-9]+' THEN SET statusCode = 416;
 		WHEN inModuleId NOT IN (SELECT ModuleId FROM ModuleInProgramInAcademicYear) THEN SET statusCode = 415;
         WHEN inSemesterId NOT IN (SELECT SemesterId FROM Semester) THEN SET statusCode = 402;
         WHEN inClassId IN (SELECT ClassId FROM Class) THEN SET statusCode = 490;
