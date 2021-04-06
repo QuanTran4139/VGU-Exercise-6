@@ -100,8 +100,31 @@ public class FacultyInAcademicYearApi extends ResourceApi {
 
     @Override
     protected void addResourceToDatabase(Resource resource)
-        throws SQLCustomException, SQLException, NamingException {
-        // TODO
+        throws SQLException, NamingException {
+        JsonObject entity = resource.exportResourceJson();
+        String fId = entity.getJsonString(FacultyInAcademicYear.p_FacultyID).toString();
+        int aYearId = entity.getJsonNumber(FacultyInAcademicYear.p_AYearID).intValue();
+
+        try {
+            Connection db = Database.getAcademiaConnection();
+            CallableStatement st = db.prepareCall("CALL AddFacultyInAcademicYear(?,?,?);");
+            st.setString(1, fId);
+            st.setInt(2, aYearId);
+            st.registerOutParameter(3, Types.INTEGER);
+
+            st.execute();
+
+            int status = st.getInt(3);
+            LOGGER.log(Level.INFO, "Status: " + status);
+            if (status != 200) {
+                throw new SQLCustomException(status, this.getClass().getName());
+            }
+            db.close();
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE,e.toString());
+        } catch (NamingException e) {
+            LOGGER.log(Level.SEVERE,e.toString());
+        }
     }
 
     private void deleteResourceFromDataBase(String FacultyID, int AYearID) {

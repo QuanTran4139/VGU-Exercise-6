@@ -85,7 +85,7 @@ public class AcademicYearApi extends ResourceApi {
 
     @Override
     protected void addResourceToDatabase(Resource resource)
-        throws SQLCustomException, SQLException, NamingException {
+        throws SQLException, NamingException {
         JsonObject entity = resource.exportResourceJson();
         int id = entity.getJsonNumber(AcademicYear.p_id).intValue();
 

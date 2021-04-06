@@ -117,8 +117,34 @@ public class ProgramInFacultyInAcademicYearApi extends ResourceApi {
 
     @Override
     protected void addResourceToDatabase(Resource resource)
-        throws SQLCustomException, SQLException, NamingException {
-        // TODO
+        throws SQLException, NamingException {
+        JsonObject entity = resource.exportResourceJson();
+        String pId = entity.getJsonString(ProgramInFacultyInAcademicYear.p_ProgramID).toString();
+        String fId = entity.getJsonString(ProgramInFacultyInAcademicYear.p_FacultyID).toString();
+        int aYearId = entity.getJsonNumber(ProgramInFacultyInAcademicYear.p_AYearID).intValue();
+
+        try {
+
+            Connection db = Database.getAcademiaConnection();
+            CallableStatement st = db.prepareCall("CALL AddProgramInFacultyInAcademicYear(?,?,?,?);");
+            st.setString(1, pId);
+            st.setString(2, fId);
+            st.setInt(3, aYearId);
+            st.registerOutParameter(4, Types.INTEGER);
+
+            st.execute();
+
+            int status = st.getInt(4);
+            LOGGER.log(Level.INFO, "Status: " + status);
+            if (status != 200) {
+                throw new SQLCustomException(status, this.getClass().getName());
+            }
+            db.close();
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE,e.toString());
+        } catch (NamingException e) {
+            LOGGER.log(Level.SEVERE,e.toString());
+        }
     }
 
     private void deleteResourceFromDataBase(String ProgramID, String FacultyID, int AYearID) {
