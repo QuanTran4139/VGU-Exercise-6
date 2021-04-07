@@ -1,5 +1,6 @@
 package com.vgu.sqm.questionnaire.resource;
 
+import java.util.regex.Matcher;
 import com.vgu.sqm.questionnaire.utils.JsonUtils;
 import javax.json.Json;
 import javax.json.JsonObject;
@@ -46,11 +47,9 @@ public class Questionnaire implements Resource {
         String LecturerID, String ClassID, char gender, int[] answers, String comment) {
         return
             // LecturerID
-            LecturerID.length() > 0 && LecturerID.length() <= 10
-            && !LecturerID.isBlank()
+            Resource.regex_ID.matcher(LecturerID).matches()
             // ClassID
-            && ClassID.length() > 0 && ClassID.length() <= 10
-            && !ClassID.isBlank()
+            && Resource.regex_ID.matcher(ClassID).matches()
             // gender
             && (gender == 'M' || gender == 'F' || gender == 'N')
             // questionnaire answers (0 == N/A)
