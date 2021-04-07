@@ -256,7 +256,7 @@ To add an object to the database, make a `PUT` request to the corresponding reso
 - `facultyInAcademicYear`: `fid` (FacultyID), `yid` (AcademicYearID)
 - `lecturer`: `lid` (LecturerID)
 - `module`: `mid` (ModuleID)
-- `moduleInProgramInAcademicYear`: `mid` (ModuleID), `pid` (ProgramID), `yid` (AcademicYearID)
+- `moduleInProgramInAcademicYear`: `mid` (ModuleID), `yid` (AcademicYearID)
 - `program`: `pid` (ProgramID)
 - `programInFacultyInAcademicYear`: `pid` (ProgramID), `fid` (FacultyID), `yid` (AcademicYearID)
 - `questionnaire`: `lid` (LecturerID), `cid` (ClassID), `qid` (QuestionnaireID)
