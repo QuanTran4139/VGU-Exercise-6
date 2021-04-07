@@ -9,6 +9,7 @@ import javax.json.JsonArray;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 
 public class JsonUtils {
     public static JsonArray arrayToJson(int[] input) {
@@ -31,7 +32,7 @@ public class JsonUtils {
         return builder.build();
     }
 
-    public static JsonArray arrayToJson(Resource[] input) {
+    public static JsonArray arrayToJson(ArrayList<Resource> input) {
         JsonArrayBuilder builder = Json.createArrayBuilder();
         for (Resource r : input) {
             builder.add(r.exportResourceJson());

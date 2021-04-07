@@ -3,17 +3,18 @@ package com.vgu.sqm.questionnaire.api;
 import com.vgu.sqm.questionnaire.database.Database;
 import com.vgu.sqm.questionnaire.database.SQLCustomException;
 import com.vgu.sqm.questionnaire.resource.Class;
+import com.vgu.sqm.questionnaire.resource.Faculty;
+import com.vgu.sqm.questionnaire.resource.Lecturer;
+import com.vgu.sqm.questionnaire.resource.Program;
 import com.vgu.sqm.questionnaire.resource.Resource;
 import com.vgu.sqm.questionnaire.resource.Semester;
-import com.vgu.sqm.questionnaire.resource.Faculty;
-import com.vgu.sqm.questionnaire.resource.Program;
-import com.vgu.sqm.questionnaire.resource.Lecturer;
 import com.vgu.sqm.questionnaire.utils.JsonUtils;
 import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.json.Json;
 import javax.json.JsonObject;
 import javax.naming.NamingException;
 import javax.servlet.ServletException;
@@ -62,8 +63,10 @@ public class ClassApi extends ResourceApi {
     }
 
     private JsonObject getClassOptions(String ClassID) {
-        // TODO replace the following sample data with real data from the DB
-
+        ArrayList<Resource> semesters = new ArrayList<>();
+        ArrayList<Resource> faculties = new ArrayList<>();
+        ArrayList<Resource> programs = new ArrayList<>();
+        ArrayList<Resource> lecturers = new ArrayList<>();
 
         try {
             Connection db = Database.getAcademiaConnection();
@@ -73,20 +76,18 @@ public class ClassApi extends ResourceApi {
 
             ResultSet rs = st.executeQuery();
 
-            ArrayList<Resource> semesters = new ArrayList<>();
-            ArrayList<Resource> faculties = new ArrayList<>();
-            ArrayList<Resource> programs = new ArrayList<>();
-            ArrayList<Resource> lecturers = new ArrayList<>();
-
             // get status
             int status = st.getInt(2);
             LOGGER.log(Level.INFO, "status is " + status);
             if (status == 200) {
                 while (rs.next()) {
                     semesters.add(new Semester(rs.getString("semesterId"), rs.getInt("AYearId")));
-                    faculties.add(new Faculty(rs.getString("FacultyId"), rs.getString("facultyName")));
-                    programs.add(new Program(rs.getString("ProgramId"), rs.getString("programName")));
-                    lecturers.add(new Lecturer(rs.getString("LecturerId"), rs.getString("lecturerName")));
+                    faculties.add(
+                        new Faculty(rs.getString("FacultyId"), rs.getString("facultyName")));
+                    programs.add(
+                        new Program(rs.getString("ProgramId"), rs.getString("programName")));
+                    lecturers.add(
+                        new Lecturer(rs.getString("LecturerId"), rs.getString("lecturerName")));
                 }
             } else {
                 throw new SQLCustomException(status);
@@ -98,19 +99,12 @@ public class ClassApi extends ResourceApi {
             LOGGER.log(Level.SEVERE, e2.toString());
         }
 
-//        Semester[] semesters = {new Semester("WS2020", 2020), new Semester("SS2021", 2021)};
-//        Faculty[] faculties = {new Faculty("A", "41414141"), new Faculty("B", "42424242")};
-//        Program[] programs = {new Program("A", "41414141"), new Program("B", "42424242")};
-//        Lecturer[] lecturers = {new Lecturer("1", "Bob"), new Lecturer("2", "Alice")};
-
-//        return Json.createObjectBuilder()
-//            .add("Semesters", JsonUtils.arrayToJson(semesters))
-//            .add("Faculties", JsonUtils.arrayToJson(faculties))
-//            .add("Programs", JsonUtils.arrayToJson(programs))
-//            .add("Lecturers", JsonUtils.arrayToJson(lecturers))
-//            .build();
-        //TODO return as ArrayList<Resource>, result is in "classinfos" variable
-        return null;
+        return Json.createObjectBuilder()
+            .add("semesters", JsonUtils.arrayToJson(semesters))
+            .add("faculties", JsonUtils.arrayToJson(faculties))
+            .add("programs", JsonUtils.arrayToJson(programs))
+            .add("lecturers", JsonUtils.arrayToJson(lecturers))
+            .build();
     }
 
     @Override
@@ -209,10 +203,9 @@ public class ClassApi extends ResourceApi {
     private void deleteResourceFromDataBase(String ClassID) {
         try {
             Connection db = Database.getAcademiaConnection();
-            CallableStatement st =
-                    db.prepareCall("CALL DeleteClass(?,?)");
+            CallableStatement st = db.prepareCall("CALL DeleteClass(?,?)");
             st.setString(1, ClassID);
-            st.registerOutParameter(2,Types.INTEGER);
+            st.registerOutParameter(2, Types.INTEGER);
 
             st.execute();
 
