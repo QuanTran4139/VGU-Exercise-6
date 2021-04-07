@@ -1,5 +1,6 @@
 package com.vgu.sqm.questionnaire.resource;
 
+import java.util.regex.Matcher;
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
@@ -25,7 +26,6 @@ public class Semester implements Resource {
     }
 
     public static boolean checkParametersAreValid(String SemesterID, int AYearID) {
-        return SemesterID.length() > 0 && SemesterID.length() <= 10 && !SemesterID.isBlank()
-            && AYearID > 0;
+        return Resource.regex_ID.matcher(SemesterID).matches() && AYearID > 0;
     }
 }

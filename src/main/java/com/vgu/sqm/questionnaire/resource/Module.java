@@ -1,5 +1,6 @@
 package com.vgu.sqm.questionnaire.resource;
 
+import java.util.regex.Matcher;
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
@@ -25,7 +26,7 @@ public class Module implements Resource {
     }
 
     public static boolean checkParametersAreValid(String ModuleID, String ModuleName) {
-        return ModuleID.length() > 0 && ModuleID.length() <= 10 && !ModuleID.isBlank()
-            && ModuleName.length() > 0 && ModuleName.length() <= 100 && !ModuleName.isBlank();
+        return Resource.regex_ID.matcher(ModuleID).matches() && ModuleName.length() > 0
+            && ModuleName.length() <= 100 && !ModuleName.isBlank();
     }
 }
