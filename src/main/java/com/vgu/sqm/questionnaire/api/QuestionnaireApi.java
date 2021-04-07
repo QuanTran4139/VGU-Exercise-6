@@ -60,23 +60,7 @@ public class QuestionnaireApi extends ResourceApi {
                 // TODO need to fixed type question[0]
                 int[] answers = new int[18];
 
-
-                String question0 = rs.getString("Question0");
-                if (question0.equals("Never")) {
-                    answers[0] = 1;
-                } else if (question0.equals("Rarely")) {
-                    answers[0] = 2;
-                } else if (question0.equals("Sometimes")) {
-                    answers[0] = 3;
-                } else if (question0.equals("Often")) {
-                    answers[0] = 4;
-                } else if (question0.equals("Always")) {
-                    answers[0] = 5;
-                } else {
-                    answers[0] = -1; //error
-                }
-
-                for (int i = 1; i < answers.length; i++) {
+                for (int i = 0; i < answers.length; i++) {
                     answers[i] = rs.getInt("Question" + i);
                 }
 
