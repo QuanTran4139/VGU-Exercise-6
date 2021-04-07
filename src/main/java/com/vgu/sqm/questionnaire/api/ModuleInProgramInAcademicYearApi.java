@@ -92,26 +92,23 @@ public class ModuleInProgramInAcademicYearApi extends ResourceApi {
     protected void doDelete(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
         if (request.getParameterMap().containsKey(ModuleInProgramInAcademicYearApi.p_ModuleID)
-            && request.getParameterMap().containsKey(ModuleInProgramInAcademicYearApi.p_ProgramID)
             && request.getParameterMap().containsKey(ModuleInProgramInAcademicYearApi.p_AYearID)) {
             try {
                 String module = request.getParameter(ModuleInProgramInAcademicYearApi.p_ModuleID);
-                String program = request.getParameter(ModuleInProgramInAcademicYearApi.p_ProgramID);
                 int year = Integer.parseInt(
                     request.getParameter(ModuleInProgramInAcademicYearApi.p_AYearID));
-                deleteResourceFromDataBase(module, program, year);
+                deleteResourceFromDataBase(module, year);
                 response.setStatus(HttpServletResponse.SC_OK);
             } catch (NumberFormatException e) {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 response.getWriter().print(
-                    "%s must be int".format(ModuleInProgramInAcademicYearApi.p_AYearID));
+                    String.format("%s must be int", ModuleInProgramInAcademicYearApi.p_AYearID));
             }
         } else {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            response.getWriter().print(
-                "Missing parameters: %s, %s, %s".format(ModuleInProgramInAcademicYearApi.p_ModuleID,
-                    ModuleInProgramInAcademicYearApi.p_ProgramID,
-                    ModuleInProgramInAcademicYearApi.p_AYearID));
+            response.getWriter().print(String.format("Missing parameters: %s, %s",
+                ModuleInProgramInAcademicYearApi.p_ModuleID,
+                ModuleInProgramInAcademicYearApi.p_AYearID));
         }
     }
 
@@ -147,7 +144,7 @@ public class ModuleInProgramInAcademicYearApi extends ResourceApi {
         }
     }
 
-    private void deleteResourceFromDataBase(String ModuleID, String ProgramID, int AYearID) {
+    private void deleteResourceFromDataBase(String ModuleID, int AYearID) {
         // TODO
     }
 }

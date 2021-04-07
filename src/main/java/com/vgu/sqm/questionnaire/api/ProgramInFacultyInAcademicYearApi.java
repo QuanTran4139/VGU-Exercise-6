@@ -107,11 +107,11 @@ public class ProgramInFacultyInAcademicYearApi extends ResourceApi {
             } catch (NumberFormatException e) {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 response.getWriter().print(
-                    "%s must be int".format(ProgramInFacultyInAcademicYearApi.p_AYearID));
+                    String.format("%s must be int", ProgramInFacultyInAcademicYearApi.p_AYearID));
             }
         } else {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            response.getWriter().print("Missing parameters: %s, %s, %s".format(
+            response.getWriter().print(String.format("Missing parameters: %s, %s, %s",
                 ProgramInFacultyInAcademicYearApi.p_ProgramID,
                 ProgramInFacultyInAcademicYearApi.p_FacultyID,
                 ProgramInFacultyInAcademicYearApi.p_AYearID));
@@ -127,9 +127,9 @@ public class ProgramInFacultyInAcademicYearApi extends ResourceApi {
         int aYearId = entity.getJsonNumber(ProgramInFacultyInAcademicYear.p_AYearID).intValue();
 
         try {
-
             Connection db = Database.getAcademiaConnection();
-            CallableStatement st = db.prepareCall("CALL AddProgramInFacultyInAcademicYear(?,?,?,?);");
+            CallableStatement st =
+                db.prepareCall("CALL AddProgramInFacultyInAcademicYear(?,?,?,?);");
             st.setString(1, pId);
             st.setString(2, fId);
             st.setInt(3, aYearId);
@@ -144,9 +144,9 @@ public class ProgramInFacultyInAcademicYearApi extends ResourceApi {
             }
             db.close();
         } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE,e.toString());
+            LOGGER.log(Level.SEVERE, e.toString());
         } catch (NamingException e) {
-            LOGGER.log(Level.SEVERE,e.toString());
+            LOGGER.log(Level.SEVERE, e.toString());
         }
     }
 
