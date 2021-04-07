@@ -60,7 +60,21 @@ public class QuestionnaireApi extends ResourceApi {
                 // TODO need to fixed type question[0]
                 int[] answers = new int[18];
 
-                answers[0] = 0;
+
+                String question0 = rs.getString("Question0");
+                if (question0.equals("Never")) {
+                    answers[0] = 1;
+                } else if (question0.equals("Rarely")) {
+                    answers[0] = 2;
+                } else if (question0.equals("Sometimes")) {
+                    answers[0] = 3;
+                } else if (question0.equals("Often")) {
+                    answers[0] = 4;
+                } else if (question0.equals("Always")) {
+                    answers[0] = 5;
+                } else {
+                    answers[0] = -1; //error
+                }
 
                 for (int i = 1; i < answers.length; i++) {
                     answers[i] = rs.getInt("Question" + i);
@@ -319,6 +333,28 @@ public class QuestionnaireApi extends ResourceApi {
 
     private void deleteResourceFromDataBase(
         String LecturerID, String ClassID, int QuestionnaireID) {
-        // TODO
+        try {
+            Connection db = Database.getAcademiaConnection();
+            CallableStatement st =
+                    db.prepareCall("CALL DeleteQuestionnaire(?,?,?,?)");
+            st.setString(1, LecturerID);
+            st.setString(2, ClassID);
+            st.setInt(3, QuestionnaireID);
+            st.registerOutParameter(4,Types.INTEGER);
+
+            st.execute();
+
+            int status = st.getInt(4);
+            LOGGER.log(Level.INFO, "Status: " + status);
+
+            if (status != 200) {
+                throw new SQLCustomException(status);
+            }
+
+        } catch (SQLException e1) {
+            LOGGER.log(Level.SEVERE, e1.toString());
+        } catch (NamingException e2) {
+            LOGGER.log(Level.SEVERE, e2.toString());
+        }
     }
 }

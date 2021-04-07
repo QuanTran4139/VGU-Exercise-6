@@ -121,19 +121,24 @@ public class AcademicYearApi extends ResourceApi {
     private void deleteResourceFromDataBase(int AYearID) {
         try {
             Connection db = Database.getAcademiaConnection();
-            PreparedStatement st =
-                db.prepareStatement("DELETE FROM academicyear where AYearId = ?;");
+            CallableStatement st =
+                db.prepareCall("CALL DeleteAcademicYear(?,?)");
             st.setInt(1, AYearID);
+            st.registerOutParameter(2,Types.INTEGER);
 
-            LOGGER.log(Level.INFO, "Deleting resource in process...");
             st.execute();
+
+            int status = st.getInt(2);
+            LOGGER.log(Level.INFO, "Status: " + status);
+
+            if (status != 200) {
+                throw new SQLCustomException(status);
+            }
 
         } catch (SQLException e1) {
             LOGGER.log(Level.SEVERE, e1.toString());
         } catch (NamingException e2) {
             LOGGER.log(Level.SEVERE, e2.toString());
         }
-
-        // TODO
     }
 }
