@@ -2,15 +2,14 @@
 
 ## Contributors
 
-- 14547 - ChocolateOverflow
-- 13948 - Noe315
-- 13886 - QuanTran4139
-- 13471 - dttuoc99
-- 13872 - duchai9109
-- 16052 - NguyenGiaKimThien
-- 15124 - TranPhanPhucLong
-- 13298 - bacxhoang
-- 14306 - khoiminhvo32
+- 14547 - ChocolateOverflow (Project Leader, Java.API)
+- 13872 - duchai9109 (Java.DB)
+- 13471 - dttuoc99 (UI Leader)
+- 13948 - Noe315 (UI)
+- 13886 - QuanTran4139 (UI)
+- 13298 - bacxhoang (DB Leader)
+- 16052 - NguyenGiaKimThien (DB)
+- 15124 - TranPhanPhucLong (DB)
 
 ## Installing the application
 

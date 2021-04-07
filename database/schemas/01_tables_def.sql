@@ -1,14 +1,12 @@
 CREATE TABLE IF NOT EXISTS AcademicYear (
     AYearId INT,
-    
+
     PRIMARY KEY (AYearId)
 );
-
-
 CREATE TABLE IF NOT EXISTS Semester (
 	SemesterId VARCHAR(10),
     AYearId INT NOT NULL,
-    
+
     PRIMARY KEY(SemesterId,AYearId),
 	FOREIGN KEY (AYearId)
 		REFERENCES AcademicYear (AYearId),
@@ -19,27 +17,27 @@ CREATE TABLE IF NOT EXISTS Semester (
 CREATE TABLE IF NOT EXISTS Faculty (
     FacultyId VARCHAR(10),
 	FacultyName VARCHAR(100) NOT NULL,
-    
+
     PRIMARY KEY (FacultyId),
     CONSTRAINT Faculty
     UNIQUE (FacultyName)
-); 
+);
 
 CREATE TABLE IF NOT EXISTS FacultyInAcademicYear (
 	FacultyId VARCHAR(10),
     AYearId INT NOT NULL,
-    
+
     PRIMARY KEY(FacultyId,AYearId),
 	FOREIGN KEY (FacultyId)
 		REFERENCES Faculty (FacultyId),
 	FOREIGN KEY (AYearId)
 		REFERENCES AcademicYear (AYearId)
 );
-    
+
 CREATE TABLE IF NOT EXISTS Program (
     ProgramId VARCHAR(10),
     ProgramName VARCHAR(100) NOT NULL,
-    
+
     PRIMARY KEY (ProgramId),
 	CONSTRAINT Program
     UNIQUE (ProgramName)
@@ -61,7 +59,7 @@ CREATE TABLE IF NOT EXISTS ProgramInFacultyInAcademicYear (
 CREATE TABLE IF NOT EXISTS Module (
     ModuleId VARCHAR(10),
     ModuleName VARCHAR(100) NOT NULL,
-    
+
 	PRIMARY KEY (ModuleId)
 );
 
@@ -83,7 +81,7 @@ CREATE TABLE IF NOT EXISTS Class (
     Size INT NOT NULL,
     SemesterId VARCHAR(10),
     ModuleId VARCHAR(10),
-   
+
     PRIMARY KEY (ClassId,SemesterId,ModuleId),
     FOREIGN KEY (SemesterId)
 		REFERENCES Semester (SemesterId),
@@ -99,7 +97,7 @@ CREATE TABLE IF NOT EXISTS Lecturer (
     LecturerId VARCHAR(10),
     LecturerName VARCHAR(100) NOT NULL,
 	PRIMARY KEY (LecturerId)
-); 
+);
 
 CREATE TABLE IF NOT EXISTS Teaching (
     LecturerId VARCHAR(10),
@@ -112,14 +110,50 @@ CREATE TABLE IF NOT EXISTS Teaching (
 		REFERENCES Class (ClassId)
 );
 
-CREATE TABLE IF NOT EXISTS Questionnaire (
-    LecturerId VARCHAR(10),
-    ClassId VARCHAR(10),
-    Content LONGBLOB, 
 
-    PRIMARY KEY (LecturerId,ClassId),
+CREATE TABLE IF NOT EXISTS Questionnaire (
+	QuestionnaireId INT NOT NULL AUTO_INCREMENT,
+    LecturerId VARCHAR(10) NOT NULL,
+    ClassId VARCHAR(10) NOT NULL,
+    PRIMARY KEY (QuestionnaireId,LecturerId,ClassID),
+    Gender CHAR,
+    Question0 ENUM('1','2','3','4','5') NOT NULL,
+	Question1 ENUM('1','2','3','4','5','N/A') NOT NULL,
+    Question2 ENUM('1','2','3','4','5','N/A') NOT NULL,
+    Question3 ENUM('1','2','3','4','5','N/A') NOT NULL,
+    Question4 ENUM('1','2','3','4','5','N/A') NOT NULL,
+    Question5 ENUM('1','2','3','4','5') NOT NULL,
+    Question6 ENUM('1','2','3','4','5') NOT NULL,
+    Question7 ENUM('1','2','3','4','5') NOT NULL,
+    Question8 ENUM('1','2','3','4','5','N/A') NOT NULL,
+    Question9 ENUM('1','2','3','4','5','N/A') NOT NULL,
+    Question10 ENUM('1','2','3','4','5','N/A') NOT NULL,
+    Question11 ENUM('1','2','3','4','5','N/A') NOT NULL,
+    Question12 ENUM('1','2','3','4','5','N/A') NOT NULL,
+    Question13 ENUM('1','2','3','4','5','N/A') NOT NULL,
+    Question14 ENUM('1','2','3','4','5','N/A') NOT NULL,
+    Question15 ENUM('1','2','3','4','5','N/A') NOT NULL,
+    Question16 ENUM('1','2','3','4','5','N/A') NOT NULL,
+    Question17 ENUM('1','2','3','4','5','N/A') NOT NULL,
+    Comment TEXT,
+
+
     FOREIGN KEY (LecturerId)
-		REFERENCES Lecturer (LecturerId),
+		REFERENCES Teaching (LecturerId),
 	FOREIGN KEY (ClassId)
-		REFERENCES Class (ClassId)
+		REFERENCES Teaching (ClassId)
 );
+
+/*Trigger to auto_increment QID based on LID-CID*/
+DELIMITER $$
+
+CREATE TRIGGER QID_AutoIncrement BEFORE INSERT ON Questionnaire
+FOR EACH ROW BEGIN
+    SELECT MAX(Questionnaireid) INTO @auto_id
+    FROM Questionnaire
+    where lecturerID = NEW.LecturerId and classID= NEW.classID;
+    SET NEW.questionnaireid = COALESCE(@AUTO_ID +1,1);
+
+END $$
+
+DELIMITER ;

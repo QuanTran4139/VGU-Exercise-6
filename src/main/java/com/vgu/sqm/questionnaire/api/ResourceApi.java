@@ -1,17 +1,30 @@
 package com.vgu.sqm.questionnaire.api;
 
-import com.vgu.sqm.questionnaire.core.Resource;
+import com.vgu.sqm.questionnaire.database.SQLCustomException;
+import com.vgu.sqm.questionnaire.resource.Resource;
+import com.vgu.sqm.questionnaire.utils.JsonUtils;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonArrayBuilder;
+import javax.json.JsonObject;
+import javax.naming.NamingException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public abstract class ResourceApi extends HttpServlet {
+    abstract protected void doPut(HttpServletRequest request, HttpServletResponse response)
+        throws ServletException, IOException;
+    abstract protected void doDelete(HttpServletRequest request, HttpServletResponse response)
+        throws ServletException, IOException;
+    abstract protected void addResourceToDatabase(Resource resource)
+        throws SQLCustomException, NamingException;
     abstract ArrayList<Resource> dumpResource();
 
     protected JsonArray ResourceToJson(ArrayList<Resource> resources) {
@@ -35,14 +48,19 @@ public abstract class ResourceApi extends HttpServlet {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             response.getWriter().print("You need to supply an 'action'");
         } else {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            String message = String.format("Action '%s' is not supported", action);
-            response.getWriter().print(message);
+            doGetCustomAction(request, response, action);
         }
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
         doGet(request, response);
+    }
+
+    protected void doGetCustomAction(HttpServletRequest request, HttpServletResponse response,
+        String action) throws ServletException, IOException {
+        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        String message = String.format("Action '%s' is not supported", action);
+        response.getWriter().print(message);
     }
 }

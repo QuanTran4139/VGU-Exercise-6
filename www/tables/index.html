@@ -1,265 +1,202 @@
-<!DOCTYPE html>
+
 <html>
 	<head>
 		<title>Database Tables</title>
-		<style>
-			table, th, td
-			{
-				table-layout: auto;
-				width: 600px;
-			}
-			td.styleNew
-			{
-				border: 1px solid black;
-			}
-			td.styleFirstCol
-			{
-				background-color: grey;
-			}
-		</style>
+		<script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+		<script src = "https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+		<script type="text/javascript" src="js/DumpAcademicYear.js"></script>
+		<script type="text/javascript" src="js/DumpClass.js"></script>
+		<script type="text/javascript" src="js/DumpFaculty.js"></script>
+		<script type="text/javascript" src="js/DumpFacultyInAcademicYear.js"></script>
+		<script type="text/javascript" src="js/DumpLecturer.js"></script>
+		<script type="text/javascript" src="js/DumpModule.js"></script>
+		<script type="text/javascript" src="js/DumpModuleInProgramInAcademicYear.js"></script>
+		<script type="text/javascript" src="js/DumpProgram.js"></script>
+		<script type="text/javascript" src="js/DumpProgramInFacultyInAcademicYear.js"></script>
+		<script type="text/javascript" src="js/DumpQuestionnaire.js"></script>
+		<script type="text/javascript" src="js/DumpSemester.js"></script>
+		<script type="text/javascript" src="js/DumpTeaching.js"></script>
 	</head>
-	
+
 	<body>
 		<h3>Faculty in a year</h3>
-		<button class="button" id="hide">Hide</button>
-		<button class="button" id="show">Show</button>
-		<table>
-			<tr>
-				<td>Faculty ID</td>
-				<td>Academic year ID</td>
-			</tr>
-			<tr>
-				<td>FE</td>
-				<td>2020</td>
-				<td><button class="button" id="delete">Delete</button></td>
-			</tr>
-			<tr>
-				<td><input type="text" id="facultyID" name="faculty"></td>
-				<td><input type="text" id="AYearID" name="AYear"></td>
-				<td><button class="button" id="new">New</button></td>
-			</tr>
-		</table>
+		<button class="button" id="hide1">Hide</button>
+		<button class="button" id="show1">Show</button>
+		<p id="facultyID"> </p>
+		<script>
+		$(document).ready(function()
+		{
+			$('#hide1').click(function()
+			{
+				$('#facultyID').hide();
+			});
+			$('#show1').click(function()
+			{
+				$('#facultyID').show();
+			});
+		});
+		</script>
 		
 		<h3>Academic year</h3>
-		<button class="button" id="hide">Hide</button>
-		<button class="button" id="show">Show</button>
-		<table>
-			<tr>
-				<td>Academic year ID</td>
-			</tr>
-			<tr>
-				<td>2020</td>
-				<td><button class="button" id="delete">Delete</button></td>
-			</tr>
-			<tr>
-				<td><input type="text" id="AYearID" name="AYear"></td>
-				<td><button class="button" id="new">New</button></td>
-			</tr>
-		</table>
-		
+		<button class="button" id="hide2">Hide</button>
+		<button class="button" id="show2">Show</button>
+		<p id="AYearID_2"> </p>
+		<script>
+		$(document).ready(function()
+		{
+			$('#hide2').click(function()
+			{
+				$('#AYearID_2').hide();
+			});
+			$('#show2').click(function()
+			{
+				$('#AYearID_2').show();
+			});
+		});
+		</script>
+
 		<h3>Semester</h3>
-		<button class="button" id="hide">Hide</button>
-		<button class="button" id="show">Show</button>
-		<table>
-			<tr>
-				<td>Semester ID</td>
-				<td>Academic year ID</td>
-			</tr>
-			<tr>
-				<td>SS2020</td>
-				<td>2020</td>
-				<td><button class="button" id="delete">Delete</button></td>
-			</tr>
-			<tr>
-				<td><input type="text" id="semesterID" name="semester"></td>
-				<td><input type="text" id="AYearID" name="AYear"></td>
-				<td><button class="button" id="new">New</button></td>
-			</tr>
-		</table>
+		<button class="button" id="hide3">Hide</button>
+		<button class="button" id="show3">Show</button>
+		<p id="semesterID"> </p>
+		<script>
+		$(document).ready(function()
+		{
+			$('#hide3').click(function()
+			{
+				$('#semesterID').hide();
+			});
+			$('#show3').click(function()
+			{
+				$('#semesterID').show();
+			});
+		});
+		</script>
 		
 		<h3>Faculty</h3>
-		<button class="button" id="hide">Hide</button>
-		<button class="button" id="show">Show</button>
-		<table>
-			<tr>
-				<td>Faculty ID</td>
-				<td>Name</td>
-			</tr>
-			<tr>
-				<td>FE</td>
-				<td>Faculty of Engineering</td>
-				<td><button class="button" id="delete">Delete</button></td>
-			</tr>
-			<tr>
-				<td>FB</td>
-				<td>Faculty of Business</td>
-				<td><button class="button" id="delete">Delete</button></td>
-			</tr>
-			<tr>
-				<td><input type="text" id="facultyID" name="faculty"></td>
-				<td><input type="text" id="facultyName" name="facultyName"></td>
-				<td><button class="button" id="new">New</button></td>
-			</tr>
-		</table>
-		
+		<button class="button" id="hide4">Hide</button>
+		<button class="button" id="show4">Show</button>
+		<p id="facultyID_2"> </p>
+		<script>
+		$(document).ready(function()
+		{
+			$('#hide4').click(function()
+			{
+				$('#facultyID_2').hide();
+			});
+			$('#show4').click(function()
+			{
+				$('#facultyID_2').show();
+			});
+		});
+		</script>
+
 		<h3>Program</h3>
-		<button class="button" id="hide">Hide</button>
-		<button class="button" id="show">Show</button>
-		<table>
-			<tr>
-				<td>Program ID</td>
-				<td>Faculty ID</td>
-				<td>Name</td>
-			</tr>
-			<tr>
-				<td>CS</td>
-				<td>FE</td>
-				<td>Computer Science</td>
-				<td><button class="button" id="delete">Delete</button></td>
-			</tr>
-			<tr>
-				<td>BA</td>
-				<td>FB</td>
-				<td>Business Administration</td>
-				<td><button class="button" id="delete">Delete</button></td>
-			</tr>
-			<tr>
-				<td><input type="text" id="programID" name="programID"></td>
-				<td><input type="text" id="facultyID" name="facultyID"></td>
-				<td><input type="text" id="programName" name="programName"></td>
-				<td><button class="button" id="new">New</button></td>
-			</tr>
-		</table>
-		
+		<button class="button" id="hide5">Hide</button>
+		<button class="button" id="show5">Show</button>
+		<p id="ProgramID"> </p>
+		<script>
+		$(document).ready(function()
+		{
+			$('#hide5').click(function()
+			{
+				$('#ProgramID').hide();
+			});
+			$('#show5').click(function()
+			{
+				$('#ProgramID').show();
+			});
+		});
+		</script>
+
 		<h3>Module</h3>
-		<button class="button" id="hide">Hide</button>
-		<button class="button" id="show">Show</button>
-		<table>
-			<tr>
-				<td>Module ID</td>
-				<td>Program ID</td>
-				<td>Name</td>
-			</tr>
-			<tr>
-				<td>M1</td>
-				<td>CS</td>
-				<td>Algebra</td>
-				<td><button class="button" id="delete">Delete</button></td>
-			</tr>
-			<tr>
-				<td>M2</td>
-				<td>ME</td>
-				<td>Control Theory</td>
-				<td><button class="button" id="delete">Delete</button></td>
-			</tr>
-			<tr>
-				<td><input type="text" id="programID" name="programID"></td>
-				<td><input type="text" id="facultyID" name="facultyID"></td>
-				<td><input type="text" id="programName" name="programName"></td>
-				<td><button class="button" id="new">New</button></td>
-			</tr>
-		</table>
-		
+		<button class="button" id="hide6">Hide</button>
+		<button class="button" id="show6">Show</button>
+		<p id="ModuleID"> </p>
+		<script>
+		$(document).ready(function()
+		{
+			$('#hide6').click(function()
+			{
+				$('#ModuleID').hide();
+			});
+			$('#show6').click(function()
+			{
+				$('#ModuleID').show();
+			});
+		});
+		</script>
+
 		<h3>Class</h3>
-		<button class="button" id="hide">Hide</button>
-		<button class="button" id="show">Show</button>
-		<table>
-			<tr>
-				<td>Class ID</td>
-				<td>Module ID</td>
-				<td>Semester ID</td>
-				<td>Size</td>
-			</tr>
-			<tr>
-				<td>M1-SS2020</td>
-				<td>M1</td>
-				<td>SS2020</td>
-				<td>30</td>
-				<td><button class="button" id="delete">Delete</button></td>
-			</tr>
-			<tr>
-				<td>M1-SS2020</td>
-				<td>M2</td>
-				<td>SS2020</td>
-				<td>25</td>
-				<td><button class="button" id="delete">Delete</button></td>
-			</tr>
-			<tr>
-				<td><input type="text" id="classID" name="classID"></td>
-				<td><input type="text" id="moduleID" name="moduleID"></td>
-				<td><input type="text" id="semesterID" name="semesterID"></td>
-				<td><input type="text" id="size" name="size"></td>
-				<td><button class="button" id="new">New</button></td>
-			</tr>
-		</table>
-		
-		<h3>Questionaire</h3>
-		<button class="button" id="hide">Hide</button>
-		<button class="button" id="show">Show</button>
-		<table>
-			<tr>
-				<td>Questionaire ID</td>
-				<td>Lecture ID</td>
-				<td>Class ID</td>
-			</tr>
-			<tr>
-				<td>1234</td>
-				<td>JD-000</td>
-				<td>M1-SS2020</td>
-				<td><button class="button" id="delete">Delete</button></td>
-			</tr>
-			<tr>
-				<td>1235</td>
-				<td>JD-001</td>
-				<td>M2-SS2020</td>
-				<td><button class="button" id="delete">Delete</button></td>
-			</tr>
-			<tr>
-				<td><input type="text" id="questionaireID" name="questionaireID"></td>
-				<td><input type="text" id="lecturerID" name="lecturerID"></td>
-				<td><input type="text" id="classID" name="classID"></td>
-				<td><button class="button" id="new">New</button></td>
-			</tr>
-		</table>
-		
+		<button class="button" id="hide7">Hide</button>
+		<button class="button" id="show7">Show</button>
+		<p id="ClassID"> </p>
+		<script>
+		$(document).ready(function()
+		{
+			$('#hide7').click(function()
+			{
+				$('#ClassID').hide();
+			});
+			$('#show7').click(function()
+			{
+				$('#ClassID').show();
+			});
+		});
+		</script>
+
+		<h3>Questionnaire</h3>
+		<button class="button" id="hide8">Hide</button>
+		<button class="button" id="show8">Show</button>
+		<p id="QuestionaireID"> </p>
+		<script>
+		$(document).ready(function()
+		{
+			$('#hide8').click(function()
+			{
+				$('#QuestionaireID').hide();
+			});
+			$('#show8').click(function()
+			{
+				$('#QuestionaireID').show();
+			});
+		});
+		</script>
+
 		<h3>Lecture</h3>
-		<button class="button" id="hide">Hide</button>
-		<button class="button" id="show">Show</button>
-		<table>
-			<tr>
-				<td>Lecture ID</td>
-				<td>Name</td>
-			</tr>
-			<tr>
-				<td>JD-000</td>
-				<td>John Doe</td>
-				<td><button class="button" id="delete">Delete</button></td>
-			</tr>
-			<tr>
-				<td><input type="text" id="lecturerID" name="lecturerID"></td>
-				<td><input type="text" id="lecturerName" name="lecturerName"></td>
-				<td><button class="button" id="new">New</button></td>
-			</tr>
-		</table>
-		
+		<button class="button" id="hide9">Hide</button>
+		<button class="button" id="show9">Show</button>
+		<p id="LecturerID"> </p>
+		<script>
+		$(document).ready(function()
+		{
+			$('#hide9').click(function()
+			{
+				$('#LecturerID').hide();
+			});
+			$('#show9').click(function()
+			{
+				$('#LecturerID').show();
+			});
+		});
+		</script>
+
 		<h3>Teaches</h3>
-		<button class="button" id="hide">Hide</button>
-		<button class="button" id="show">Show</button>
-		<table>
-			<tr>
-				<td>Lecture ID</td>
-				<td>Class ID</td>
-			</tr>
-			<tr>
-				<td>JD-000</td>
-				<td>M1-SS2020</td>
-				<td><button class="button" id="delete">Delete</button></td>
-			</tr>
-			<tr>
-				<td><input type="text" id="lecturerID" name="lecturerID"></td>
-				<td><input type="text" id="classID" name="classID"></td>
-				<td><button class="button" id="new">New</button></td>
-			</tr>
-		</table>
+		<button class="button" id="hide10">Hide</button>
+		<button class="button" id="show10">Show</button>
+		<p id="lecturerID_2"> </p>
+		<script>
+		$(document).ready(function()
+		{
+			$('#hide10').click(function()
+			{
+				$('#lecturerID_2').hide();
+			});
+			$('#show10').click(function()
+			{
+				$('#lecturerID_2').show();
+			});
+		});
+		</script>
 	</body>
 </html>
